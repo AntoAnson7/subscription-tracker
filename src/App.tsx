@@ -132,9 +132,10 @@ export default function App() {
     <div
       className={css({
         minHeight: '100vh',
-        bg: '#F5F5F7',
-        color: '#1D1D1F',
+        bg: { base: '#F5F5F7', _dark: '#000000' },
+        color: { base: '#1D1D1F', _dark: '#F5F5F7' },
         fontFamily: 'sans',
+        transition: 'background-color 0.2s ease, color 0.2s ease',
       })}
     >
       {/* Apple-style Frosted Glass Navigation Bar */}
@@ -144,8 +145,9 @@ export default function App() {
           top: 0,
           zIndex: 50,
           backdropFilter: 'blur(20px)',
-          backgroundColor: 'rgba(255, 255, 255, 0.82)',
-          borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
+          backgroundColor: { base: 'rgba(255, 255, 255, 0.85)', _dark: 'rgba(28, 28, 30, 0.85)' },
+          borderBottom: '1px solid',
+          borderColor: { base: 'rgba(0, 0, 0, 0.08)', _dark: 'rgba(255, 255, 255, 0.12)' },
           transition: 'all 0.2s ease',
         })}
       >
@@ -187,11 +189,11 @@ export default function App() {
                 className={css({
                   ml: '2',
                   fontSize: '11px',
-                  fontWeight: '500',
+                  fontWeight: '600',
                   px: '2',
                   py: '0.5',
                   borderRadius: '9999px',
-                  bg: 'rgba(0, 113, 227, 0.08)',
+                  bg: { base: 'rgba(0, 113, 227, 0.08)', _dark: 'rgba(0, 113, 227, 0.2)' },
                   color: '#0071E3',
                   letterSpacing: '0.2px',
                 })}
@@ -213,14 +215,15 @@ export default function App() {
                 px: '3',
                 py: '1.5',
                 borderRadius: '9999px',
-                bg: 'rgba(0, 0, 0, 0.04)',
-                border: '1px solid rgba(0, 0, 0, 0.06)',
+                bg: { base: 'rgba(0, 0, 0, 0.04)', _dark: 'rgba(255, 255, 255, 0.1)' },
+                border: '1px solid',
+                borderColor: { base: 'rgba(0, 0, 0, 0.06)', _dark: 'rgba(255, 255, 255, 0.15)' },
                 fontSize: '13px',
                 fontWeight: '500',
-                color: '#1D1D1F',
+                color: { base: '#1D1D1F', _dark: '#F5F5F7' },
                 cursor: 'pointer',
                 transition: 'background 0.15s ease',
-                _hover: { bg: 'rgba(0, 0, 0, 0.08)' },
+                _hover: { bg: { base: 'rgba(0, 0, 0, 0.08)', _dark: 'rgba(255, 255, 255, 0.15)' } },
                 _focusVisible: {
                   outline: '2px solid #0071E3',
                   outlineOffset: '2px',
@@ -237,14 +240,15 @@ export default function App() {
                 width: '32px',
                 height: '32px',
                 borderRadius: '9999px',
-                bg: '#E5E5EA',
-                color: '#1D1D1F',
+                bg: { base: '#E5E5EA', _dark: '#3A3A3C' },
+                color: { base: '#1D1D1F', _dark: '#F5F5F7' },
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: '13px',
                 fontWeight: '600',
-                border: '1px solid rgba(0, 0, 0, 0.08)',
+                border: '1px solid',
+                borderColor: { base: 'rgba(0, 0, 0, 0.08)', _dark: 'rgba(255, 255, 255, 0.15)' },
               })}
               title="Demo User"
             >
@@ -270,8 +274,9 @@ export default function App() {
               mb: '6',
               p: '4',
               borderRadius: '16px',
-              bg: 'rgba(255, 149, 0, 0.1)',
-              border: '1px solid rgba(255, 149, 0, 0.25)',
+              bg: { base: 'rgba(255, 149, 0, 0.12)', _dark: 'rgba(255, 149, 0, 0.2)' },
+              border: '1px solid',
+              borderColor: { base: 'rgba(255, 149, 0, 0.3)', _dark: 'rgba(255, 149, 0, 0.4)' },
               display: 'flex',
               alignItems: { base: 'flex-start', sm: 'center' },
               justifyContent: 'space-between',
@@ -296,10 +301,21 @@ export default function App() {
                 <AlertTriangle size={20} strokeWidth={2.2} />
               </div>
               <div>
-                <p className={css({ fontSize: '14px', fontWeight: '600', color: '#1D1D1F' })}>
+                <p
+                  className={css({
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    color: { base: '#1D1D1F', _dark: '#F5F5F7' },
+                  })}
+                >
                   Free trial expiring in 2 days
                 </p>
-                <p className={css({ fontSize: '13px', color: '#86868B' })}>
+                <p
+                  className={css({
+                    fontSize: '13px',
+                    color: { base: '#86868B', _dark: '#A1A1A6' },
+                  })}
+                >
                   Figma Professional will renew for $15.00/mo on Nov 15, 2026.
                 </p>
               </div>
@@ -313,17 +329,18 @@ export default function App() {
                   px: '3.5',
                   py: '1.5',
                   borderRadius: '9999px',
-                  bg: 'white',
-                  border: '1px solid rgba(0, 0, 0, 0.12)',
+                  bg: { base: 'white', _dark: '#2C2C2E' },
+                  border: '1px solid',
+                  borderColor: { base: 'rgba(0, 0, 0, 0.12)', _dark: 'rgba(255, 255, 255, 0.15)' },
                   fontSize: '13px',
                   fontWeight: '500',
-                  color: '#1D1D1F',
+                  color: { base: '#1D1D1F', _dark: '#F5F5F7' },
                   textDecoration: 'none',
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '1.5',
                   transition: 'background 0.15s ease',
-                  _hover: { bg: '#F5F5F7' },
+                  _hover: { bg: { base: '#F5F5F7', _dark: '#3A3A3C' } },
                 })}
               >
                 Manage Trial <ExternalLink size={13} />
@@ -337,9 +354,13 @@ export default function App() {
           className={css({
             p: { base: '6', md: '8' },
             borderRadius: '24px',
-            bg: 'white',
-            border: '1px solid rgba(0, 0, 0, 0.06)',
-            boxShadow: '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+            bg: { base: 'white', _dark: '#1C1C1E' },
+            border: '1px solid',
+            borderColor: { base: 'rgba(0, 0, 0, 0.06)', _dark: 'rgba(255, 255, 255, 0.1)' },
+            boxShadow: {
+              base: '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+              _dark: '0 4px 20px -2px rgba(0, 0, 0, 0.4)',
+            },
             mb: '8',
             position: 'relative',
             overflow: 'hidden',
@@ -369,7 +390,7 @@ export default function App() {
                     fontWeight: '700',
                     letterSpacing: '0.8px',
                     textTransform: 'uppercase',
-                    color: '#86868B',
+                    color: { base: '#86868B', _dark: '#98989D' },
                   })}
                 >
                   Monthly Commitment
@@ -395,14 +416,20 @@ export default function App() {
                     fontSize: { base: '44px', md: '56px' },
                     fontWeight: '700',
                     letterSpacing: '-1.5px',
-                    color: '#1D1D1F',
+                    color: { base: '#1D1D1F', _dark: '#FFFFFF' },
                     lineHeight: '1',
                     margin: 0,
                   })} tabular-nums`}
                 >
                   ${totalMonthlySpend.toFixed(2)}
                 </h1>
-                <span className={css({ fontSize: '18px', fontWeight: '500', color: '#86868B' })}>
+                <span
+                  className={css({
+                    fontSize: '18px',
+                    fontWeight: '500',
+                    color: { base: '#86868B', _dark: '#98989D' },
+                  })}
+                >
                   / month
                 </span>
               </div>
@@ -416,11 +443,16 @@ export default function App() {
                   gap: { base: '4', md: '6' },
                   mt: '4',
                   fontSize: '14px',
-                  color: '#86868B',
+                  color: { base: '#86868B', _dark: '#98989D' },
                 })}
               >
                 <div>
-                  <span className={css({ color: '#1D1D1F', fontWeight: '600' })}>
+                  <span
+                    className={css({
+                      color: { base: '#1D1D1F', _dark: '#F5F5F7' },
+                      fontWeight: '600',
+                    })}
+                  >
                     ${totalAnnualSpend.toFixed(2)}
                   </span>{' '}
                   projected annually
@@ -434,7 +466,12 @@ export default function App() {
                   })}
                 />
                 <div>
-                  <span className={css({ color: '#1D1D1F', fontWeight: '600' })}>
+                  <span
+                    className={css({
+                      color: { base: '#1D1D1F', _dark: '#F5F5F7' },
+                      fontWeight: '600',
+                    })}
+                  >
                     {SAMPLE_SUBSCRIPTIONS.length}
                   </span>{' '}
                   active subscriptions
@@ -502,17 +539,20 @@ export default function App() {
                   px: '4',
                   py: '3',
                   borderRadius: '12px',
-                  bg: 'rgba(0, 0, 0, 0.04)',
-                  color: '#1D1D1F',
+                  bg: { base: 'rgba(0, 0, 0, 0.04)', _dark: 'rgba(255, 255, 255, 0.1)' },
+                  color: { base: '#1D1D1F', _dark: '#F5F5F7' },
                   fontSize: '14px',
                   fontWeight: '500',
-                  border: '1px solid rgba(0, 0, 0, 0.06)',
+                  border: '1px solid',
+                  borderColor: { base: 'rgba(0, 0, 0, 0.06)', _dark: 'rgba(255, 255, 255, 0.15)' },
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '2',
                   transition: 'background 0.15s ease',
-                  _hover: { bg: 'rgba(0, 0, 0, 0.08)' },
+                  _hover: {
+                    bg: { base: 'rgba(0, 0, 0, 0.08)', _dark: 'rgba(255, 255, 255, 0.15)' },
+                  },
                   _focusVisible: {
                     outline: '2px solid #0071E3',
                     outlineOffset: '2px',
@@ -546,8 +586,9 @@ export default function App() {
               display: 'inline-flex',
               p: '1',
               borderRadius: '12px',
-              bg: 'rgba(118, 118, 128, 0.12)',
-              border: '1px solid rgba(0, 0, 0, 0.04)',
+              bg: { base: 'rgba(118, 118, 128, 0.12)', _dark: 'rgba(118, 118, 128, 0.24)' },
+              border: '1px solid',
+              borderColor: { base: 'rgba(0, 0, 0, 0.04)', _dark: 'rgba(255, 255, 255, 0.08)' },
             })}
           >
             <button
@@ -567,9 +608,21 @@ export default function App() {
                 border: 'none',
                 cursor: 'pointer',
                 transition: 'all 0.15s ease',
-                bg: activeTab === 'subscriptions' ? 'white' : 'transparent',
-                color: activeTab === 'subscriptions' ? '#1D1D1F' : '#86868B',
-                boxShadow: activeTab === 'subscriptions' ? '0 2px 8px rgba(0, 0, 0, 0.08)' : 'none',
+                bg:
+                  activeTab === 'subscriptions'
+                    ? { base: 'white', _dark: '#2C2C2E' }
+                    : 'transparent',
+                color:
+                  activeTab === 'subscriptions'
+                    ? { base: '#1D1D1F', _dark: '#FFFFFF' }
+                    : { base: '#86868B', _dark: '#98989D' },
+                boxShadow:
+                  activeTab === 'subscriptions'
+                    ? {
+                        base: '0 2px 8px rgba(0, 0, 0, 0.08)',
+                        _dark: '0 2px 8px rgba(0, 0, 0, 0.4)',
+                      }
+                    : 'none',
               })}
             >
               <Layers size={14} />
@@ -593,9 +646,18 @@ export default function App() {
                 border: 'none',
                 cursor: 'pointer',
                 transition: 'all 0.15s ease',
-                bg: activeTab === 'calendar' ? 'white' : 'transparent',
-                color: activeTab === 'calendar' ? '#1D1D1F' : '#86868B',
-                boxShadow: activeTab === 'calendar' ? '0 2px 8px rgba(0, 0, 0, 0.08)' : 'none',
+                bg: activeTab === 'calendar' ? { base: 'white', _dark: '#2C2C2E' } : 'transparent',
+                color:
+                  activeTab === 'calendar'
+                    ? { base: '#1D1D1F', _dark: '#FFFFFF' }
+                    : { base: '#86868B', _dark: '#98989D' },
+                boxShadow:
+                  activeTab === 'calendar'
+                    ? {
+                        base: '0 2px 8px rgba(0, 0, 0, 0.08)',
+                        _dark: '0 2px 8px rgba(0, 0, 0, 0.4)',
+                      }
+                    : 'none',
               })}
             >
               <Calendar size={14} />
@@ -619,9 +681,18 @@ export default function App() {
                 border: 'none',
                 cursor: 'pointer',
                 transition: 'all 0.15s ease',
-                bg: activeTab === 'analytics' ? 'white' : 'transparent',
-                color: activeTab === 'analytics' ? '#1D1D1F' : '#86868B',
-                boxShadow: activeTab === 'analytics' ? '0 2px 8px rgba(0, 0, 0, 0.08)' : 'none',
+                bg: activeTab === 'analytics' ? { base: 'white', _dark: '#2C2C2E' } : 'transparent',
+                color:
+                  activeTab === 'analytics'
+                    ? { base: '#1D1D1F', _dark: '#FFFFFF' }
+                    : { base: '#86868B', _dark: '#98989D' },
+                boxShadow:
+                  activeTab === 'analytics'
+                    ? {
+                        base: '0 2px 8px rgba(0, 0, 0, 0.08)',
+                        _dark: '0 2px 8px rgba(0, 0, 0, 0.4)',
+                      }
+                    : 'none',
               })}
             >
               <PieChart size={14} />
@@ -636,7 +707,7 @@ export default function App() {
               alignItems: 'center',
               p: '1',
               borderRadius: '10px',
-              bg: 'rgba(118, 118, 128, 0.12)',
+              bg: { base: 'rgba(118, 118, 128, 0.12)', _dark: 'rgba(118, 118, 128, 0.24)' },
               alignSelf: { base: 'flex-end', sm: 'center' },
             })}
           >
@@ -653,9 +724,12 @@ export default function App() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                bg: viewMode === 'grid' ? 'white' : 'transparent',
-                color: viewMode === 'grid' ? '#0071E3' : '#86868B',
-                boxShadow: viewMode === 'grid' ? '0 1px 4px rgba(0,0,0,0.1)' : 'none',
+                bg: viewMode === 'grid' ? { base: 'white', _dark: '#2C2C2E' } : 'transparent',
+                color: viewMode === 'grid' ? '#0071E3' : { base: '#86868B', _dark: '#98989D' },
+                boxShadow:
+                  viewMode === 'grid'
+                    ? { base: '0 1px 4px rgba(0,0,0,0.1)', _dark: '0 1px 4px rgba(0,0,0,0.3)' }
+                    : 'none',
               })}
             >
               <Grid3X3 size={16} />
@@ -673,9 +747,12 @@ export default function App() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                bg: viewMode === 'table' ? 'white' : 'transparent',
-                color: viewMode === 'table' ? '#0071E3' : '#86868B',
-                boxShadow: viewMode === 'table' ? '0 1px 4px rgba(0,0,0,0.1)' : 'none',
+                bg: viewMode === 'table' ? { base: 'white', _dark: '#2C2C2E' } : 'transparent',
+                color: viewMode === 'table' ? '#0071E3' : { base: '#86868B', _dark: '#98989D' },
+                boxShadow:
+                  viewMode === 'table'
+                    ? { base: '0 1px 4px rgba(0,0,0,0.1)', _dark: '0 1px 4px rgba(0,0,0,0.3)' }
+                    : 'none',
               })}
             >
               <TableIcon size={16} />
@@ -724,10 +801,11 @@ export default function App() {
                 pr: '4',
                 py: '2',
                 borderRadius: '10px',
-                bg: 'white',
-                border: '1px solid rgba(0, 0, 0, 0.08)',
+                bg: { base: 'white', _dark: '#1C1C1E' },
+                border: '1px solid',
+                borderColor: { base: 'rgba(0, 0, 0, 0.08)', _dark: 'rgba(255, 255, 255, 0.12)' },
                 fontSize: '14px',
-                color: '#1D1D1F',
+                color: { base: '#1D1D1F', _dark: '#FFFFFF' },
                 outline: 'none',
                 transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
                 _focus: {
@@ -769,12 +847,18 @@ export default function App() {
                   whiteSpace: 'nowrap',
                   cursor: 'pointer',
                   border: '1px solid',
-                  borderColor: selectedCategory === cat ? '#0071E3' : 'rgba(0, 0, 0, 0.08)',
-                  bg: selectedCategory === cat ? '#0071E3' : 'white',
-                  color: selectedCategory === cat ? 'white' : '#1D1D1F',
+                  borderColor:
+                    selectedCategory === cat
+                      ? '#0071E3'
+                      : { base: 'rgba(0, 0, 0, 0.08)', _dark: 'rgba(255, 255, 255, 0.15)' },
+                  bg: selectedCategory === cat ? '#0071E3' : { base: 'white', _dark: '#1C1C1E' },
+                  color: selectedCategory === cat ? 'white' : { base: '#1D1D1F', _dark: '#F5F5F7' },
                   transition: 'all 0.15s ease',
                   _hover: {
-                    borderColor: selectedCategory === cat ? '#0071E3' : 'rgba(0, 0, 0, 0.2)',
+                    borderColor:
+                      selectedCategory === cat
+                        ? '#0071E3'
+                        : { base: 'rgba(0, 0, 0, 0.2)', _dark: 'rgba(255, 255, 255, 0.3)' },
                   },
                 })}
               >
@@ -807,16 +891,23 @@ export default function App() {
                   className={css({
                     p: '6',
                     borderRadius: '20px',
-                    bg: 'white',
-                    border: '1px solid rgba(0, 0, 0, 0.06)',
-                    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
+                    bg: { base: 'white', _dark: '#1C1C1E' },
+                    border: '1px solid',
+                    borderColor: { base: 'rgba(0, 0, 0, 0.06)', _dark: 'rgba(255, 255, 255, 0.1)' },
+                    boxShadow: {
+                      base: '0 2px 10px rgba(0, 0, 0, 0.03)',
+                      _dark: '0 2px 10px rgba(0, 0, 0, 0.3)',
+                    },
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
                     position: 'relative',
                     transition: 'all 0.2s ease',
                     _hover: {
-                      boxShadow: '0 8px 24px -4px rgba(0, 0, 0, 0.08)',
+                      boxShadow: {
+                        base: '0 8px 24px -4px rgba(0, 0, 0, 0.08)',
+                        _dark: '0 8px 24px -4px rgba(0, 0, 0, 0.5)',
+                      },
                       transform: 'translateY(-2px)',
                     },
                   })}
@@ -837,8 +928,12 @@ export default function App() {
                             width: '44px',
                             height: '44px',
                             borderRadius: '12px',
-                            bg: '#F5F5F7',
-                            border: '1px solid rgba(0, 0, 0, 0.06)',
+                            bg: { base: '#F5F5F7', _dark: '#2C2C2E' },
+                            border: '1px solid',
+                            borderColor: {
+                              base: 'rgba(0, 0, 0, 0.06)',
+                              _dark: 'rgba(255, 255, 255, 0.1)',
+                            },
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -850,8 +945,15 @@ export default function App() {
                             alt={`${sub.name} logo`}
                             width={22}
                             height={22}
+                            className={css({
+                              _dark: {
+                                filter:
+                                  sub.iconSlug === 'apple' || sub.iconSlug === 'openai'
+                                    ? 'invert(1)'
+                                    : 'none',
+                              },
+                            })}
                             onError={(e) => {
-                              // Fallback monogram if CDN fails
                               e.currentTarget.style.display = 'none';
                             }}
                           />
@@ -861,13 +963,18 @@ export default function App() {
                             className={css({
                               fontSize: '16px',
                               fontWeight: '600',
-                              color: '#1D1D1F',
+                              color: { base: '#1D1D1F', _dark: '#FFFFFF' },
                               margin: 0,
                             })}
                           >
                             {sub.name}
                           </h3>
-                          <span className={css({ fontSize: '12px', color: '#86868B' })}>
+                          <span
+                            className={css({
+                              fontSize: '12px',
+                              color: { base: '#86868B', _dark: '#98989D' },
+                            })}
+                          >
                             {sub.category}
                           </span>
                         </div>
@@ -886,8 +993,14 @@ export default function App() {
                           gap: '1',
                           bg:
                             sub.status === 'trial'
-                              ? 'rgba(255, 149, 0, 0.12)'
-                              : 'rgba(52, 199, 89, 0.12)',
+                              ? {
+                                  base: 'rgba(255, 149, 0, 0.12)',
+                                  _dark: 'rgba(255, 149, 0, 0.25)',
+                                }
+                              : {
+                                  base: 'rgba(52, 199, 89, 0.12)',
+                                  _dark: 'rgba(52, 199, 89, 0.25)',
+                                },
                           color: sub.status === 'trial' ? '#FF9500' : '#34C759',
                         })}
                       >
@@ -911,21 +1024,31 @@ export default function App() {
                             fontSize: '26px',
                             fontWeight: '700',
                             letterSpacing: '-0.5px',
-                            color: '#1D1D1F',
+                            color: { base: '#1D1D1F', _dark: '#FFFFFF' },
                           })} tabular-nums`}
                         >
                           ${sub.cost.toFixed(2)}
                         </span>
                         <span
-                          className={css({ fontSize: '13px', color: '#86868B', fontWeight: '500' })}
+                          className={css({
+                            fontSize: '13px',
+                            color: { base: '#86868B', _dark: '#98989D' },
+                            fontWeight: '500',
+                          })}
                         >
                           / {sub.cycle}
                         </span>
                       </div>
                       {sub.cycle === 'yearly' && (
-                        <p className={css({ fontSize: '12px', color: '#86868B', mt: '0.5' })}>
+                        <p
+                          className={css({
+                            fontSize: '12px',
+                            color: { base: '#86868B', _dark: '#98989D' },
+                            mt: '0.5',
+                          })}
+                        >
                           Normalized to{' '}
-                          <strong className={css({ color: '#1D1D1F' })}>
+                          <strong className={css({ color: { base: '#1D1D1F', _dark: '#FFFFFF' } })}>
                             ${sub.monthlyEquivalent.toFixed(2)}/mo
                           </strong>
                         </p>
@@ -937,7 +1060,11 @@ export default function App() {
                   <div
                     className={css({
                       pt: '3',
-                      borderTop: '1px solid rgba(0, 0, 0, 0.05)',
+                      borderTop: '1px solid',
+                      borderColor: {
+                        base: 'rgba(0, 0, 0, 0.05)',
+                        _dark: 'rgba(255, 255, 255, 0.08)',
+                      },
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
@@ -945,11 +1072,22 @@ export default function App() {
                     })}
                   >
                     <div>
-                      <span className={css({ color: '#86868B', display: 'block' })}>Renews</span>
+                      <span
+                        className={css({
+                          color: { base: '#86868B', _dark: '#98989D' },
+                          display: 'block',
+                        })}
+                      >
+                        Renews
+                      </span>
                       <span
                         className={css({
                           fontWeight: '600',
-                          color: isUrgent ? '#FF3B30' : isSoon ? '#FF9500' : '#1D1D1F',
+                          color: isUrgent
+                            ? '#FF3B30'
+                            : isSoon
+                              ? '#FF9500'
+                              : { base: '#1D1D1F', _dark: '#F5F5F7' },
                         })}
                       >
                         {sub.renewalDate} ({sub.daysRemaining}d)
@@ -967,12 +1105,14 @@ export default function App() {
                         px: '2.5',
                         py: '1.5',
                         borderRadius: '8px',
-                        bg: 'rgba(0, 0, 0, 0.03)',
+                        bg: { base: 'rgba(0, 0, 0, 0.03)', _dark: 'rgba(255, 255, 255, 0.08)' },
                         color: '#0071E3',
                         fontWeight: '500',
                         textDecoration: 'none',
                         transition: 'background 0.15s ease',
-                        _hover: { bg: 'rgba(0, 113, 227, 0.08)' },
+                        _hover: {
+                          bg: { base: 'rgba(0, 113, 227, 0.08)', _dark: 'rgba(0, 113, 227, 0.25)' },
+                        },
                       })}
                     >
                       <span>Manage</span>
@@ -987,11 +1127,15 @@ export default function App() {
           /* Dense Table View (Power User / Apple Numbers Style) */
           <div
             className={css({
-              bg: 'white',
+              bg: { base: 'white', _dark: '#1C1C1E' },
               borderRadius: '20px',
-              border: '1px solid rgba(0, 0, 0, 0.06)',
+              border: '1px solid',
+              borderColor: { base: 'rgba(0, 0, 0, 0.06)', _dark: 'rgba(255, 255, 255, 0.1)' },
               overflowX: 'auto',
-              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
+              boxShadow: {
+                base: '0 2px 10px rgba(0, 0, 0, 0.03)',
+                _dark: '0 2px 10px rgba(0, 0, 0, 0.3)',
+              },
             })}
           >
             <table
@@ -1005,26 +1149,69 @@ export default function App() {
               <thead>
                 <tr
                   className={css({
-                    borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
-                    bg: 'rgba(0, 0, 0, 0.02)',
+                    borderBottom: '1px solid',
+                    borderColor: { base: 'rgba(0, 0, 0, 0.08)', _dark: 'rgba(255, 255, 255, 0.1)' },
+                    bg: { base: 'rgba(0, 0, 0, 0.02)', _dark: 'rgba(255, 255, 255, 0.04)' },
                   })}
                 >
-                  <th className={css({ py: '3.5', px: '5', fontWeight: '600', color: '#86868B' })}>
+                  <th
+                    className={css({
+                      py: '3.5',
+                      px: '5',
+                      fontWeight: '600',
+                      color: { base: '#86868B', _dark: '#98989D' },
+                    })}
+                  >
                     Service
                   </th>
-                  <th className={css({ py: '3.5', px: '4', fontWeight: '600', color: '#86868B' })}>
+                  <th
+                    className={css({
+                      py: '3.5',
+                      px: '4',
+                      fontWeight: '600',
+                      color: { base: '#86868B', _dark: '#98989D' },
+                    })}
+                  >
                     Category
                   </th>
-                  <th className={css({ py: '3.5', px: '4', fontWeight: '600', color: '#86868B' })}>
+                  <th
+                    className={css({
+                      py: '3.5',
+                      px: '4',
+                      fontWeight: '600',
+                      color: { base: '#86868B', _dark: '#98989D' },
+                    })}
+                  >
                     Billed Cost
                   </th>
-                  <th className={css({ py: '3.5', px: '4', fontWeight: '600', color: '#86868B' })}>
+                  <th
+                    className={css({
+                      py: '3.5',
+                      px: '4',
+                      fontWeight: '600',
+                      color: { base: '#86868B', _dark: '#98989D' },
+                    })}
+                  >
                     Monthly Rate
                   </th>
-                  <th className={css({ py: '3.5', px: '4', fontWeight: '600', color: '#86868B' })}>
+                  <th
+                    className={css({
+                      py: '3.5',
+                      px: '4',
+                      fontWeight: '600',
+                      color: { base: '#86868B', _dark: '#98989D' },
+                    })}
+                  >
                     Renewal Date
                   </th>
-                  <th className={css({ py: '3.5', px: '4', fontWeight: '600', color: '#86868B' })}>
+                  <th
+                    className={css({
+                      py: '3.5',
+                      px: '4',
+                      fontWeight: '600',
+                      color: { base: '#86868B', _dark: '#98989D' },
+                    })}
+                  >
                     Status
                   </th>
                   <th
@@ -1033,7 +1220,7 @@ export default function App() {
                       px: '5',
                       textAlign: 'right',
                       fontWeight: '600',
-                      color: '#86868B',
+                      color: { base: '#86868B', _dark: '#98989D' },
                     })}
                   >
                     Action
@@ -1045,9 +1232,13 @@ export default function App() {
                   <tr
                     key={sub.id}
                     className={css({
-                      borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
+                      borderBottom: '1px solid',
+                      borderColor: {
+                        base: 'rgba(0, 0, 0, 0.05)',
+                        _dark: 'rgba(255, 255, 255, 0.06)',
+                      },
                       transition: 'background 0.15s ease',
-                      _hover: { bg: '#FBFBFC' },
+                      _hover: { bg: { base: '#FBFBFC', _dark: '#252528' } },
                     })}
                   >
                     <td className={css({ py: '3.5', px: '5' })}>
@@ -1057,23 +1248,42 @@ export default function App() {
                           alt=""
                           width={18}
                           height={18}
+                          className={css({
+                            _dark: {
+                              filter:
+                                sub.iconSlug === 'apple' || sub.iconSlug === 'openai'
+                                  ? 'invert(1)'
+                                  : 'none',
+                            },
+                          })}
                         />
-                        <span className={css({ fontWeight: '600', color: '#1D1D1F' })}>
+                        <span
+                          className={css({
+                            fontWeight: '600',
+                            color: { base: '#1D1D1F', _dark: '#FFFFFF' },
+                          })}
+                        >
                           {sub.name}
                         </span>
                       </div>
                     </td>
-                    <td className={css({ py: '3.5', px: '4', color: '#86868B' })}>
+                    <td
+                      className={css({
+                        py: '3.5',
+                        px: '4',
+                        color: { base: '#86868B', _dark: '#98989D' },
+                      })}
+                    >
                       {sub.category}
                     </td>
                     <td
-                      className={`${css({ py: '3.5', px: '4', fontWeight: '600', color: '#1D1D1F' })} tabular-nums`}
+                      className={`${css({ py: '3.5', px: '4', fontWeight: '600', color: { base: '#1D1D1F', _dark: '#FFFFFF' } })} tabular-nums`}
                     >
                       ${sub.cost.toFixed(2)}{' '}
                       <span
                         className={css({
                           fontSize: '12px',
-                          color: '#86868B',
+                          color: { base: '#86868B', _dark: '#98989D' },
                           fontWeight: 'normal',
                         })}
                       >
@@ -1088,7 +1298,10 @@ export default function App() {
                     <td className={css({ py: '3.5', px: '4' })}>
                       <span
                         className={css({
-                          color: sub.daysRemaining <= 3 ? '#FF3B30' : '#1D1D1F',
+                          color:
+                            sub.daysRemaining <= 3
+                              ? '#FF3B30'
+                              : { base: '#1D1D1F', _dark: '#F5F5F7' },
                           fontWeight: sub.daysRemaining <= 3 ? '600' : 'normal',
                         })}
                       >
@@ -1105,8 +1318,14 @@ export default function App() {
                           borderRadius: '9999px',
                           bg:
                             sub.status === 'trial'
-                              ? 'rgba(255, 149, 0, 0.12)'
-                              : 'rgba(52, 199, 89, 0.12)',
+                              ? {
+                                  base: 'rgba(255, 149, 0, 0.12)',
+                                  _dark: 'rgba(255, 149, 0, 0.25)',
+                                }
+                              : {
+                                  base: 'rgba(52, 199, 89, 0.12)',
+                                  _dark: 'rgba(52, 199, 89, 0.25)',
+                                },
                           color: sub.status === 'trial' ? '#FF9500' : '#34C759',
                         })}
                       >
@@ -1142,15 +1361,24 @@ export default function App() {
             mt: '12',
             p: '6',
             borderRadius: '20px',
-            bg: 'white',
-            border: '1px solid rgba(0, 0, 0, 0.06)',
-            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.02)',
+            bg: { base: 'white', _dark: '#1C1C1E' },
+            border: '1px solid',
+            borderColor: { base: 'rgba(0, 0, 0, 0.06)', _dark: 'rgba(255, 255, 255, 0.1)' },
+            boxShadow: {
+              base: '0 2px 10px rgba(0, 0, 0, 0.02)',
+              _dark: '0 2px 10px rgba(0, 0, 0, 0.2)',
+            },
           })}
         >
           <div className={css({ display: 'flex', alignItems: 'center', gap: '2', mb: '3' })}>
             <CheckCircle2 size={18} color="#34C759" />
             <h2
-              className={css({ fontSize: '15px', fontWeight: '600', color: '#1D1D1F', margin: 0 })}
+              className={css({
+                fontSize: '15px',
+                fontWeight: '600',
+                color: { base: '#1D1D1F', _dark: '#FFFFFF' },
+                margin: 0,
+              })}
             >
               Apple HIG & Studio Craft Specs Implemented
             </h2>
@@ -1161,11 +1389,17 @@ export default function App() {
               gridTemplateColumns: { base: '1fr', md: 'repeat(3, 1fr)' },
               gap: '4',
               fontSize: '13px',
-              color: '#86868B',
+              color: { base: '#86868B', _dark: '#98989D' },
             })}
           >
             <div>
-              <p className={css({ fontWeight: '600', color: '#1D1D1F', mb: '1' })}>
+              <p
+                className={css({
+                  fontWeight: '600',
+                  color: { base: '#1D1D1F', _dark: '#F5F5F7' },
+                  mb: '1',
+                })}
+              >
                 1. Tabular Figures
               </p>
               <p>
@@ -1174,7 +1408,13 @@ export default function App() {
               </p>
             </div>
             <div>
-              <p className={css({ fontWeight: '600', color: '#1D1D1F', mb: '1' })}>
+              <p
+                className={css({
+                  fontWeight: '600',
+                  color: { base: '#1D1D1F', _dark: '#F5F5F7' },
+                  mb: '1',
+                })}
+              >
                 2. Squircles & Materials
               </p>
               <p>
@@ -1183,7 +1423,13 @@ export default function App() {
               </p>
             </div>
             <div>
-              <p className={css({ fontWeight: '600', color: '#1D1D1F', mb: '1' })}>
+              <p
+                className={css({
+                  fontWeight: '600',
+                  color: { base: '#1D1D1F', _dark: '#F5F5F7' },
+                  mb: '1',
+                })}
+              >
                 3. Accessibility (Priority 1)
               </p>
               <p>
