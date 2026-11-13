@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Subscription } from '@/modules/subscriptions/types/subscription.types';
-import { INITIAL_SUBSCRIPTIONS } from '@/modules/subscriptions/utils/mockData.utils';
 
 export function useSubscriptions() {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>(() => {
@@ -10,11 +9,11 @@ export function useSubscriptions() {
         try {
           return JSON.parse(saved) as Subscription[];
         } catch {
-          return INITIAL_SUBSCRIPTIONS;
+          return [];
         }
       }
     }
-    return INITIAL_SUBSCRIPTIONS;
+    return [];
   });
 
   const addSubscription = (newSub: Subscription) => {
@@ -33,15 +32,9 @@ export function useSubscriptions() {
     });
   };
 
-  const loadSampleData = () => {
-    setSubscriptions(INITIAL_SUBSCRIPTIONS);
-    localStorage.setItem('subtrack-subscriptions', JSON.stringify(INITIAL_SUBSCRIPTIONS));
-  };
-
   return {
     subscriptions,
     addSubscription,
     deleteSubscription,
-    loadSampleData,
   };
 }

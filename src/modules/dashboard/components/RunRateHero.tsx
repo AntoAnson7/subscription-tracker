@@ -1,14 +1,13 @@
-import { Calendar, Plus, Sparkles, TrendingUp } from 'lucide-react';
+import { Calendar, Plus, TrendingUp } from 'lucide-react';
 import { heroStyles } from '@/modules/dashboard/recipes/hero.recipe';
 import { RunRateMetrics } from '@/modules/dashboard/types/dashboard.types';
 
 interface RunRateHeroProps {
   metrics: RunRateMetrics;
   onAddClick: () => void;
-  onLoadSampleData: () => void;
 }
 
-export function RunRateHero({ metrics, onAddClick, onLoadSampleData }: RunRateHeroProps) {
+export function RunRateHero({ metrics, onAddClick }: RunRateHeroProps) {
   const classes = heroStyles();
 
   return (
@@ -47,11 +46,6 @@ export function RunRateHero({ metrics, onAddClick, onLoadSampleData }: RunRateHe
         <button type="button" onClick={onAddClick} className={classes.primaryBtn}>
           <Plus size={16} />
           <span>Add Subscription</span>
-        </button>
-
-        <button type="button" onClick={onLoadSampleData} className={classes.secondaryBtn}>
-          <Sparkles size={15} />
-          <span>Sample Data</span>
         </button>
       </div>
     </section>

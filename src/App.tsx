@@ -18,7 +18,7 @@ export function App() {
     'subscriptions'
   );
 
-  const { subscriptions, loadSampleData } = useSubscriptions();
+  const { subscriptions } = useSubscriptions();
   const metrics = useRunRateMetrics(subscriptions);
   const {
     searchQuery,
@@ -43,7 +43,6 @@ export function App() {
         <RunRateHero
           metrics={metrics}
           onAddClick={() => alert('Add Subscription Modal coming next!')}
-          onLoadSampleData={loadSampleData}
         />
 
         <ViewControls
