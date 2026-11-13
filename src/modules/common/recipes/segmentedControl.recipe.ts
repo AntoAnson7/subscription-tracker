@@ -1,0 +1,51 @@
+import { sva } from 'styled-system/css';
+
+export const segmentedControlStyles = sva({
+  slots: ['root', 'tab', 'viewToggleWrapper', 'viewToggleBtn'],
+  base: {
+    root: {
+      display: 'inline-flex',
+      p: '50',
+      borderRadius: 'md',
+      border: '1px solid',
+      borderColor: 'border.subtle',
+      background: 'bg.hover',
+    },
+    tab: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '100',
+      px: '200',
+      py: '100',
+      borderRadius: 'sm',
+      fontSize: '13px',
+      fontWeight: '600',
+      border: 'none',
+      cursor: 'pointer',
+      transition: 'all 0.15s ease',
+      color: 'text.secondary',
+      background: 'transparent',
+      _hover: { color: 'text.primary' },
+    },
+    viewToggleWrapper: {
+      display: 'flex',
+      alignItems: 'center',
+      p: '50',
+      borderRadius: 'md',
+      background: 'bg.hover',
+      alignSelf: { base: 'flex-end', sm: 'center' },
+    },
+    viewToggleBtn: {
+      p: '100',
+      borderRadius: 'sm',
+      border: 'none',
+      cursor: 'pointer',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: 'text.secondary',
+      background: 'transparent',
+      transition: 'all 0.15s ease',
+    },
+  },
+});

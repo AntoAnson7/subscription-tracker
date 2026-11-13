@@ -175,3 +175,100 @@ export function Dashboard() {
   // Avoid
   export default function SubscriptionCard() { ... }
   ```
+
+---
+
+## 7. Design Tokens & Sizing Rules (Consistency Standard)
+
+All colors, sizing, spacing, and border radii used throughout the application must be declared as Panda CSS tokens in `panda.config.ts` to ensure 100% visual consistency and automatic light/dark mode adaptation.
+
+### Semantic Color Tokens
+
+Always reference semantic tokens instead of hardcoded hex or rgba values:
+
+```typescript
+// Good: Automatically adapts to light/dark themes
+background: 'bg.primary',
+color: 'text.primary',
+borderColor: 'border.subtle',
+
+// Avoid: Hardcoded colors
+background: '#FFFFFF',
+color: '#1D1D1F',
+```
+
+Available semantic tokens:
+
+- **Backgrounds**: `bg.canvas`, `bg.primary`, `bg.secondary`, `bg.tertiary`, `bg.hover`, `bg.muted`
+- **Text**: `text.primary`, `text.secondary`, `text.tertiary`, `text.inverse`
+- **Borders**: `border.subtle`, `border.default`, `border.strong`
+- **Accent**: `accent.primary`, `accent.subtle`, `accent.border`
+- **Status**: `status.danger`, `status.dangerBg`, `status.dangerBorder`, `status.warning`, `status.warningBg`, `status.success`, `status.successBg`
+
+### Sizing & Spacing Scale
+
+- **Scale Rule**: Tokens are defined in steps of `50` up to `500`, where **each 100 equals 8px** (e.g. `'100'` = 8px, `'150'` = 12px, `'200'` = 16px).
+- Sizing applies uniformly to `width`, `height`, `padding`, `margin`, and `gap`.
+- **Beyond 500**: Use explicit pixel strings (e.g. `'1200px'`, `'360px'`).
+
+| Token   | Pixels         | Common Use Cases                               |
+| :------ | :------------- | :--------------------------------------------- |
+| `'0'`   | `0px`          | Zero spacing / resets                          |
+| `'50'`  | `4px`          | Micro gaps, badge vertical padding             |
+| `'100'` | `8px`          | Tight gap, small padding                       |
+| `'150'` | `12px`         | Icon sizes, medium button padding              |
+| `'200'` | `16px`         | Standard element gap, card inner padding       |
+| `'250'` | `20px`         | Large padding, icon containers                 |
+| `'300'` | `24px`         | Section gap, header spacing                    |
+| `'350'` | `28px`         | Large card padding                             |
+| `'400'` | `32px`         | Layout spacing                                 |
+| `'450'` | `36px`         | Extra spacious padding                         |
+| `'500'` | `40px`         | Maximum tokenized spacing/height               |
+| `> 500` | Ex: `'1200px'` | Max container widths, explicit hero dimensions |
+
+### Border Radius Tokens
+
+Always use radii tokens for corners:
+
+- Semantic scale: `'sm'` (`8px`), `'md'` (`12px`), `'lg'` (`16px`), `'xl'` (`22px`), `'2xl'` (`28px`), `'pill'` or `'full'` (`9999px`)
+- Numeric scale: `'50'` (`4px`), `'100'` (`8px`), `'150'` (`12px`), `'200'` (`16px`), `'250'` (`20px`), etc.
+
+Usage in recipes:
+
+```typescript
+borderRadius: 'xl',
+borderRadius: 'pill',
+borderRadius: 'md',
+```
+
+### Gradient Tokens
+
+Gradients are defined in `src/theme/gradientTokens.ts` and configured as Panda CSS semantic gradient tokens with automatic light and dark mode values:
+
+- `ambientMesh`: Full page atmospheric background mesh
+- `heroCard`: Titanium / Apple Card translucent glass hero background
+- `brandIcon`: Subtle brand icon background gradient
+
+Usage in recipes:
+
+```typescript
+bgGradient: 'ambientMesh',
+bgGradient: 'heroCard',
+bgGradient: 'brandIcon',
+```
+
+### Gradient Tokens
+
+Gradients are defined in `src/theme/gradientTokens.ts` and configured as Panda CSS semantic gradient tokens with automatic light and dark mode values:
+
+- `ambientMesh`: Full page atmospheric background mesh
+- `heroCard`: Titanium / Apple Card translucent glass hero background
+- `brandIcon`: Subtle brand icon background gradient
+
+Usage in recipes:
+
+```typescript
+bgGradient: 'ambientMesh',
+bgGradient: 'heroCard',
+bgGradient: 'brandIcon',
+```
