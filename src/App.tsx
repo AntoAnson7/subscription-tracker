@@ -3,12 +3,10 @@ import {
   AlertTriangle,
   ArrowUpRight,
   Calendar,
-  Check,
   CreditCard,
   ExternalLink,
   Grid3X3,
   Moon,
-  Palette,
   PieChart,
   Plus,
   Search,
@@ -18,8 +16,6 @@ import {
   TrendingUp,
 } from 'lucide-react';
 import { css } from 'styled-system/css';
-
-type ThemePalette = 'apple-card' | 'sequoia' | 'obsidian';
 
 interface SampleSubscription {
   id: string;
@@ -114,12 +110,11 @@ export default function App() {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('subtrack-theme');
       if (saved) return saved === 'dark';
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+      return false; // Default to Light Mode as chosen
     }
     return false;
   });
 
-  const [palette, setPalette] = useState<ThemePalette>('apple-card');
   const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
   const [activeTab, setActiveTab] = useState<'subscriptions' | 'calendar' | 'analytics'>(
     'subscriptions'
@@ -151,53 +146,19 @@ export default function App() {
     return matchesCategory && matchesSearch;
   });
 
-  // Palette Configurations (Distinct non-AI looks)
-  const paletteStyles = {
-    'apple-card': {
-      name: 'Apple Card & Titanium',
-      description: 'Warm champagne, sunset iridescent glow, titanium surfaces',
-      lightGradient:
-        'radial-gradient(at 10% 10%, rgba(255, 179, 138, 0.22) 0px, transparent 50%), radial-gradient(at 85% 15%, rgba(254, 218, 119, 0.22) 0px, transparent 55%), radial-gradient(at 50% 90%, rgba(247, 185, 235, 0.18) 0px, transparent 60%)',
-      darkGradient:
-        'radial-gradient(at 15% 15%, rgba(217, 119, 6, 0.15) 0px, transparent 50%), radial-gradient(at 85% 20%, rgba(219, 39, 119, 0.12) 0px, transparent 55%), radial-gradient(at 50% 90%, rgba(124, 58, 237, 0.1) 0px, transparent 60%)',
-      accentColor: isDarkMode ? '#F59E0B' : '#D97706',
-      accentBg: isDarkMode ? 'rgba(245, 158, 11, 0.15)' : 'rgba(217, 119, 6, 0.1)',
-      heroGradient: isDarkMode
-        ? 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%)'
-        : 'linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(255,250,245,0.85) 100%)',
-      cardBorder: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(217, 119, 6, 0.15)',
-    },
-    sequoia: {
-      name: 'macOS Sequoia Aurora',
-      description: 'Cool glacial teal, deep alpine navy, serene frosted glass',
-      lightGradient:
-        'radial-gradient(at 15% 10%, rgba(56, 189, 248, 0.18) 0px, transparent 50%), radial-gradient(at 85% 15%, rgba(167, 139, 250, 0.18) 0px, transparent 50%), radial-gradient(at 50% 85%, rgba(52, 211, 153, 0.12) 0px, transparent 55%)',
-      darkGradient:
-        'radial-gradient(at 15% 15%, rgba(14, 165, 233, 0.15) 0px, transparent 50%), radial-gradient(at 85% 20%, rgba(139, 92, 246, 0.15) 0px, transparent 55%), radial-gradient(at 50% 85%, rgba(16, 185, 129, 0.08) 0px, transparent 60%)',
-      accentColor: isDarkMode ? '#38BDF8' : '#0284C7',
-      accentBg: isDarkMode ? 'rgba(56, 189, 248, 0.15)' : 'rgba(2, 132, 199, 0.1)',
-      heroGradient: isDarkMode
-        ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.8) 100%)'
-        : 'linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(240, 249, 255, 0.85) 100%)',
-      cardBorder: isDarkMode ? 'rgba(56, 189, 248, 0.18)' : 'rgba(2, 132, 199, 0.15)',
-    },
-    obsidian: {
-      name: 'Studio Obsidian & Warm Amber',
-      description: 'Luxe dark marble, warm cognac highlights, ultra-minimal craft',
-      lightGradient:
-        'radial-gradient(at 10% 10%, rgba(245, 158, 11, 0.12) 0px, transparent 50%), radial-gradient(at 90% 80%, rgba(100, 116, 139, 0.1) 0px, transparent 55%)',
-      darkGradient:
-        'radial-gradient(at 15% 15%, rgba(245, 158, 11, 0.08) 0px, transparent 50%), radial-gradient(at 85% 85%, rgba(148, 163, 184, 0.05) 0px, transparent 60%)',
-      accentColor: isDarkMode ? '#FBBF24' : '#B45309',
-      accentBg: isDarkMode ? 'rgba(251, 191, 36, 0.12)' : 'rgba(180, 83, 9, 0.08)',
-      heroGradient: isDarkMode
-        ? 'linear-gradient(135deg, rgba(24, 24, 27, 0.9) 0%, rgba(9, 9, 11, 0.95) 100%)'
-        : 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248, 250, 252, 0.9) 100%)',
-      cardBorder: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
-    },
+  // Locked Design Theme: Apple Card & Titanium
+  const theme = {
+    lightGradient:
+      'radial-gradient(at 10% 10%, rgba(255, 179, 138, 0.22) 0px, transparent 50%), radial-gradient(at 85% 15%, rgba(254, 218, 119, 0.22) 0px, transparent 55%), radial-gradient(at 50% 90%, rgba(247, 185, 235, 0.18) 0px, transparent 60%)',
+    darkGradient:
+      'radial-gradient(at 15% 15%, rgba(217, 119, 6, 0.15) 0px, transparent 50%), radial-gradient(at 85% 20%, rgba(219, 39, 119, 0.12) 0px, transparent 55%), radial-gradient(at 50% 90%, rgba(124, 58, 237, 0.1) 0px, transparent 60%)',
+    accentColor: isDarkMode ? '#F59E0B' : '#D97706',
+    accentBg: isDarkMode ? 'rgba(245, 158, 11, 0.15)' : 'rgba(217, 119, 6, 0.1)',
+    heroGradient: isDarkMode
+      ? 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%)'
+      : 'linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(255,250,245,0.85) 100%)',
+    cardBorder: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(217, 119, 6, 0.15)',
   };
-
-  const currentTheme = paletteStyles[palette];
 
   return (
     <div
@@ -214,7 +175,7 @@ export default function App() {
       {/* Dynamic Ambient Gradient Mesh Layer */}
       <div
         style={{
-          backgroundImage: isDarkMode ? currentTheme.darkGradient : currentTheme.lightGradient,
+          backgroundImage: isDarkMode ? theme.darkGradient : theme.lightGradient,
         }}
         className={css({
           position: 'fixed',
@@ -225,111 +186,6 @@ export default function App() {
           transition: 'background-image 0.5s ease',
         })}
       />
-
-      {/* Floating Theme Customizer Bar (To help finalize the design theme!) */}
-      <div
-        className={css({
-          position: 'relative',
-          zIndex: 40,
-          backdropFilter: 'blur(16px)',
-          borderBottom: '1px solid',
-          borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
-          bg: isDarkMode ? 'rgba(12, 13, 16, 0.85)' : 'rgba(255, 255, 255, 0.85)',
-          px: { base: '4', md: '8' },
-          py: '2.5',
-        })}
-      >
-        <div
-          className={css({
-            maxWidth: '1200px',
-            margin: '0 auto',
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '3',
-            fontSize: '13px',
-          })}
-        >
-          <div className={css({ display: 'flex', alignItems: 'center', gap: '2' })}>
-            <Palette size={16} color={currentTheme.accentColor} />
-            <span className={css({ fontWeight: '600' })}>Design Inspo Selector:</span>
-            <span
-              className={css({
-                color: isDarkMode ? '#98989D' : '#6E6E73',
-                display: { base: 'none', sm: 'inline' },
-              })}
-            >
-              Choose a design aesthetic to review
-            </span>
-          </div>
-
-          <div
-            className={css({ display: 'flex', alignItems: 'center', gap: '2', flexWrap: 'wrap' })}
-          >
-            {(['apple-card', 'sequoia', 'obsidian'] as ThemePalette[]).map((t) => (
-              <button
-                key={t}
-                type="button"
-                onClick={() => setPalette(t)}
-                className={css({
-                  px: '3',
-                  py: '1.5',
-                  borderRadius: '9999px',
-                  border: '1px solid',
-                  fontSize: '12px',
-                  fontWeight: palette === t ? '600' : '500',
-                  cursor: 'pointer',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '1.5',
-                  transition: 'all 0.2s ease',
-                  bg: palette === t ? currentTheme.accentBg : 'transparent',
-                  borderColor:
-                    palette === t
-                      ? currentTheme.accentColor
-                      : isDarkMode
-                        ? 'rgba(255, 255, 255, 0.12)'
-                        : 'rgba(0, 0, 0, 0.1)',
-                  color:
-                    palette === t ? currentTheme.accentColor : isDarkMode ? '#F5F5F7' : '#1D1D1F',
-                })}
-              >
-                {palette === t && <Check size={12} />}
-                <span>{paletteStyles[t].name}</span>
-              </button>
-            ))}
-
-            {/* Light / Dark Mode Toggle Pill */}
-            <button
-              type="button"
-              onClick={() => setIsDarkMode(!isDarkMode)}
-              title={`Switch to ${isDarkMode ? 'Light' : 'Dark'} Mode`}
-              className={css({
-                ml: '2',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '1.5',
-                px: '3',
-                py: '1.5',
-                borderRadius: '9999px',
-                border: '1px solid',
-                borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.12)',
-                bg: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
-                color: isDarkMode ? '#F5F5F7' : '#1D1D1F',
-                cursor: 'pointer',
-                fontSize: '12px',
-                fontWeight: '600',
-                transition: 'all 0.2s ease',
-                _hover: { transform: 'scale(1.03)' },
-              })}
-            >
-              {isDarkMode ? <Sun size={14} color="#FBBF24" /> : <Moon size={14} color="#6366F1" />}
-              <span>{isDarkMode ? 'Light Mode' : 'Dark Mode'}</span>
-            </button>
-          </div>
-        </div>
-      </div>
 
       {/* Apple-style Frosted Glass Navigation Bar */}
       <header
@@ -360,7 +216,7 @@ export default function App() {
             <div
               style={{
                 background: isDarkMode
-                  ? `linear-gradient(135deg, ${currentTheme.accentColor} 0%, #3B82F6 100%)`
+                  ? `linear-gradient(135deg, ${theme.accentColor} 0%, #3B82F6 100%)`
                   : `linear-gradient(135deg, #1D1D1F 0%, #434344 100%)`,
               }}
               className={css({
@@ -388,8 +244,8 @@ export default function App() {
               </span>
               <span
                 style={{
-                  color: currentTheme.accentColor,
-                  background: currentTheme.accentBg,
+                  color: theme.accentColor,
+                  background: theme.accentBg,
                 }}
                 className={css({
                   ml: '2',
@@ -401,7 +257,7 @@ export default function App() {
                   letterSpacing: '0.4px',
                 })}
               >
-                STUDIO
+                TITANIUM
               </span>
             </div>
           </div>
@@ -429,6 +285,32 @@ export default function App() {
               })}
             >
               <span className="tabular-nums">USD ($)</span>
+            </button>
+
+            {/* Light / Dark Mode Toggle Pill */}
+            <button
+              type="button"
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              title={`Switch to ${isDarkMode ? 'Light' : 'Dark'} Mode`}
+              className={css({
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '1.5',
+                px: '3',
+                py: '1.5',
+                borderRadius: '9999px',
+                border: '1px solid',
+                borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)',
+                bg: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)',
+                color: isDarkMode ? '#F5F5F7' : '#1D1D1F',
+                cursor: 'pointer',
+                fontSize: '12px',
+                fontWeight: '600',
+                transition: 'all 0.15s ease',
+                _hover: { transform: 'scale(1.03)' },
+              })}
+            >
+              {isDarkMode ? <Sun size={14} color="#FBBF24" /> : <Moon size={14} color="#6366F1" />}
             </button>
 
             {/* Account Avatar */}
@@ -541,11 +423,11 @@ export default function App() {
           </div>
         </div>
 
-        {/* Signature Apple Card / Iridescent Hero Card */}
+        {/* Signature Apple Card / Titanium Hero Card */}
         <section
           style={{
-            background: currentTheme.heroGradient,
-            borderColor: currentTheme.cardBorder,
+            background: theme.heroGradient,
+            borderColor: theme.cardBorder,
             boxShadow: isDarkMode
               ? '0 12px 40px -8px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
               : '0 12px 40px -8px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
@@ -563,7 +445,7 @@ export default function App() {
           {/* Subtle Ambient Specular Flare */}
           <div
             style={{
-              background: `radial-gradient(circle at 100% 0%, ${currentTheme.accentColor}25 0%, transparent 60%)`,
+              background: `radial-gradient(circle at 100% 0%, ${theme.accentColor}25 0%, transparent 60%)`,
             }}
             className={css({
               position: 'absolute',
@@ -596,7 +478,7 @@ export default function App() {
                 })}
               >
                 <span
-                  style={{ color: currentTheme.accentColor }}
+                  style={{ color: theme.accentColor }}
                   className={css({
                     fontSize: '11px',
                     fontWeight: '800',
@@ -762,7 +644,7 @@ export default function App() {
                   transition: 'background 0.15s ease',
                 })}
               >
-                <Sparkles size={16} color={currentTheme.accentColor} />
+                <Sparkles size={16} color={theme.accentColor} />
                 <span className={css({ display: { base: 'none', sm: 'inline' } })}>
                   Try Presets
                 </span>
@@ -920,12 +802,7 @@ export default function App() {
               style={{
                 background:
                   viewMode === 'grid' ? (isDarkMode ? '#27272A' : '#FFFFFF') : 'transparent',
-                color:
-                  viewMode === 'grid'
-                    ? currentTheme.accentColor
-                    : isDarkMode
-                      ? '#A1A1AA'
-                      : '#71717A',
+                color: viewMode === 'grid' ? theme.accentColor : isDarkMode ? '#A1A1AA' : '#71717A',
                 boxShadow: viewMode === 'grid' ? '0 2px 6px rgba(0,0,0,0.1)' : 'none',
               }}
               className={css({
@@ -947,11 +824,7 @@ export default function App() {
                 background:
                   viewMode === 'table' ? (isDarkMode ? '#27272A' : '#FFFFFF') : 'transparent',
                 color:
-                  viewMode === 'table'
-                    ? currentTheme.accentColor
-                    : isDarkMode
-                      ? '#A1A1AA'
-                      : '#71717A',
+                  viewMode === 'table' ? theme.accentColor : isDarkMode ? '#A1A1AA' : '#71717A',
                 boxShadow: viewMode === 'table' ? '0 2px 6px rgba(0,0,0,0.1)' : 'none',
               }}
               className={css({
@@ -1387,7 +1260,14 @@ export default function App() {
                   <th className={css({ py: '4', px: '4', fontWeight: '700' })}>Monthly Rate</th>
                   <th className={css({ py: '4', px: '4', fontWeight: '700' })}>Renewal</th>
                   <th className={css({ py: '4', px: '4', fontWeight: '700' })}>Status</th>
-                  <th className={css({ py: '4', px: '5', textAlign: 'right', fontWeight: '700' })}>
+                  <th
+                    className={css({
+                      py: '4',
+                      px: '5',
+                      textAlign: 'right',
+                      fontWeight: '700',
+                    })}
+                  >
                     Action
                   </th>
                 </tr>
@@ -1445,7 +1325,7 @@ export default function App() {
                       </span>
                     </td>
                     <td
-                      style={{ color: currentTheme.accentColor }}
+                      style={{ color: theme.accentColor }}
                       className={`${css({ py: '3.5', px: '4', fontWeight: '700' })} tabular-nums`}
                     >
                       ${sub.monthlyEquivalent.toFixed(2)}/mo
@@ -1493,7 +1373,7 @@ export default function App() {
                         rel="noreferrer"
                         className={css({
                           fontSize: '13px',
-                          color: currentTheme.accentColor,
+                          color: theme.accentColor,
                           textDecoration: 'none',
                           fontWeight: '600',
                           _hover: { textDecoration: 'underline' },
