@@ -1,21 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   AlertTriangle,
+  ArrowUpRight,
   Calendar,
-  CheckCircle2,
-  ChevronDown,
+  Check,
   CreditCard,
   ExternalLink,
   Grid3X3,
-  Layers,
+  Moon,
+  Palette,
   PieChart,
   Plus,
   Search,
   Sparkles,
+  Sun,
   Table as TableIcon,
   TrendingUp,
 } from 'lucide-react';
 import { css } from 'styled-system/css';
+
+type ThemePalette = 'apple-card' | 'sequoia' | 'obsidian';
 
 interface SampleSubscription {
   id: string;
@@ -106,19 +110,38 @@ const SAMPLE_SUBSCRIPTIONS: SampleSubscription[] = [
 ];
 
 export default function App() {
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('subtrack-theme');
+      if (saved) return saved === 'dark';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return false;
+  });
+
+  const [palette, setPalette] = useState<ThemePalette>('apple-card');
+  const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
   const [activeTab, setActiveTab] = useState<'subscriptions' | 'calendar' | 'analytics'>(
     'subscriptions'
   );
-  const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('subtrack-theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('subtrack-theme', 'light');
+    }
+  }, [isDarkMode]);
 
   const totalMonthlySpend = SAMPLE_SUBSCRIPTIONS.reduce(
     (sum, sub) => sum + sub.monthlyEquivalent,
     0
   );
   const totalAnnualSpend = totalMonthlySpend * 12;
-  const trialSubscriptions = SAMPLE_SUBSCRIPTIONS.filter((sub) => sub.status === 'trial');
 
   const filteredSubscriptions = SAMPLE_SUBSCRIPTIONS.filter((sub) => {
     const matchesCategory = selectedCategory === 'All' || sub.category === selectedCategory;
@@ -128,26 +151,196 @@ export default function App() {
     return matchesCategory && matchesSearch;
   });
 
+  // Palette Configurations (Distinct non-AI looks)
+  const paletteStyles = {
+    'apple-card': {
+      name: 'Apple Card & Titanium',
+      description: 'Warm champagne, sunset iridescent glow, titanium surfaces',
+      lightGradient:
+        'radial-gradient(at 10% 10%, rgba(255, 179, 138, 0.22) 0px, transparent 50%), radial-gradient(at 85% 15%, rgba(254, 218, 119, 0.22) 0px, transparent 55%), radial-gradient(at 50% 90%, rgba(247, 185, 235, 0.18) 0px, transparent 60%)',
+      darkGradient:
+        'radial-gradient(at 15% 15%, rgba(217, 119, 6, 0.15) 0px, transparent 50%), radial-gradient(at 85% 20%, rgba(219, 39, 119, 0.12) 0px, transparent 55%), radial-gradient(at 50% 90%, rgba(124, 58, 237, 0.1) 0px, transparent 60%)',
+      accentColor: isDarkMode ? '#F59E0B' : '#D97706',
+      accentBg: isDarkMode ? 'rgba(245, 158, 11, 0.15)' : 'rgba(217, 119, 6, 0.1)',
+      heroGradient: isDarkMode
+        ? 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%)'
+        : 'linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(255,250,245,0.85) 100%)',
+      cardBorder: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(217, 119, 6, 0.15)',
+    },
+    sequoia: {
+      name: 'macOS Sequoia Aurora',
+      description: 'Cool glacial teal, deep alpine navy, serene frosted glass',
+      lightGradient:
+        'radial-gradient(at 15% 10%, rgba(56, 189, 248, 0.18) 0px, transparent 50%), radial-gradient(at 85% 15%, rgba(167, 139, 250, 0.18) 0px, transparent 50%), radial-gradient(at 50% 85%, rgba(52, 211, 153, 0.12) 0px, transparent 55%)',
+      darkGradient:
+        'radial-gradient(at 15% 15%, rgba(14, 165, 233, 0.15) 0px, transparent 50%), radial-gradient(at 85% 20%, rgba(139, 92, 246, 0.15) 0px, transparent 55%), radial-gradient(at 50% 85%, rgba(16, 185, 129, 0.08) 0px, transparent 60%)',
+      accentColor: isDarkMode ? '#38BDF8' : '#0284C7',
+      accentBg: isDarkMode ? 'rgba(56, 189, 248, 0.15)' : 'rgba(2, 132, 199, 0.1)',
+      heroGradient: isDarkMode
+        ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.8) 100%)'
+        : 'linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(240, 249, 255, 0.85) 100%)',
+      cardBorder: isDarkMode ? 'rgba(56, 189, 248, 0.18)' : 'rgba(2, 132, 199, 0.15)',
+    },
+    obsidian: {
+      name: 'Studio Obsidian & Warm Amber',
+      description: 'Luxe dark marble, warm cognac highlights, ultra-minimal craft',
+      lightGradient:
+        'radial-gradient(at 10% 10%, rgba(245, 158, 11, 0.12) 0px, transparent 50%), radial-gradient(at 90% 80%, rgba(100, 116, 139, 0.1) 0px, transparent 55%)',
+      darkGradient:
+        'radial-gradient(at 15% 15%, rgba(245, 158, 11, 0.08) 0px, transparent 50%), radial-gradient(at 85% 85%, rgba(148, 163, 184, 0.05) 0px, transparent 60%)',
+      accentColor: isDarkMode ? '#FBBF24' : '#B45309',
+      accentBg: isDarkMode ? 'rgba(251, 191, 36, 0.12)' : 'rgba(180, 83, 9, 0.08)',
+      heroGradient: isDarkMode
+        ? 'linear-gradient(135deg, rgba(24, 24, 27, 0.9) 0%, rgba(9, 9, 11, 0.95) 100%)'
+        : 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248, 250, 252, 0.9) 100%)',
+      cardBorder: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
+    },
+  };
+
+  const currentTheme = paletteStyles[palette];
+
   return (
     <div
+      style={{
+        background: isDarkMode ? '#08090C' : '#F6F6F9',
+        color: isDarkMode ? '#F5F5F7' : '#1D1D1F',
+      }}
       className={css({
         minHeight: '100vh',
-        bg: { base: '#F5F5F7', _dark: '#000000' },
-        color: { base: '#1D1D1F', _dark: '#F5F5F7' },
-        fontFamily: 'sans',
-        transition: 'background-color 0.2s ease, color 0.2s ease',
+        position: 'relative',
+        transition: 'all 0.3s ease',
       })}
     >
+      {/* Dynamic Ambient Gradient Mesh Layer */}
+      <div
+        style={{
+          backgroundImage: isDarkMode ? currentTheme.darkGradient : currentTheme.lightGradient,
+        }}
+        className={css({
+          position: 'fixed',
+          inset: 0,
+          pointerEvents: 'none',
+          zIndex: 0,
+          opacity: 0.9,
+          transition: 'background-image 0.5s ease',
+        })}
+      />
+
+      {/* Floating Theme Customizer Bar (To help finalize the design theme!) */}
+      <div
+        className={css({
+          position: 'relative',
+          zIndex: 40,
+          backdropFilter: 'blur(16px)',
+          borderBottom: '1px solid',
+          borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
+          bg: isDarkMode ? 'rgba(12, 13, 16, 0.85)' : 'rgba(255, 255, 255, 0.85)',
+          px: { base: '4', md: '8' },
+          py: '2.5',
+        })}
+      >
+        <div
+          className={css({
+            maxWidth: '1200px',
+            margin: '0 auto',
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '3',
+            fontSize: '13px',
+          })}
+        >
+          <div className={css({ display: 'flex', alignItems: 'center', gap: '2' })}>
+            <Palette size={16} color={currentTheme.accentColor} />
+            <span className={css({ fontWeight: '600' })}>Design Inspo Selector:</span>
+            <span
+              className={css({
+                color: isDarkMode ? '#98989D' : '#6E6E73',
+                display: { base: 'none', sm: 'inline' },
+              })}
+            >
+              Choose a design aesthetic to review
+            </span>
+          </div>
+
+          <div
+            className={css({ display: 'flex', alignItems: 'center', gap: '2', flexWrap: 'wrap' })}
+          >
+            {(['apple-card', 'sequoia', 'obsidian'] as ThemePalette[]).map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setPalette(t)}
+                className={css({
+                  px: '3',
+                  py: '1.5',
+                  borderRadius: '9999px',
+                  border: '1px solid',
+                  fontSize: '12px',
+                  fontWeight: palette === t ? '600' : '500',
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '1.5',
+                  transition: 'all 0.2s ease',
+                  bg: palette === t ? currentTheme.accentBg : 'transparent',
+                  borderColor:
+                    palette === t
+                      ? currentTheme.accentColor
+                      : isDarkMode
+                        ? 'rgba(255, 255, 255, 0.12)'
+                        : 'rgba(0, 0, 0, 0.1)',
+                  color:
+                    palette === t ? currentTheme.accentColor : isDarkMode ? '#F5F5F7' : '#1D1D1F',
+                })}
+              >
+                {palette === t && <Check size={12} />}
+                <span>{paletteStyles[t].name}</span>
+              </button>
+            ))}
+
+            {/* Light / Dark Mode Toggle Pill */}
+            <button
+              type="button"
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              title={`Switch to ${isDarkMode ? 'Light' : 'Dark'} Mode`}
+              className={css({
+                ml: '2',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '1.5',
+                px: '3',
+                py: '1.5',
+                borderRadius: '9999px',
+                border: '1px solid',
+                borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.12)',
+                bg: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
+                color: isDarkMode ? '#F5F5F7' : '#1D1D1F',
+                cursor: 'pointer',
+                fontSize: '12px',
+                fontWeight: '600',
+                transition: 'all 0.2s ease',
+                _hover: { transform: 'scale(1.03)' },
+              })}
+            >
+              {isDarkMode ? <Sun size={14} color="#FBBF24" /> : <Moon size={14} color="#6366F1" />}
+              <span>{isDarkMode ? 'Light Mode' : 'Dark Mode'}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Apple-style Frosted Glass Navigation Bar */}
       <header
         className={css({
           position: 'sticky',
           top: 0,
-          zIndex: 50,
-          backdropFilter: 'blur(20px)',
-          backgroundColor: { base: 'rgba(255, 255, 255, 0.85)', _dark: 'rgba(28, 28, 30, 0.85)' },
+          zIndex: 30,
+          backdropFilter: 'blur(24px)',
+          backgroundColor: isDarkMode ? 'rgba(8, 9, 12, 0.75)' : 'rgba(255, 255, 255, 0.75)',
           borderBottom: '1px solid',
-          borderColor: { base: 'rgba(0, 0, 0, 0.08)', _dark: 'rgba(255, 255, 255, 0.12)' },
+          borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
           transition: 'all 0.2s ease',
         })}
       >
@@ -156,7 +349,7 @@ export default function App() {
             maxWidth: '1200px',
             margin: '0 auto',
             px: { base: '4', md: '8' },
-            height: '60px',
+            height: '62px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -165,40 +358,50 @@ export default function App() {
           {/* Brand */}
           <div className={css({ display: 'flex', alignItems: 'center', gap: '3' })}>
             <div
+              style={{
+                background: isDarkMode
+                  ? `linear-gradient(135deg, ${currentTheme.accentColor} 0%, #3B82F6 100%)`
+                  : `linear-gradient(135deg, #1D1D1F 0%, #434344 100%)`,
+              }}
               className={css({
-                width: '32px',
-                height: '32px',
-                borderRadius: '8px',
-                background: 'linear-gradient(135deg, #0071E3 0%, #42A5F5 100%)',
+                width: '34px',
+                height: '34px',
+                borderRadius: '10px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: 'white',
-                boxShadow: '0 2px 6px rgba(0, 113, 227, 0.25)',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
               })}
             >
               <CreditCard size={18} strokeWidth={2.2} />
             </div>
             <div>
               <span
-                className={css({ fontWeight: '600', fontSize: '17px', letterSpacing: '-0.3px' })}
+                className={css({
+                  fontWeight: '700',
+                  fontSize: '18px',
+                  letterSpacing: '-0.4px',
+                })}
               >
                 SubTrack
               </span>
               <span
+                style={{
+                  color: currentTheme.accentColor,
+                  background: currentTheme.accentBg,
+                }}
                 className={css({
                   ml: '2',
                   fontSize: '11px',
-                  fontWeight: '600',
+                  fontWeight: '700',
                   px: '2',
                   py: '0.5',
                   borderRadius: '9999px',
-                  bg: { base: 'rgba(0, 113, 227, 0.08)', _dark: 'rgba(0, 113, 227, 0.2)' },
-                  color: '#0071E3',
-                  letterSpacing: '0.2px',
+                  letterSpacing: '0.4px',
                 })}
               >
-                PRO
+                STUDIO
               </span>
             </div>
           </div>
@@ -212,45 +415,38 @@ export default function App() {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '1.5',
-                px: '3',
+                px: '3.5',
                 py: '1.5',
                 borderRadius: '9999px',
-                bg: { base: 'rgba(0, 0, 0, 0.04)', _dark: 'rgba(255, 255, 255, 0.1)' },
+                bg: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)',
                 border: '1px solid',
-                borderColor: { base: 'rgba(0, 0, 0, 0.06)', _dark: 'rgba(255, 255, 255, 0.15)' },
+                borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)',
                 fontSize: '13px',
-                fontWeight: '500',
-                color: { base: '#1D1D1F', _dark: '#F5F5F7' },
+                fontWeight: '600',
+                color: isDarkMode ? '#F5F5F7' : '#1D1D1F',
                 cursor: 'pointer',
                 transition: 'background 0.15s ease',
-                _hover: { bg: { base: 'rgba(0, 0, 0, 0.08)', _dark: 'rgba(255, 255, 255, 0.15)' } },
-                _focusVisible: {
-                  outline: '2px solid #0071E3',
-                  outlineOffset: '2px',
-                },
               })}
             >
-              <span>USD ($)</span>
-              <ChevronDown size={14} color="#86868B" />
+              <span className="tabular-nums">USD ($)</span>
             </button>
 
-            {/* Profile Avatar / Trigger */}
+            {/* Account Avatar */}
             <div
               className={css({
-                width: '32px',
-                height: '32px',
+                width: '34px',
+                height: '34px',
                 borderRadius: '9999px',
-                bg: { base: '#E5E5EA', _dark: '#3A3A3C' },
-                color: { base: '#1D1D1F', _dark: '#F5F5F7' },
+                bg: isDarkMode ? '#27272A' : '#E5E5EA',
+                color: isDarkMode ? '#F5F5F7' : '#1D1D1F',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: '13px',
-                fontWeight: '600',
+                fontWeight: '700',
                 border: '1px solid',
-                borderColor: { base: 'rgba(0, 0, 0, 0.08)', _dark: 'rgba(255, 255, 255, 0.15)' },
+                borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.08)',
               })}
-              title="Demo User"
             >
               JD
             </div>
@@ -258,114 +454,127 @@ export default function App() {
         </div>
       </header>
 
-      {/* Main Content Area */}
+      {/* Main Container */}
       <main
         className={css({
+          position: 'relative',
+          zIndex: 10,
           maxWidth: '1200px',
           margin: '0 auto',
           px: { base: '4', md: '8' },
           py: { base: '6', md: '8' },
         })}
       >
-        {/* Urgent Free Trial Warning Banner (Apple Alert Pattern) */}
-        {trialSubscriptions.length > 0 && (
-          <div
-            className={css({
-              mb: '6',
-              p: '4',
-              borderRadius: '16px',
-              bg: { base: 'rgba(255, 149, 0, 0.12)', _dark: 'rgba(255, 149, 0, 0.2)' },
-              border: '1px solid',
-              borderColor: { base: 'rgba(255, 149, 0, 0.3)', _dark: 'rgba(255, 149, 0, 0.4)' },
-              display: 'flex',
-              alignItems: { base: 'flex-start', sm: 'center' },
-              justifyContent: 'space-between',
-              gap: '4',
-              flexDirection: { base: 'column', sm: 'row' },
-            })}
-          >
-            <div className={css({ display: 'flex', alignItems: 'center', gap: '3' })}>
-              <div
-                className={css({
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: '10px',
-                  bg: '#FF9500',
-                  color: 'white',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                })}
-              >
-                <AlertTriangle size={20} strokeWidth={2.2} />
-              </div>
-              <div>
-                <p
-                  className={css({
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    color: { base: '#1D1D1F', _dark: '#F5F5F7' },
-                  })}
-                >
-                  Free trial expiring in 2 days
-                </p>
-                <p
-                  className={css({
-                    fontSize: '13px',
-                    color: { base: '#86868B', _dark: '#A1A1A6' },
-                  })}
-                >
-                  Figma Professional will renew for $15.00/mo on Nov 15, 2026.
-                </p>
-              </div>
+        {/* Urgent Free Trial Warning Banner */}
+        <div
+          style={{
+            borderColor: isDarkMode ? 'rgba(245, 158, 11, 0.3)' : 'rgba(245, 158, 11, 0.4)',
+            background: isDarkMode ? 'rgba(245, 158, 11, 0.1)' : 'rgba(254, 243, 199, 0.7)',
+          }}
+          className={css({
+            mb: '6',
+            p: '4',
+            borderRadius: '18px',
+            border: '1px solid',
+            backdropFilter: 'blur(12px)',
+            display: 'flex',
+            alignItems: { base: 'flex-start', sm: 'center' },
+            justifyContent: 'space-between',
+            gap: '4',
+            flexDirection: { base: 'column', sm: 'row' },
+          })}
+        >
+          <div className={css({ display: 'flex', alignItems: 'center', gap: '3' })}>
+            <div
+              style={{ background: '#F59E0B' }}
+              className={css({
+                width: '36px',
+                height: '36px',
+                borderRadius: '10px',
+                color: 'white',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              })}
+            >
+              <AlertTriangle size={18} strokeWidth={2.4} />
             </div>
-            <div className={css({ display: 'flex', gap: '2' })}>
-              <a
-                href="https://figma.com/settings"
-                target="_blank"
-                rel="noreferrer"
-                className={css({
-                  px: '3.5',
-                  py: '1.5',
-                  borderRadius: '9999px',
-                  bg: { base: 'white', _dark: '#2C2C2E' },
-                  border: '1px solid',
-                  borderColor: { base: 'rgba(0, 0, 0, 0.12)', _dark: 'rgba(255, 255, 255, 0.15)' },
-                  fontSize: '13px',
-                  fontWeight: '500',
-                  color: { base: '#1D1D1F', _dark: '#F5F5F7' },
-                  textDecoration: 'none',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '1.5',
-                  transition: 'background 0.15s ease',
-                  _hover: { bg: { base: '#F5F5F7', _dark: '#3A3A3C' } },
-                })}
+            <div>
+              <p className={css({ fontSize: '14px', fontWeight: '700', letterSpacing: '-0.2px' })}>
+                Free trial expiring in 2 days
+              </p>
+              <p
+                style={{ color: isDarkMode ? '#D4D4D8' : '#71717A' }}
+                className={css({ fontSize: '13px' })}
               >
-                Manage Trial <ExternalLink size={13} />
-              </a>
+                Figma Professional will renew for $15.00/mo on Nov 15, 2026.
+              </p>
             </div>
           </div>
-        )}
+          <div>
+            <a
+              href="https://figma.com/settings"
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                background: isDarkMode ? '#27272A' : '#FFFFFF',
+                color: isDarkMode ? '#F5F5F7' : '#1D1D1F',
+              }}
+              className={css({
+                px: '3.5',
+                py: '1.5',
+                borderRadius: '9999px',
+                border: '1px solid',
+                borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.12)',
+                fontSize: '13px',
+                fontWeight: '600',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '1.5',
+                transition: 'all 0.15s ease',
+              })}
+            >
+              Manage Trial <ArrowUpRight size={13} />
+            </a>
+          </div>
+        </div>
 
-        {/* Signature Apple Wallet-style Run-Rate Hero Card */}
+        {/* Signature Apple Card / Iridescent Hero Card */}
         <section
+          style={{
+            background: currentTheme.heroGradient,
+            borderColor: currentTheme.cardBorder,
+            boxShadow: isDarkMode
+              ? '0 12px 40px -8px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+              : '0 12px 40px -8px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
+          }}
           className={css({
             p: { base: '6', md: '8' },
-            borderRadius: '24px',
-            bg: { base: 'white', _dark: '#1C1C1E' },
+            borderRadius: '26px',
             border: '1px solid',
-            borderColor: { base: 'rgba(0, 0, 0, 0.06)', _dark: 'rgba(255, 255, 255, 0.1)' },
-            boxShadow: {
-              base: '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
-              _dark: '0 4px 20px -2px rgba(0, 0, 0, 0.4)',
-            },
+            backdropFilter: 'blur(30px)',
             mb: '8',
             position: 'relative',
             overflow: 'hidden',
           })}
         >
+          {/* Subtle Ambient Specular Flare */}
+          <div
+            style={{
+              background: `radial-gradient(circle at 100% 0%, ${currentTheme.accentColor}25 0%, transparent 60%)`,
+            }}
+            className={css({
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              width: '320px',
+              height: '100%',
+              pointerEvents: 'none',
+            })}
+          />
+
           <div
             className={css({
               display: 'flex',
@@ -373,6 +582,8 @@ export default function App() {
               justifyContent: 'space-between',
               alignItems: { base: 'flex-start', md: 'flex-end' },
               gap: '6',
+              position: 'relative',
+              zIndex: 1,
             })}
           >
             <div>
@@ -381,42 +592,47 @@ export default function App() {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '2',
-                  mb: '2',
+                  mb: '2.5',
                 })}
               >
                 <span
+                  style={{ color: currentTheme.accentColor }}
                   className={css({
                     fontSize: '11px',
-                    fontWeight: '700',
-                    letterSpacing: '0.8px',
+                    fontWeight: '800',
+                    letterSpacing: '1px',
                     textTransform: 'uppercase',
-                    color: { base: '#86868B', _dark: '#98989D' },
                   })}
                 >
                   Monthly Commitment
                 </span>
                 <span
+                  style={{
+                    color: isDarkMode ? '#34D399' : '#059669',
+                    background: isDarkMode ? 'rgba(52, 211, 153, 0.12)' : 'rgba(5, 150, 105, 0.1)',
+                  }}
                   className={css({
                     fontSize: '12px',
-                    fontWeight: '500',
-                    color: '#34C759',
+                    fontWeight: '600',
+                    px: '2',
+                    py: '0.5',
+                    borderRadius: '9999px',
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '1',
                   })}
                 >
-                  <TrendingUp size={13} /> On track
+                  <TrendingUp size={12} /> Normalized Run-Rate
                 </span>
               </div>
 
-              {/* Large Run-Rate Typography with Tabular Figures */}
+              {/* Bold Tabular Numbers */}
               <div className={css({ display: 'flex', alignItems: 'baseline', gap: '2' })}>
                 <h1
                   className={`${css({
-                    fontSize: { base: '44px', md: '56px' },
-                    fontWeight: '700',
-                    letterSpacing: '-1.5px',
-                    color: { base: '#1D1D1F', _dark: '#FFFFFF' },
+                    fontSize: { base: '48px', md: '64px' },
+                    fontWeight: '800',
+                    letterSpacing: '-2px',
                     lineHeight: '1',
                     margin: 0,
                   })} tabular-nums`}
@@ -424,52 +640,46 @@ export default function App() {
                   ${totalMonthlySpend.toFixed(2)}
                 </h1>
                 <span
-                  className={css({
-                    fontSize: '18px',
-                    fontWeight: '500',
-                    color: { base: '#86868B', _dark: '#98989D' },
-                  })}
+                  style={{ color: isDarkMode ? '#A1A1AA' : '#71717A' }}
+                  className={css({ fontSize: '18px', fontWeight: '500' })}
                 >
                   / month
                 </span>
               </div>
 
-              {/* Secondary Sub-metrics */}
+              {/* Secondary Breakdown */}
               <div
+                style={{ color: isDarkMode ? '#A1A1AA' : '#71717A' }}
                 className={css({
                   display: 'flex',
                   flexWrap: 'wrap',
                   alignItems: 'center',
-                  gap: { base: '4', md: '6' },
+                  gap: { base: '3', md: '5' },
                   mt: '4',
                   fontSize: '14px',
-                  color: { base: '#86868B', _dark: '#98989D' },
                 })}
               >
                 <div>
                   <span
-                    className={css({
-                      color: { base: '#1D1D1F', _dark: '#F5F5F7' },
-                      fontWeight: '600',
-                    })}
+                    className={`${css({ fontWeight: '700', color: isDarkMode ? '#FFFFFF' : '#1D1D1F' })} tabular-nums`}
                   >
                     ${totalAnnualSpend.toFixed(2)}
                   </span>{' '}
-                  projected annually
+                  annual run-rate
                 </div>
                 <div
                   className={css({
                     width: '4px',
                     height: '4px',
                     borderRadius: '50%',
-                    bg: '#C7C7CC',
+                    bg: '#71717A',
                   })}
                 />
                 <div>
                   <span
                     className={css({
-                      color: { base: '#1D1D1F', _dark: '#F5F5F7' },
-                      fontWeight: '600',
+                      fontWeight: '700',
+                      color: isDarkMode ? '#FFFFFF' : '#1D1D1F',
                     })}
                   >
                     {SAMPLE_SUBSCRIPTIONS.length}
@@ -481,19 +691,19 @@ export default function App() {
                     width: '4px',
                     height: '4px',
                     borderRadius: '50%',
-                    bg: '#C7C7CC',
+                    bg: '#71717A',
                   })}
                 />
                 <div>
                   Next bill:{' '}
-                  <span className={css({ color: '#FF3B30', fontWeight: '600' })}>
+                  <span style={{ color: '#EF4444' }} className={css({ fontWeight: '700' })}>
                     Netflix in 4 days
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Quick Actions */}
+            {/* Hero Actions */}
             <div
               className={css({
                 display: 'flex',
@@ -504,71 +714,64 @@ export default function App() {
             >
               <button
                 type="button"
+                style={{
+                  background: isDarkMode ? '#FFFFFF' : '#18181B',
+                  color: isDarkMode ? '#000000' : '#FFFFFF',
+                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.25)',
+                }}
                 className={css({
                   flex: { base: 1, md: 'initial' },
                   px: '5',
-                  py: '3',
-                  borderRadius: '12px',
-                  bg: '#0071E3',
-                  color: 'white',
+                  py: '3.5',
+                  borderRadius: '14px',
                   fontSize: '14px',
-                  fontWeight: '600',
+                  fontWeight: '700',
+                  letterSpacing: '-0.2px',
                   border: 'none',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: '2',
-                  boxShadow: '0 2px 8px rgba(0, 113, 227, 0.25)',
                   transition: 'all 0.15s ease',
-                  _hover: { bg: '#0077ED', transform: 'translateY(-1px)' },
+                  _hover: { transform: 'translateY(-1px)', filter: 'brightness(1.05)' },
                   _active: { transform: 'scale(0.98)' },
-                  _focusVisible: {
-                    outline: '2px solid #0071E3',
-                    outlineOffset: '2px',
-                  },
                 })}
               >
-                <Plus size={16} strokeWidth={2.5} />
+                <Plus size={16} strokeWidth={2.6} />
                 <span>Add Subscription</span>
               </button>
 
               <button
                 type="button"
+                style={{
+                  background: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.05)',
+                  borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.08)',
+                }}
                 className={css({
                   px: '4',
-                  py: '3',
-                  borderRadius: '12px',
-                  bg: { base: 'rgba(0, 0, 0, 0.04)', _dark: 'rgba(255, 255, 255, 0.1)' },
-                  color: { base: '#1D1D1F', _dark: '#F5F5F7' },
-                  fontSize: '14px',
-                  fontWeight: '500',
+                  py: '3.5',
+                  borderRadius: '14px',
                   border: '1px solid',
-                  borderColor: { base: 'rgba(0, 0, 0, 0.06)', _dark: 'rgba(255, 255, 255, 0.15)' },
+                  fontSize: '14px',
+                  fontWeight: '600',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '2',
                   transition: 'background 0.15s ease',
-                  _hover: {
-                    bg: { base: 'rgba(0, 0, 0, 0.08)', _dark: 'rgba(255, 255, 255, 0.15)' },
-                  },
-                  _focusVisible: {
-                    outline: '2px solid #0071E3',
-                    outlineOffset: '2px',
-                  },
                 })}
               >
-                <Sparkles size={16} color="#0071E3" />
+                <Sparkles size={16} color={currentTheme.accentColor} />
                 <span className={css({ display: { base: 'none', sm: 'inline' } })}>
-                  Sample Data
+                  Try Presets
                 </span>
               </button>
             </div>
           </div>
         </section>
 
-        {/* Apple Segmented View Control */}
+        {/* View Segmented Switcher & Card/Table Toggle */}
         <div
           className={css({
             display: 'flex',
@@ -579,85 +782,84 @@ export default function App() {
             mb: '6',
           })}
         >
-          {/* Segmented Control Pill */}
+          {/* Segmented Pill */}
           <div
-            role="tablist"
+            style={{
+              background: isDarkMode ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.05)',
+              borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
+            }}
             className={css({
               display: 'inline-flex',
               p: '1',
-              borderRadius: '12px',
-              bg: { base: 'rgba(118, 118, 128, 0.12)', _dark: 'rgba(118, 118, 128, 0.24)' },
+              borderRadius: '14px',
               border: '1px solid',
-              borderColor: { base: 'rgba(0, 0, 0, 0.04)', _dark: 'rgba(255, 255, 255, 0.08)' },
             })}
           >
             <button
               type="button"
-              role="tab"
-              aria-selected={activeTab === 'subscriptions'}
               onClick={() => setActiveTab('subscriptions')}
+              style={{
+                background:
+                  activeTab === 'subscriptions'
+                    ? isDarkMode
+                      ? '#27272A'
+                      : '#FFFFFF'
+                    : 'transparent',
+                color:
+                  activeTab === 'subscriptions'
+                    ? isDarkMode
+                      ? '#FFFFFF'
+                      : '#18181B'
+                    : isDarkMode
+                      ? '#A1A1AA'
+                      : '#71717A',
+                boxShadow: activeTab === 'subscriptions' ? '0 2px 8px rgba(0,0,0,0.1)' : 'none',
+              }}
               className={css({
                 display: 'flex',
                 alignItems: 'center',
                 gap: '2',
                 px: '4',
                 py: '2',
-                borderRadius: '8px',
+                borderRadius: '10px',
                 fontSize: '13px',
                 fontWeight: '600',
                 border: 'none',
                 cursor: 'pointer',
                 transition: 'all 0.15s ease',
-                bg:
-                  activeTab === 'subscriptions'
-                    ? { base: 'white', _dark: '#2C2C2E' }
-                    : 'transparent',
-                color:
-                  activeTab === 'subscriptions'
-                    ? { base: '#1D1D1F', _dark: '#FFFFFF' }
-                    : { base: '#86868B', _dark: '#98989D' },
-                boxShadow:
-                  activeTab === 'subscriptions'
-                    ? {
-                        base: '0 2px 8px rgba(0, 0, 0, 0.08)',
-                        _dark: '0 2px 8px rgba(0, 0, 0, 0.4)',
-                      }
-                    : 'none',
               })}
             >
-              <Layers size={14} />
               <span>Subscriptions ({SAMPLE_SUBSCRIPTIONS.length})</span>
             </button>
 
             <button
               type="button"
-              role="tab"
-              aria-selected={activeTab === 'calendar'}
               onClick={() => setActiveTab('calendar')}
+              style={{
+                background:
+                  activeTab === 'calendar' ? (isDarkMode ? '#27272A' : '#FFFFFF') : 'transparent',
+                color:
+                  activeTab === 'calendar'
+                    ? isDarkMode
+                      ? '#FFFFFF'
+                      : '#18181B'
+                    : isDarkMode
+                      ? '#A1A1AA'
+                      : '#71717A',
+                boxShadow: activeTab === 'calendar' ? '0 2px 8px rgba(0,0,0,0.1)' : 'none',
+              }}
               className={css({
                 display: 'flex',
                 alignItems: 'center',
                 gap: '2',
                 px: '4',
                 py: '2',
-                borderRadius: '8px',
+                borderRadius: '10px',
                 fontSize: '13px',
                 fontWeight: '600',
                 border: 'none',
                 cursor: 'pointer',
                 transition: 'all 0.15s ease',
-                bg: activeTab === 'calendar' ? { base: 'white', _dark: '#2C2C2E' } : 'transparent',
-                color:
-                  activeTab === 'calendar'
-                    ? { base: '#1D1D1F', _dark: '#FFFFFF' }
-                    : { base: '#86868B', _dark: '#98989D' },
-                boxShadow:
-                  activeTab === 'calendar'
-                    ? {
-                        base: '0 2px 8px rgba(0, 0, 0, 0.08)',
-                        _dark: '0 2px 8px rgba(0, 0, 0, 0.4)',
-                      }
-                    : 'none',
               })}
             >
               <Calendar size={14} />
@@ -666,33 +868,32 @@ export default function App() {
 
             <button
               type="button"
-              role="tab"
-              aria-selected={activeTab === 'analytics'}
               onClick={() => setActiveTab('analytics')}
+              style={{
+                background:
+                  activeTab === 'analytics' ? (isDarkMode ? '#27272A' : '#FFFFFF') : 'transparent',
+                color:
+                  activeTab === 'analytics'
+                    ? isDarkMode
+                      ? '#FFFFFF'
+                      : '#18181B'
+                    : isDarkMode
+                      ? '#A1A1AA'
+                      : '#71717A',
+                boxShadow: activeTab === 'analytics' ? '0 2px 8px rgba(0,0,0,0.1)' : 'none',
+              }}
               className={css({
                 display: 'flex',
                 alignItems: 'center',
                 gap: '2',
                 px: '4',
                 py: '2',
-                borderRadius: '8px',
+                borderRadius: '10px',
                 fontSize: '13px',
                 fontWeight: '600',
                 border: 'none',
                 cursor: 'pointer',
                 transition: 'all 0.15s ease',
-                bg: activeTab === 'analytics' ? { base: 'white', _dark: '#2C2C2E' } : 'transparent',
-                color:
-                  activeTab === 'analytics'
-                    ? { base: '#1D1D1F', _dark: '#FFFFFF' }
-                    : { base: '#86868B', _dark: '#98989D' },
-                boxShadow:
-                  activeTab === 'analytics'
-                    ? {
-                        base: '0 2px 8px rgba(0, 0, 0, 0.08)',
-                        _dark: '0 2px 8px rgba(0, 0, 0, 0.4)',
-                      }
-                    : 'none',
               })}
             >
               <PieChart size={14} />
@@ -700,36 +901,41 @@ export default function App() {
             </button>
           </div>
 
-          {/* Grid / Table Toggle (Apple Segmented Style) */}
+          {/* Grid / Table Toggle */}
           <div
+            style={{
+              background: isDarkMode ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.05)',
+            }}
             className={css({
               display: 'flex',
               alignItems: 'center',
               p: '1',
-              borderRadius: '10px',
-              bg: { base: 'rgba(118, 118, 128, 0.12)', _dark: 'rgba(118, 118, 128, 0.24)' },
+              borderRadius: '12px',
               alignSelf: { base: 'flex-end', sm: 'center' },
             })}
           >
             <button
               type="button"
               onClick={() => setViewMode('grid')}
-              title="Card Grid View"
-              aria-label="Card Grid View"
+              style={{
+                background:
+                  viewMode === 'grid' ? (isDarkMode ? '#27272A' : '#FFFFFF') : 'transparent',
+                color:
+                  viewMode === 'grid'
+                    ? currentTheme.accentColor
+                    : isDarkMode
+                      ? '#A1A1AA'
+                      : '#71717A',
+                boxShadow: viewMode === 'grid' ? '0 2px 6px rgba(0,0,0,0.1)' : 'none',
+              }}
               className={css({
                 p: '1.5',
-                borderRadius: '6px',
+                borderRadius: '8px',
                 border: 'none',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                bg: viewMode === 'grid' ? { base: 'white', _dark: '#2C2C2E' } : 'transparent',
-                color: viewMode === 'grid' ? '#0071E3' : { base: '#86868B', _dark: '#98989D' },
-                boxShadow:
-                  viewMode === 'grid'
-                    ? { base: '0 1px 4px rgba(0,0,0,0.1)', _dark: '0 1px 4px rgba(0,0,0,0.3)' }
-                    : 'none',
               })}
             >
               <Grid3X3 size={16} />
@@ -737,22 +943,25 @@ export default function App() {
             <button
               type="button"
               onClick={() => setViewMode('table')}
-              title="Dense Table View"
-              aria-label="Dense Table View"
+              style={{
+                background:
+                  viewMode === 'table' ? (isDarkMode ? '#27272A' : '#FFFFFF') : 'transparent',
+                color:
+                  viewMode === 'table'
+                    ? currentTheme.accentColor
+                    : isDarkMode
+                      ? '#A1A1AA'
+                      : '#71717A',
+                boxShadow: viewMode === 'table' ? '0 2px 6px rgba(0,0,0,0.1)' : 'none',
+              }}
               className={css({
                 p: '1.5',
-                borderRadius: '6px',
+                borderRadius: '8px',
                 border: 'none',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                bg: viewMode === 'table' ? { base: 'white', _dark: '#2C2C2E' } : 'transparent',
-                color: viewMode === 'table' ? '#0071E3' : { base: '#86868B', _dark: '#98989D' },
-                boxShadow:
-                  viewMode === 'table'
-                    ? { base: '0 1px 4px rgba(0,0,0,0.1)', _dark: '0 1px 4px rgba(0,0,0,0.3)' }
-                    : 'none',
               })}
             >
               <TableIcon size={16} />
@@ -771,7 +980,7 @@ export default function App() {
             mb: '6',
           })}
         >
-          {/* Search Field */}
+          {/* Search Input */}
           <div
             className={css({
               position: 'relative',
@@ -781,12 +990,12 @@ export default function App() {
           >
             <Search
               size={16}
+              style={{ color: isDarkMode ? '#A1A1AA' : '#71717A' }}
               className={css({
                 position: 'absolute',
-                left: '3',
+                left: '3.5',
                 top: '50%',
                 transform: 'translateY(-50%)',
-                color: '#86868B',
                 pointerEvents: 'none',
               })}
             />
@@ -795,23 +1004,22 @@ export default function App() {
               placeholder="Search subscriptions..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              style={{
+                background: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.9)',
+                borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)',
+                color: isDarkMode ? '#FFFFFF' : '#1D1D1F',
+              }}
               className={css({
                 width: '100%',
-                pl: '9',
+                pl: '10',
                 pr: '4',
-                py: '2',
-                borderRadius: '10px',
-                bg: { base: 'white', _dark: '#1C1C1E' },
+                py: '2.5',
+                borderRadius: '12px',
                 border: '1px solid',
-                borderColor: { base: 'rgba(0, 0, 0, 0.08)', _dark: 'rgba(255, 255, 255, 0.12)' },
                 fontSize: '14px',
-                color: { base: '#1D1D1F', _dark: '#FFFFFF' },
                 outline: 'none',
-                transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
-                _focus: {
-                  borderColor: '#0071E3',
-                  boxShadow: '0 0 0 3px rgba(0, 113, 227, 0.15)',
-                },
+                backdropFilter: 'blur(12px)',
+                transition: 'border-color 0.15s ease',
               })}
             />
           </div>
@@ -838,28 +1046,40 @@ export default function App() {
                 key={cat}
                 type="button"
                 onClick={() => setSelectedCategory(cat)}
+                style={{
+                  background:
+                    selectedCategory === cat
+                      ? isDarkMode
+                        ? '#FFFFFF'
+                        : '#18181B'
+                      : isDarkMode
+                        ? 'rgba(255, 255, 255, 0.05)'
+                        : 'rgba(255, 255, 255, 0.8)',
+                  color:
+                    selectedCategory === cat
+                      ? isDarkMode
+                        ? '#000000'
+                        : '#FFFFFF'
+                      : isDarkMode
+                        ? '#D4D4D8'
+                        : '#52525B',
+                  borderColor:
+                    selectedCategory === cat
+                      ? 'transparent'
+                      : isDarkMode
+                        ? 'rgba(255, 255, 255, 0.1)'
+                        : 'rgba(0, 0, 0, 0.08)',
+                }}
                 className={css({
                   px: '3.5',
                   py: '1.5',
                   borderRadius: '9999px',
                   fontSize: '13px',
-                  fontWeight: '500',
+                  fontWeight: '600',
                   whiteSpace: 'nowrap',
                   cursor: 'pointer',
                   border: '1px solid',
-                  borderColor:
-                    selectedCategory === cat
-                      ? '#0071E3'
-                      : { base: 'rgba(0, 0, 0, 0.08)', _dark: 'rgba(255, 255, 255, 0.15)' },
-                  bg: selectedCategory === cat ? '#0071E3' : { base: 'white', _dark: '#1C1C1E' },
-                  color: selectedCategory === cat ? 'white' : { base: '#1D1D1F', _dark: '#F5F5F7' },
                   transition: 'all 0.15s ease',
-                  _hover: {
-                    borderColor:
-                      selectedCategory === cat
-                        ? '#0071E3'
-                        : { base: 'rgba(0, 0, 0, 0.2)', _dark: 'rgba(255, 255, 255, 0.3)' },
-                  },
                 })}
               >
                 {cat}
@@ -868,7 +1088,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* Subscriptions Content: Card Grid View */}
+        {/* Card Grid View */}
         {viewMode === 'grid' ? (
           <div
             className={css({
@@ -888,32 +1108,33 @@ export default function App() {
               return (
                 <article
                   key={sub.id}
+                  style={{
+                    background: isDarkMode ? 'rgba(24, 24, 27, 0.7)' : 'rgba(255, 255, 255, 0.85)',
+                    borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
+                    boxShadow: isDarkMode
+                      ? '0 8px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
+                      : '0 8px 30px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
+                  }}
                   className={css({
                     p: '6',
-                    borderRadius: '20px',
-                    bg: { base: 'white', _dark: '#1C1C1E' },
+                    borderRadius: '22px',
                     border: '1px solid',
-                    borderColor: { base: 'rgba(0, 0, 0, 0.06)', _dark: 'rgba(255, 255, 255, 0.1)' },
-                    boxShadow: {
-                      base: '0 2px 10px rgba(0, 0, 0, 0.03)',
-                      _dark: '0 2px 10px rgba(0, 0, 0, 0.3)',
-                    },
+                    backdropFilter: 'blur(20px)',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
                     position: 'relative',
                     transition: 'all 0.2s ease',
                     _hover: {
-                      boxShadow: {
-                        base: '0 8px 24px -4px rgba(0, 0, 0, 0.08)',
-                        _dark: '0 8px 24px -4px rgba(0, 0, 0, 0.5)',
-                      },
                       transform: 'translateY(-2px)',
+                      boxShadow: isDarkMode
+                        ? '0 14px 40px rgba(0, 0, 0, 0.6)'
+                        : '0 14px 40px rgba(0, 0, 0, 0.08)',
                     },
                   })}
                 >
-                  {/* Top: Icon + Name + Category */}
                   <div>
+                    {/* Header: Brand Icon + Title */}
                     <div
                       className={css({
                         display: 'flex',
@@ -924,16 +1145,19 @@ export default function App() {
                     >
                       <div className={css({ display: 'flex', alignItems: 'center', gap: '3' })}>
                         <div
+                          style={{
+                            background: isDarkMode
+                              ? 'rgba(255, 255, 255, 0.08)'
+                              : 'rgba(0, 0, 0, 0.03)',
+                            borderColor: isDarkMode
+                              ? 'rgba(255, 255, 255, 0.1)'
+                              : 'rgba(0, 0, 0, 0.08)',
+                          }}
                           className={css({
-                            width: '44px',
-                            height: '44px',
-                            borderRadius: '12px',
-                            bg: { base: '#F5F5F7', _dark: '#2C2C2E' },
+                            width: '46px',
+                            height: '46px',
+                            borderRadius: '14px',
                             border: '1px solid',
-                            borderColor: {
-                              base: 'rgba(0, 0, 0, 0.06)',
-                              _dark: 'rgba(255, 255, 255, 0.1)',
-                            },
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -942,17 +1166,18 @@ export default function App() {
                         >
                           <img
                             src={`https://cdn.simpleicons.org/${sub.iconSlug}`}
-                            alt={`${sub.name} logo`}
+                            alt=""
                             width={22}
                             height={22}
-                            className={css({
-                              _dark: {
-                                filter:
-                                  sub.iconSlug === 'apple' || sub.iconSlug === 'openai'
-                                    ? 'invert(1)'
-                                    : 'none',
-                              },
-                            })}
+                            style={{
+                              filter:
+                                isDarkMode &&
+                                (sub.iconSlug === 'apple' ||
+                                  sub.iconSlug === 'openai' ||
+                                  sub.iconSlug === 'github')
+                                  ? 'invert(1)'
+                                  : 'none',
+                            }}
                             onError={(e) => {
                               e.currentTarget.style.display = 'none';
                             }}
@@ -961,94 +1186,91 @@ export default function App() {
                         <div>
                           <h3
                             className={css({
-                              fontSize: '16px',
-                              fontWeight: '600',
-                              color: { base: '#1D1D1F', _dark: '#FFFFFF' },
+                              fontSize: '17px',
+                              fontWeight: '700',
+                              letterSpacing: '-0.3px',
                               margin: 0,
                             })}
                           >
                             {sub.name}
                           </h3>
                           <span
-                            className={css({
-                              fontSize: '12px',
-                              color: { base: '#86868B', _dark: '#98989D' },
-                            })}
+                            style={{ color: isDarkMode ? '#A1A1AA' : '#71717A' }}
+                            className={css({ fontSize: '13px' })}
                           >
                             {sub.category}
                           </span>
                         </div>
                       </div>
 
-                      {/* Status indicator */}
+                      {/* Status Pill */}
                       <span
+                        style={{
+                          background:
+                            sub.status === 'trial'
+                              ? isDarkMode
+                                ? 'rgba(245, 158, 11, 0.2)'
+                                : 'rgba(245, 158, 11, 0.15)'
+                              : isDarkMode
+                                ? 'rgba(16, 185, 129, 0.2)'
+                                : 'rgba(16, 185, 129, 0.15)',
+                          color:
+                            sub.status === 'trial' ? '#F59E0B' : isDarkMode ? '#34D399' : '#059669',
+                        }}
                         className={css({
                           fontSize: '11px',
-                          fontWeight: '600',
+                          fontWeight: '700',
                           px: '2.5',
                           py: '1',
                           borderRadius: '9999px',
                           display: 'inline-flex',
                           alignItems: 'center',
-                          gap: '1',
-                          bg:
-                            sub.status === 'trial'
-                              ? {
-                                  base: 'rgba(255, 149, 0, 0.12)',
-                                  _dark: 'rgba(255, 149, 0, 0.25)',
-                                }
-                              : {
-                                  base: 'rgba(52, 199, 89, 0.12)',
-                                  _dark: 'rgba(52, 199, 89, 0.25)',
-                                },
-                          color: sub.status === 'trial' ? '#FF9500' : '#34C759',
+                          gap: '1.5',
                         })}
                       >
                         <span
-                          className={css({
-                            width: '6px',
-                            height: '6px',
-                            borderRadius: '50%',
-                            bg: sub.status === 'trial' ? '#FF9500' : '#34C759',
-                          })}
+                          style={{
+                            background:
+                              sub.status === 'trial'
+                                ? '#F59E0B'
+                                : isDarkMode
+                                  ? '#34D399'
+                                  : '#059669',
+                          }}
+                          className={css({ width: '6px', height: '6px', borderRadius: '50%' })}
                         />
                         {sub.status === 'trial' ? 'Trial' : 'Active'}
                       </span>
                     </div>
 
-                    {/* Cost & Cycle */}
+                    {/* Price and Cycle */}
                     <div className={css({ my: '4' })}>
                       <div className={css({ display: 'flex', alignItems: 'baseline', gap: '1.5' })}>
                         <span
                           className={`${css({
-                            fontSize: '26px',
-                            fontWeight: '700',
-                            letterSpacing: '-0.5px',
-                            color: { base: '#1D1D1F', _dark: '#FFFFFF' },
+                            fontSize: '28px',
+                            fontWeight: '800',
+                            letterSpacing: '-0.8px',
                           })} tabular-nums`}
                         >
                           ${sub.cost.toFixed(2)}
                         </span>
                         <span
-                          className={css({
-                            fontSize: '13px',
-                            color: { base: '#86868B', _dark: '#98989D' },
-                            fontWeight: '500',
-                          })}
+                          style={{ color: isDarkMode ? '#A1A1AA' : '#71717A' }}
+                          className={css({ fontSize: '14px', fontWeight: '500' })}
                         >
-                          / {sub.cycle}
+                          /{sub.cycle}
                         </span>
                       </div>
                       {sub.cycle === 'yearly' && (
                         <p
-                          className={css({
-                            fontSize: '12px',
-                            color: { base: '#86868B', _dark: '#98989D' },
-                            mt: '0.5',
-                          })}
+                          style={{ color: isDarkMode ? '#A1A1AA' : '#71717A' }}
+                          className={css({ fontSize: '13px', mt: '0.5' })}
                         >
                           Normalized to{' '}
-                          <strong className={css({ color: { base: '#1D1D1F', _dark: '#FFFFFF' } })}>
+                          <strong
+                            className={`${css({ color: isDarkMode ? '#FFFFFF' : '#1D1D1F' })} tabular-nums`}
+                          >
                             ${sub.monthlyEquivalent.toFixed(2)}/mo
                           </strong>
                         </p>
@@ -1056,39 +1278,43 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Bottom: Renewal Info & Direct Manage Action */}
+                  {/* Footer: Renewal Countdown & Manage Button */}
                   <div
+                    style={{
+                      borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
+                    }}
                     className={css({
-                      pt: '3',
+                      pt: '3.5',
                       borderTop: '1px solid',
-                      borderColor: {
-                        base: 'rgba(0, 0, 0, 0.05)',
-                        _dark: 'rgba(255, 255, 255, 0.08)',
-                      },
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      fontSize: '12px',
+                      fontSize: '13px',
                     })}
                   >
                     <div>
                       <span
+                        style={{ color: isDarkMode ? '#A1A1AA' : '#71717A' }}
                         className={css({
-                          color: { base: '#86868B', _dark: '#98989D' },
+                          fontSize: '11px',
                           display: 'block',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px',
                         })}
                       >
-                        Renews
+                        Renewal
                       </span>
                       <span
-                        className={css({
-                          fontWeight: '600',
+                        className={`${css({
+                          fontWeight: '700',
                           color: isUrgent
-                            ? '#FF3B30'
+                            ? '#EF4444'
                             : isSoon
-                              ? '#FF9500'
-                              : { base: '#1D1D1F', _dark: '#F5F5F7' },
-                        })}
+                              ? '#F59E0B'
+                              : isDarkMode
+                                ? '#E4E4E7'
+                                : '#27272A',
+                        })} tabular-nums`}
                       >
                         {sub.renewalDate} ({sub.daysRemaining}d)
                       </span>
@@ -1098,21 +1324,23 @@ export default function App() {
                       href={sub.cancellationUrl}
                       target="_blank"
                       rel="noreferrer"
+                      style={{
+                        background: isDarkMode
+                          ? 'rgba(255, 255, 255, 0.08)'
+                          : 'rgba(0, 0, 0, 0.04)',
+                        color: isDarkMode ? '#FFFFFF' : '#1D1D1F',
+                      }}
                       className={css({
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '1',
-                        px: '2.5',
+                        px: '3',
                         py: '1.5',
-                        borderRadius: '8px',
-                        bg: { base: 'rgba(0, 0, 0, 0.03)', _dark: 'rgba(255, 255, 255, 0.08)' },
-                        color: '#0071E3',
-                        fontWeight: '500',
+                        borderRadius: '9999px',
+                        fontWeight: '600',
+                        fontSize: '12px',
                         textDecoration: 'none',
-                        transition: 'background 0.15s ease',
-                        _hover: {
-                          bg: { base: 'rgba(0, 113, 227, 0.08)', _dark: 'rgba(0, 113, 227, 0.25)' },
-                        },
+                        transition: 'all 0.15s ease',
                       })}
                     >
                       <span>Manage</span>
@@ -1124,18 +1352,17 @@ export default function App() {
             })}
           </div>
         ) : (
-          /* Dense Table View (Power User / Apple Numbers Style) */
+          /* Dense Table View */
           <div
+            style={{
+              background: isDarkMode ? 'rgba(24, 24, 27, 0.75)' : 'rgba(255, 255, 255, 0.85)',
+              borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
+            }}
             className={css({
-              bg: { base: 'white', _dark: '#1C1C1E' },
-              borderRadius: '20px',
+              borderRadius: '22px',
               border: '1px solid',
-              borderColor: { base: 'rgba(0, 0, 0, 0.06)', _dark: 'rgba(255, 255, 255, 0.1)' },
               overflowX: 'auto',
-              boxShadow: {
-                base: '0 2px 10px rgba(0, 0, 0, 0.03)',
-                _dark: '0 2px 10px rgba(0, 0, 0, 0.3)',
-              },
+              backdropFilter: 'blur(20px)',
             })}
           >
             <table
@@ -1148,81 +1375,19 @@ export default function App() {
             >
               <thead>
                 <tr
-                  className={css({
-                    borderBottom: '1px solid',
-                    borderColor: { base: 'rgba(0, 0, 0, 0.08)', _dark: 'rgba(255, 255, 255, 0.1)' },
-                    bg: { base: 'rgba(0, 0, 0, 0.02)', _dark: 'rgba(255, 255, 255, 0.04)' },
-                  })}
+                  style={{
+                    borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
+                    background: isDarkMode ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.02)',
+                  }}
+                  className={css({ borderBottom: '1px solid' })}
                 >
-                  <th
-                    className={css({
-                      py: '3.5',
-                      px: '5',
-                      fontWeight: '600',
-                      color: { base: '#86868B', _dark: '#98989D' },
-                    })}
-                  >
-                    Service
-                  </th>
-                  <th
-                    className={css({
-                      py: '3.5',
-                      px: '4',
-                      fontWeight: '600',
-                      color: { base: '#86868B', _dark: '#98989D' },
-                    })}
-                  >
-                    Category
-                  </th>
-                  <th
-                    className={css({
-                      py: '3.5',
-                      px: '4',
-                      fontWeight: '600',
-                      color: { base: '#86868B', _dark: '#98989D' },
-                    })}
-                  >
-                    Billed Cost
-                  </th>
-                  <th
-                    className={css({
-                      py: '3.5',
-                      px: '4',
-                      fontWeight: '600',
-                      color: { base: '#86868B', _dark: '#98989D' },
-                    })}
-                  >
-                    Monthly Rate
-                  </th>
-                  <th
-                    className={css({
-                      py: '3.5',
-                      px: '4',
-                      fontWeight: '600',
-                      color: { base: '#86868B', _dark: '#98989D' },
-                    })}
-                  >
-                    Renewal Date
-                  </th>
-                  <th
-                    className={css({
-                      py: '3.5',
-                      px: '4',
-                      fontWeight: '600',
-                      color: { base: '#86868B', _dark: '#98989D' },
-                    })}
-                  >
-                    Status
-                  </th>
-                  <th
-                    className={css({
-                      py: '3.5',
-                      px: '5',
-                      textAlign: 'right',
-                      fontWeight: '600',
-                      color: { base: '#86868B', _dark: '#98989D' },
-                    })}
-                  >
+                  <th className={css({ py: '4', px: '5', fontWeight: '700' })}>Service</th>
+                  <th className={css({ py: '4', px: '4', fontWeight: '700' })}>Category</th>
+                  <th className={css({ py: '4', px: '4', fontWeight: '700' })}>Billed Cost</th>
+                  <th className={css({ py: '4', px: '4', fontWeight: '700' })}>Monthly Rate</th>
+                  <th className={css({ py: '4', px: '4', fontWeight: '700' })}>Renewal</th>
+                  <th className={css({ py: '4', px: '4', fontWeight: '700' })}>Status</th>
+                  <th className={css({ py: '4', px: '5', textAlign: 'right', fontWeight: '700' })}>
                     Action
                   </th>
                 </tr>
@@ -1231,14 +1396,15 @@ export default function App() {
                 {filteredSubscriptions.map((sub) => (
                   <tr
                     key={sub.id}
+                    style={{
+                      borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.04)',
+                    }}
                     className={css({
                       borderBottom: '1px solid',
-                      borderColor: {
-                        base: 'rgba(0, 0, 0, 0.05)',
-                        _dark: 'rgba(255, 255, 255, 0.06)',
-                      },
                       transition: 'background 0.15s ease',
-                      _hover: { bg: { base: '#FBFBFC', _dark: '#252528' } },
+                      _hover: {
+                        bg: isDarkMode ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.02)',
+                      },
                     })}
                   >
                     <td className={css({ py: '3.5', px: '5' })}>
@@ -1248,85 +1414,73 @@ export default function App() {
                           alt=""
                           width={18}
                           height={18}
-                          className={css({
-                            _dark: {
-                              filter:
-                                sub.iconSlug === 'apple' || sub.iconSlug === 'openai'
-                                  ? 'invert(1)'
-                                  : 'none',
-                            },
-                          })}
+                          style={{
+                            filter:
+                              isDarkMode &&
+                              (sub.iconSlug === 'apple' ||
+                                sub.iconSlug === 'openai' ||
+                                sub.iconSlug === 'github')
+                                ? 'invert(1)'
+                                : 'none',
+                          }}
                         />
-                        <span
-                          className={css({
-                            fontWeight: '600',
-                            color: { base: '#1D1D1F', _dark: '#FFFFFF' },
-                          })}
-                        >
-                          {sub.name}
-                        </span>
+                        <span className={css({ fontWeight: '700' })}>{sub.name}</span>
                       </div>
                     </td>
                     <td
-                      className={css({
-                        py: '3.5',
-                        px: '4',
-                        color: { base: '#86868B', _dark: '#98989D' },
-                      })}
+                      style={{ color: isDarkMode ? '#A1A1AA' : '#71717A' }}
+                      className={css({ py: '3.5', px: '4' })}
                     >
                       {sub.category}
                     </td>
                     <td
-                      className={`${css({ py: '3.5', px: '4', fontWeight: '600', color: { base: '#1D1D1F', _dark: '#FFFFFF' } })} tabular-nums`}
+                      className={`${css({ py: '3.5', px: '4', fontWeight: '700' })} tabular-nums`}
                     >
                       ${sub.cost.toFixed(2)}{' '}
                       <span
-                        className={css({
-                          fontSize: '12px',
-                          color: { base: '#86868B', _dark: '#98989D' },
-                          fontWeight: 'normal',
-                        })}
+                        style={{ color: isDarkMode ? '#A1A1AA' : '#71717A' }}
+                        className={css({ fontSize: '12px', fontWeight: 'normal' })}
                       >
                         /{sub.cycle}
                       </span>
                     </td>
                     <td
-                      className={`${css({ py: '3.5', px: '4', fontWeight: '600', color: '#0071E3' })} tabular-nums`}
+                      style={{ color: currentTheme.accentColor }}
+                      className={`${css({ py: '3.5', px: '4', fontWeight: '700' })} tabular-nums`}
                     >
                       ${sub.monthlyEquivalent.toFixed(2)}/mo
                     </td>
-                    <td className={css({ py: '3.5', px: '4' })}>
+                    <td className={`${css({ py: '3.5', px: '4' })} tabular-nums`}>
                       <span
-                        className={css({
+                        style={{
                           color:
-                            sub.daysRemaining <= 3
-                              ? '#FF3B30'
-                              : { base: '#1D1D1F', _dark: '#F5F5F7' },
-                          fontWeight: sub.daysRemaining <= 3 ? '600' : 'normal',
-                        })}
+                            sub.daysRemaining <= 3 ? '#EF4444' : isDarkMode ? '#E4E4E7' : '#27272A',
+                          fontWeight: sub.daysRemaining <= 3 ? '700' : 'normal',
+                        }}
                       >
                         {sub.renewalDate}
                       </span>
                     </td>
                     <td className={css({ py: '3.5', px: '4' })}>
                       <span
+                        style={{
+                          background:
+                            sub.status === 'trial'
+                              ? isDarkMode
+                                ? 'rgba(245, 158, 11, 0.2)'
+                                : 'rgba(245, 158, 11, 0.15)'
+                              : isDarkMode
+                                ? 'rgba(16, 185, 129, 0.2)'
+                                : 'rgba(16, 185, 129, 0.15)',
+                          color:
+                            sub.status === 'trial' ? '#F59E0B' : isDarkMode ? '#34D399' : '#059669',
+                        }}
                         className={css({
                           fontSize: '12px',
-                          fontWeight: '500',
-                          px: '2',
+                          fontWeight: '700',
+                          px: '2.5',
                           py: '0.5',
                           borderRadius: '9999px',
-                          bg:
-                            sub.status === 'trial'
-                              ? {
-                                  base: 'rgba(255, 149, 0, 0.12)',
-                                  _dark: 'rgba(255, 149, 0, 0.25)',
-                                }
-                              : {
-                                  base: 'rgba(52, 199, 89, 0.12)',
-                                  _dark: 'rgba(52, 199, 89, 0.25)',
-                                },
-                          color: sub.status === 'trial' ? '#FF9500' : '#34C759',
                         })}
                       >
                         {sub.status === 'trial' ? 'Trial' : 'Active'}
@@ -1339,9 +1493,9 @@ export default function App() {
                         rel="noreferrer"
                         className={css({
                           fontSize: '13px',
-                          color: '#0071E3',
+                          color: currentTheme.accentColor,
                           textDecoration: 'none',
-                          fontWeight: '500',
+                          fontWeight: '600',
                           _hover: { textDecoration: 'underline' },
                         })}
                       >
@@ -1354,91 +1508,6 @@ export default function App() {
             </table>
           </div>
         )}
-
-        {/* Apple HIG Craft Callout & Design Spec Showcase */}
-        <section
-          className={css({
-            mt: '12',
-            p: '6',
-            borderRadius: '20px',
-            bg: { base: 'white', _dark: '#1C1C1E' },
-            border: '1px solid',
-            borderColor: { base: 'rgba(0, 0, 0, 0.06)', _dark: 'rgba(255, 255, 255, 0.1)' },
-            boxShadow: {
-              base: '0 2px 10px rgba(0, 0, 0, 0.02)',
-              _dark: '0 2px 10px rgba(0, 0, 0, 0.2)',
-            },
-          })}
-        >
-          <div className={css({ display: 'flex', alignItems: 'center', gap: '2', mb: '3' })}>
-            <CheckCircle2 size={18} color="#34C759" />
-            <h2
-              className={css({
-                fontSize: '15px',
-                fontWeight: '600',
-                color: { base: '#1D1D1F', _dark: '#FFFFFF' },
-                margin: 0,
-              })}
-            >
-              Apple HIG & Studio Craft Specs Implemented
-            </h2>
-          </div>
-          <div
-            className={css({
-              display: 'grid',
-              gridTemplateColumns: { base: '1fr', md: 'repeat(3, 1fr)' },
-              gap: '4',
-              fontSize: '13px',
-              color: { base: '#86868B', _dark: '#98989D' },
-            })}
-          >
-            <div>
-              <p
-                className={css({
-                  fontWeight: '600',
-                  color: { base: '#1D1D1F', _dark: '#F5F5F7' },
-                  mb: '1',
-                })}
-              >
-                1. Tabular Figures
-              </p>
-              <p>
-                All prices and stats use <code>tabular-nums</code> so numbers align vertically and
-                never wiggle during updates.
-              </p>
-            </div>
-            <div>
-              <p
-                className={css({
-                  fontWeight: '600',
-                  color: { base: '#1D1D1F', _dark: '#F5F5F7' },
-                  mb: '1',
-                })}
-              >
-                2. Squircles & Materials
-              </p>
-              <p>
-                Translucent frosted glass navigation, hairline 1px borders, and Apple continuous
-                curve radii for a native feel.
-              </p>
-            </div>
-            <div>
-              <p
-                className={css({
-                  fontWeight: '600',
-                  color: { base: '#1D1D1F', _dark: '#F5F5F7' },
-                  mb: '1',
-                })}
-              >
-                3. Accessibility (Priority 1)
-              </p>
-              <p>
-                WCAG AA contrast ratios, touch targets $\ge 44\times 44$px, and color never used as
-                the sole conveyer of information.
-              </p>
-            </div>
-          </div>
-        </section>
       </main>
     </div>
   );
