@@ -33,7 +33,7 @@ export const subscriptionCardStyles = sva({
       position: 'relative',
       transition: 'all 0.2s ease',
       _hover: {
-        transform: 'translateY(-2px)',
+        transform: 'scale(1.008)',
         boxShadow: '0 14px 40px rgba(0, 0, 0, 0.08)',
       },
       _dark: {
