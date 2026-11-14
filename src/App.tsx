@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { AuthModal } from '@/modules/auth/components/AuthModal';
+import { useAuth } from '@/modules/auth/hooks/useAuth';
 import { AppBackground } from '@/modules/common/components/AppBackground';
 import { Header } from '@/modules/common/components/Header';
 import { ViewControls } from '@/modules/common/components/ViewControls';
@@ -8,6 +10,7 @@ import { TrialAlertBanner } from '@/modules/dashboard/components/TrialAlertBanne
 import { useRunRateMetrics } from '@/modules/dashboard/hooks/useRunRateMetrics';
 import { SubscriptionFilterBar } from '@/modules/subscriptions/components/SubscriptionFilterBar';
 import { SubscriptionGrid } from '@/modules/subscriptions/components/SubscriptionGrid';
+import { SubscriptionModal } from '@/modules/subscriptions/components/SubscriptionModal';
 import { SubscriptionTable } from '@/modules/subscriptions/components/SubscriptionTable';
 import { useSubscriptionFilter } from '@/modules/subscriptions/hooks/useSubscriptionFilter';
 import { useSubscriptions } from '@/modules/subscriptions/hooks/useSubscriptions';
@@ -17,8 +20,11 @@ export function App() {
   const [activeTab, setActiveTab] = useState<'subscriptions' | 'calendar' | 'analytics'>(
     'subscriptions'
   );
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
-  const { subscriptions } = useSubscriptions();
+  const { user, signIn, signUp, signOut, error: authError } = useAuth();
+  const { subscriptions, addSubscription } = useSubscriptions(user?.id ?? null);
   const metrics = useRunRateMetrics(subscriptions);
   const {
     searchQuery,
@@ -36,14 +42,11 @@ export function App() {
 
   return (
     <AppBackground>
-      <Header />
+      <Header user={user} onOpenAuth={() => setIsAuthModalOpen(true)} onSignOut={signOut} />
       <main className={classes.mainContainer}>
         <TrialAlertBanner trialSubscription={expiringTrial} />
 
-        <RunRateHero
-          metrics={metrics}
-          onAddClick={() => alert('Add Subscription Modal coming next!')}
-        />
+        <RunRateHero metrics={metrics} onAddClick={() => setIsAddModalOpen(true)} />
 
         <ViewControls
           activeTab={activeTab}
@@ -69,6 +72,20 @@ export function App() {
           )}
         </div>
       </main>
+
+      <SubscriptionModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onAdd={addSubscription}
+      />
+
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        onSignIn={signIn}
+        onSignUp={signUp}
+        error={authError}
+      />
     </AppBackground>
   );
 }

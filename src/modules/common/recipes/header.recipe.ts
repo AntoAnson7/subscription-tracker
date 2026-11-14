@@ -12,6 +12,7 @@ export const headerStyles = sva({
     'currencyBtn',
     'themeBtn',
     'avatar',
+    'authBtn',
   ],
   base: {
     root: {
@@ -117,6 +118,23 @@ export const headerStyles = sva({
       fontWeight: '700',
       border: '1px solid',
       borderColor: 'border.default',
+      cursor: 'pointer',
+    },
+    authBtn: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '50',
+      px: '150',
+      py: '50',
+      borderRadius: 'pill',
+      background: 'accent.primary',
+      color: 'text.inverse',
+      border: 'none',
+      fontSize: '12px',
+      fontWeight: '700',
+      cursor: 'pointer',
+      transition: 'all 0.15s ease',
+      _hover: { transform: 'scale(1.02)' },
     },
   },
 });
