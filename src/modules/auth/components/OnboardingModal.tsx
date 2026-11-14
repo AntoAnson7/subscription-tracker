@@ -3,12 +3,30 @@ import { User } from '@supabase/supabase-js';
 import { useOnboardingForm } from '@/modules/auth/hooks/useOnboardingForm';
 import { onboardingModalStyles } from '@/modules/auth/recipes/onboardingModal.recipe';
 import { CreateProfileData, TrackingFocus } from '@/modules/auth/types/auth.types';
+import { CustomInput } from '@/modules/common/components/CustomInput';
+import { CustomSelect } from '@/modules/common/components/CustomSelect';
 
 interface OnboardingModalProps {
   isOpen: boolean;
   user: User | null;
   onSubmit: (data: CreateProfileData) => Promise<boolean> | boolean;
 }
+
+const CURRENCY_OPTIONS = [
+  { value: 'USD', label: 'USD ($)' },
+  { value: 'EUR', label: 'EUR (€)' },
+  { value: 'GBP', label: 'GBP (£)' },
+  { value: 'CAD', label: 'CAD ($)' },
+  { value: 'AUD', label: 'AUD ($)' },
+  { value: 'INR', label: 'INR (₹)' },
+  { value: 'JPY', label: 'JPY (¥)' },
+];
+
+const FOCUS_OPTIONS = [
+  { value: 'Personal', label: 'Personal Subscriptions' },
+  { value: 'Work & Business', label: 'Work & SaaS Tools' },
+  { value: 'Family Sharing', label: 'Family & Household' },
+];
 
 export function OnboardingModal({ isOpen, user, onSubmit }: OnboardingModalProps) {
   const classes = onboardingModalStyles();
@@ -21,7 +39,12 @@ export function OnboardingModal({ isOpen, user, onSubmit }: OnboardingModalProps
     (user.user_metadata?.picture as string | undefined);
 
   return (
-    <div className={classes.backdrop}>
+    <div
+      className={classes.backdrop}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="onboarding-title"
+    >
       <div className={classes.modal}>
         <header className={classes.header}>
           <div className={classes.avatarWrapper}>
@@ -31,7 +54,9 @@ export function OnboardingModal({ isOpen, user, onSubmit }: OnboardingModalProps
               <UserIcon size={24} />
             )}
           </div>
-          <h2 className={classes.title}>Complete Account Setup</h2>
+          <h2 id="onboarding-title" className={classes.title}>
+            Complete Account Setup
+          </h2>
           <p className={classes.subtitle}>
             We found your Google profile. Confirm your details to finish creating your SubTrack
             account.
@@ -47,47 +72,27 @@ export function OnboardingModal({ isOpen, user, onSubmit }: OnboardingModalProps
             </div>
           </div>
 
-          <div className={classes.field}>
-            <label className={classes.label}>Full Name</label>
-            <input
-              type="text"
-              required
-              value={formData.fullName}
-              onChange={(e) => updateField('fullName', e.target.value)}
-              className={classes.input}
-              placeholder="e.g. Jane Doe"
-            />
-          </div>
+          <CustomInput
+            label="Full Name"
+            required
+            value={formData.fullName}
+            onChange={(e) => updateField('fullName', e.target.value)}
+            placeholder="e.g. Jane Doe"
+          />
 
-          <div className={classes.field}>
-            <label className={classes.label}>Preferred Currency</label>
-            <select
-              value={formData.preferredCurrency}
-              onChange={(e) => updateField('preferredCurrency', e.target.value)}
-              className={classes.select}
-            >
-              <option value="USD">USD ($)</option>
-              <option value="EUR">EUR (€)</option>
-              <option value="GBP">GBP (£)</option>
-              <option value="CAD">CAD ($)</option>
-              <option value="AUD">AUD ($)</option>
-              <option value="INR">INR (₹)</option>
-              <option value="JPY">JPY (¥)</option>
-            </select>
-          </div>
+          <CustomSelect
+            label="Preferred Currency"
+            value={formData.preferredCurrency}
+            onChange={(val) => updateField('preferredCurrency', val)}
+            options={CURRENCY_OPTIONS}
+          />
 
-          <div className={classes.field}>
-            <label className={classes.label}>Tracking Focus</label>
-            <select
-              value={formData.trackingFocus}
-              onChange={(e) => updateField('trackingFocus', e.target.value as TrackingFocus)}
-              className={classes.select}
-            >
-              <option value="Personal">Personal Subscriptions</option>
-              <option value="Work & Business">Work & SaaS Tools</option>
-              <option value="Family Sharing">Family & Household</option>
-            </select>
-          </div>
+          <CustomSelect
+            label="Tracking Focus"
+            value={formData.trackingFocus}
+            onChange={(val) => updateField('trackingFocus', val as TrackingFocus)}
+            options={FOCUS_OPTIONS}
+          />
 
           <button type="submit" disabled={submitting} className={classes.submitBtn}>
             {submitting ? 'Setting up...' : 'Create Account & Start Tracking'}

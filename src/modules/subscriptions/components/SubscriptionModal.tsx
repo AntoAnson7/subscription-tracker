@@ -1,11 +1,17 @@
+import { useRef } from 'react';
 import { X } from 'lucide-react';
+import { CustomInput } from '@/modules/common/components/CustomInput';
+import { CustomSelect } from '@/modules/common/components/CustomSelect';
+import { useClickOutside } from '@/modules/common/hooks/useClickOutside';
 import { useSubscriptionForm } from '@/modules/subscriptions/hooks/useSubscriptionForm';
+import { autocompleteStyles } from '@/modules/subscriptions/recipes/autocomplete.recipe';
 import { subscriptionModalStyles } from '@/modules/subscriptions/recipes/subscriptionModal.recipe';
 import { SubscriptionFormData } from '@/modules/subscriptions/types/form.types';
 import {
   BillingCycle,
   SubscriptionCategory,
 } from '@/modules/subscriptions/types/subscription.types';
+import { CATEGORY_OPTIONS, CYCLE_OPTIONS } from '@/modules/subscriptions/utils/formOptions.utils';
 
 interface SubscriptionModalProps {
   isOpen: boolean;
@@ -14,25 +20,36 @@ interface SubscriptionModalProps {
 }
 
 export function SubscriptionModal({ isOpen, onClose, onAdd }: SubscriptionModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null);
   const classes = subscriptionModalStyles();
-  const { formData, isSubmitting, handleNameChange, updateField, handleSubmit, resetForm } =
-    useSubscriptionForm(async (data) => {
-      await onAdd(data);
-      onClose();
-    });
+  const auto = autocompleteStyles();
 
-  if (!isOpen) return null;
+  const form = useSubscriptionForm(async (data) => {
+    await onAdd(data);
+    onClose();
+  });
 
   const handleClose = () => {
-    resetForm();
+    form.resetForm();
     onClose();
   };
 
+  useClickOutside(modalRef, handleClose, isOpen);
+  if (!isOpen) return null;
+  const { formData } = form;
+
   return (
-    <div className={classes.backdrop} onClick={handleClose}>
-      <div className={classes.modal} onClick={(e) => e.stopPropagation()}>
+    <div
+      className={classes.backdrop}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="add-sub-title"
+    >
+      <div ref={modalRef} className={classes.modal}>
         <header className={classes.header}>
-          <h2 className={classes.title}>Add Subscription</h2>
+          <h2 id="add-sub-title" className={classes.title}>
+            Add Subscription
+          </h2>
           <button
             type="button"
             onClick={handleClose}
@@ -43,97 +60,85 @@ export function SubscriptionModal({ isOpen, onClose, onAdd }: SubscriptionModalP
           </button>
         </header>
 
-        <form onSubmit={handleSubmit} className={classes.form}>
-          <div className={classes.field}>
-            <label className={classes.label}>Service Name</label>
-            <input
-              type="text"
+        <form onSubmit={form.handleSubmit} className={classes.form}>
+          <div className={auto.root}>
+            <CustomInput
+              label="Service Name"
               required
               placeholder="e.g. Netflix, Spotify, Claude, AWS"
               value={formData.name}
-              onChange={(e) => handleNameChange(e.target.value)}
-              className={classes.input}
+              onChange={(e) => form.handleNameChange(e.target.value)}
+            />
+            {form.suggestions.length > 0 && (
+              <div className={auto.menu} role="listbox">
+                {form.suggestions.map((item) => (
+                  <button
+                    key={item.name}
+                    type="button"
+                    role="option"
+                    aria-selected="false"
+                    onClick={() => form.applyPreset(item)}
+                    className={auto.item}
+                  >
+                    <div className={auto.icon} style={{ background: item.brandColor }}>
+                      {item.name.slice(0, 2).toUpperCase()}
+                    </div>
+                    <span className={auto.name}>{item.name}</span>
+                    <span className={auto.category}>{item.category}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className={classes.grid}>
+            <CustomInput
+              label="Cost"
+              type="number"
+              step="0.01"
+              min="0"
+              required
+              value={formData.cost}
+              onChange={(e) => form.updateField('cost', parseFloat(e.target.value) || 0)}
+            />
+            <CustomSelect
+              label="Billing Cycle"
+              value={formData.cycle}
+              onChange={(val) => form.updateField('cycle', val as BillingCycle)}
+              options={CYCLE_OPTIONS}
             />
           </div>
 
           <div className={classes.grid}>
-            <div className={classes.field}>
-              <label className={classes.label}>Cost</label>
-              <input
-                type="number"
-                step="0.01"
-                min="0"
-                required
-                value={formData.cost}
-                onChange={(e) => updateField('cost', parseFloat(e.target.value) || 0)}
-                className={classes.input}
-              />
-            </div>
-
-            <div className={classes.field}>
-              <label className={classes.label}>Billing Cycle</label>
-              <select
-                value={formData.cycle}
-                onChange={(e) => updateField('cycle', e.target.value as BillingCycle)}
-                className={classes.select}
-              >
-                <option value="monthly">Monthly</option>
-                <option value="yearly">Yearly</option>
-                <option value="quarterly">Quarterly</option>
-                <option value="weekly">Weekly</option>
-              </select>
-            </div>
-          </div>
-
-          <div className={classes.grid}>
-            <div className={classes.field}>
-              <label className={classes.label}>Category</label>
-              <select
-                value={formData.category}
-                onChange={(e) => updateField('category', e.target.value as SubscriptionCategory)}
-                className={classes.select}
-              >
-                <option value="Entertainment">Entertainment</option>
-                <option value="Productivity & AI">Productivity & AI</option>
-                <option value="Bundled Services">Bundled Services</option>
-                <option value="Developer Tools">Developer Tools</option>
-                <option value="Design & Craft">Design & Craft</option>
-                <option value="Health & Fitness">Health & Fitness</option>
-                <option value="Cloud & Hosting">Cloud & Hosting</option>
-                <option value="Utilities">Utilities</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-
-            <div className={classes.field}>
-              <label className={classes.label}>Next Renewal Date</label>
-              <input
-                type="date"
-                required
-                value={formData.renewalDate}
-                onChange={(e) => updateField('renewalDate', e.target.value)}
-                className={classes.input}
-              />
-            </div>
-          </div>
-
-          <div className={classes.field}>
-            <label className={classes.label}>Cancellation URL (optional)</label>
-            <input
-              type="url"
-              placeholder="https://..."
-              value={formData.cancellationUrl || ''}
-              onChange={(e) => updateField('cancellationUrl', e.target.value || null)}
-              className={classes.input}
+            <CustomSelect
+              label="Category"
+              value={formData.category}
+              onChange={(val) => form.updateField('category', val as SubscriptionCategory)}
+              options={CATEGORY_OPTIONS}
+            />
+            <CustomInput
+              label="Next Renewal Date"
+              type="date"
+              required
+              value={formData.renewalDate}
+              onChange={(e) => form.updateField('renewalDate', e.target.value)}
             />
           </div>
+
+          <CustomInput
+            label="Cancellation URL (optional)"
+            type="url"
+            placeholder="https://..."
+            value={formData.cancellationUrl || ''}
+            onChange={(e) => form.updateField('cancellationUrl', e.target.value || null)}
+          />
 
           <div className={classes.footer}>
             <button type="button" onClick={handleClose} className={classes.cancelBtn}>
               Cancel
             </button>
-            <button type="submit" disabled={isSubmitting} className={classes.submitBtn}>
-              {isSubmitting ? 'Saving...' : 'Save Subscription'}
+            <button type="submit" disabled={form.isSubmitting} className={classes.submitBtn}>
+              {form.isSubmitting ? 'Saving...' : 'Save Subscription'}
             </button>
           </div>
         </form>

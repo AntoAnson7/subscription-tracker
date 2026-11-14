@@ -1,16 +1,9 @@
 import { sva } from 'styled-system/css';
 
-const inputBase = {
-  width: '100%',
-  px: '150',
-  py: '100',
-  borderRadius: 'md',
-  border: '1px solid',
-  borderColor: 'border.default',
-  background: 'bg.secondary',
-  color: 'text.primary',
-  fontSize: '14px',
-  outline: 'none',
+const focusRing = {
+  outline: '2px solid',
+  outlineColor: 'accent.primary',
+  outlineOffset: '2px',
 } as const;
 
 export const subscriptionModalStyles = sva({
@@ -22,10 +15,6 @@ export const subscriptionModalStyles = sva({
     'closeBtn',
     'form',
     'grid',
-    'field',
-    'label',
-    'input',
-    'select',
     'footer',
     'submitBtn',
     'cancelBtn',
@@ -79,23 +68,10 @@ export const subscriptionModalStyles = sva({
       border: 'none',
       cursor: 'pointer',
       _hover: { color: 'text.primary' },
+      _focusVisible: focusRing,
     },
-    form: { display: 'flex', flexDirection: 'column', gap: '250' },
-    grid: {
-      display: 'grid',
-      gridTemplateColumns: { base: '1fr', sm: '1fr 1fr' },
-      gap: '200',
-    },
-    field: { display: 'flex', flexDirection: 'column', gap: '50' },
-    label: {
-      fontSize: '12px',
-      fontWeight: '600',
-      color: 'text.secondary',
-      textTransform: 'uppercase',
-      letterSpacing: '0.4px',
-    },
-    input: { ...inputBase, _focus: { borderColor: 'accent.primary' } },
-    select: { ...inputBase, cursor: 'pointer' },
+    form: { display: 'flex', flexDirection: 'column', gap: '200' },
+    grid: { display: 'grid', gridTemplateColumns: { base: '1fr', sm: '1fr 1fr' }, gap: '200' },
     footer: {
       display: 'flex',
       alignItems: 'center',
@@ -115,7 +91,7 @@ export const subscriptionModalStyles = sva({
       cursor: 'pointer',
       boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
       _hover: { transform: 'scale(1.02)' },
-      _active: { transform: 'scale(0.98)' },
+      _focusVisible: focusRing,
     },
     cancelBtn: {
       px: '200',
@@ -128,6 +104,7 @@ export const subscriptionModalStyles = sva({
       border: 'none',
       cursor: 'pointer',
       _hover: { color: 'text.primary' },
+      _focusVisible: focusRing,
     },
   },
 });

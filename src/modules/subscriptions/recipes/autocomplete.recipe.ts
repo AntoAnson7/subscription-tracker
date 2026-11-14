@@ -1,0 +1,68 @@
+import { sva } from 'styled-system/css';
+
+export const autocompleteStyles = sva({
+  slots: ['root', 'menu', 'item', 'icon', 'name', 'category'],
+  base: {
+    root: {
+      position: 'relative',
+      width: '100%',
+    },
+    menu: {
+      position: 'absolute',
+      top: 'calc(100% + 4px)',
+      left: 0,
+      right: 0,
+      background: 'bg.primary',
+      borderRadius: 'md',
+      border: '1px solid',
+      borderColor: 'border.default',
+      p: '50',
+      boxShadow: '0 16px 36px rgba(0, 0, 0, 0.2)',
+      zIndex: 70,
+      maxHeight: '220px',
+      overflowY: 'auto',
+    },
+    item: {
+      width: '100%',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '150',
+      px: '150',
+      py: '100',
+      borderRadius: 'sm',
+      background: 'transparent',
+      border: 'none',
+      cursor: 'pointer',
+      textAlign: 'left',
+      _hover: { background: 'bg.hover' },
+      _focusVisible: {
+        outline: '2px solid',
+        outlineColor: 'accent.primary',
+        outlineOffset: '-2px',
+        background: 'bg.hover',
+      },
+    },
+    icon: {
+      width: '26px',
+      height: '26px',
+      borderRadius: 'sm',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: 'white',
+      fontWeight: '700',
+      fontSize: '11px',
+      flexShrink: 0,
+    },
+    name: {
+      fontSize: '13px',
+      fontWeight: '600',
+      color: 'text.primary',
+    },
+    category: {
+      fontSize: '11px',
+      color: 'text.tertiary',
+      ml: 'auto',
+    },
+  },
+});

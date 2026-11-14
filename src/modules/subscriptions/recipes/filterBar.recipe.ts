@@ -38,6 +38,12 @@ export const filterBarStyles = sva({
       backdropFilter: 'blur(12px)',
       color: 'text.primary',
       transition: 'border-color 0.15s ease',
+      _focusVisible: {
+        outline: '2px solid',
+        outlineColor: 'accent.primary',
+        outlineOffset: '2px',
+        borderColor: 'accent.primary',
+      },
     },
     pillsWrapper: {
       display: 'flex',
@@ -59,6 +65,11 @@ export const filterBarStyles = sva({
       background: 'bg.secondary',
       color: 'text.secondary',
       transition: 'all 0.15s ease',
+      _focusVisible: {
+        outline: '2px solid',
+        outlineColor: 'accent.primary',
+        outlineOffset: '2px',
+      },
     },
   },
 });
