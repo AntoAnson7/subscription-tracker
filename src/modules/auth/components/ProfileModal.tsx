@@ -41,12 +41,12 @@ export function ProfileModal({ isOpen, onClose, user, profile, onSignOut }: Prof
 
   return (
     <div
-      className={classes.backdrop}
+      className={`${classes.backdrop} backdrop-animated`}
       role="dialog"
       aria-modal="true"
       aria-labelledby="profile-name"
     >
-      <div ref={modalRef} className={classes.modal}>
+      <div ref={modalRef} className={`${classes.modal} modal-animated`}>
         <button
           type="button"
           onClick={onClose}

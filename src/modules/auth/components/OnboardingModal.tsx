@@ -40,12 +40,12 @@ export function OnboardingModal({ isOpen, user, onSubmit }: OnboardingModalProps
 
   return (
     <div
-      className={classes.backdrop}
+      className={`${classes.backdrop} backdrop-animated`}
       role="dialog"
       aria-modal="true"
       aria-labelledby="onboarding-title"
     >
-      <div className={classes.modal}>
+      <div className={`${classes.modal} modal-animated`}>
         <header className={classes.header}>
           <div className={classes.avatarWrapper}>
             {avatarUrl ? (

@@ -80,7 +80,10 @@ export function App() {
             categories={categories}
           />
 
-          <div className={classes.contentSection}>
+          <div
+            key={`${activeTab}-${viewMode}`}
+            className={`${classes.contentSection} tab-content-animated`}
+          >
             {viewMode === 'grid' ? (
               <SubscriptionGrid subscriptions={filteredSubscriptions} />
             ) : (

@@ -10,7 +10,7 @@ export function AppBackground({ children }: AppBackgroundProps) {
 
   return (
     <div className={classes.shell}>
-      <div className={classes.ambientMesh} />
+      <div className={`${classes.ambientMesh} ambient-animated`} />
       {children}
     </div>
   );

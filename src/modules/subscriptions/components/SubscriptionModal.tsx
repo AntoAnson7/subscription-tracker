@@ -40,12 +40,12 @@ export function SubscriptionModal({ isOpen, onClose, onAdd }: SubscriptionModalP
 
   return (
     <div
-      className={classes.backdrop}
+      className={`${classes.backdrop} backdrop-animated`}
       role="dialog"
       aria-modal="true"
       aria-labelledby="add-sub-title"
     >
-      <div ref={modalRef} className={classes.modal}>
+      <div ref={modalRef} className={`${classes.modal} modal-animated`}>
         <header className={classes.header}>
           <h2 id="add-sub-title" className={classes.title}>
             Add Subscription

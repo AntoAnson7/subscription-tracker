@@ -21,12 +21,12 @@ export function AuthModal({ isOpen, onClose, onGoogleSignIn, error }: AuthModalP
 
   return (
     <div
-      className={classes.backdrop}
+      className={`${classes.backdrop} backdrop-animated`}
       role="dialog"
       aria-modal="true"
       aria-labelledby="auth-modal-title"
     >
-      <div ref={modalRef} className={classes.modal}>
+      <div ref={modalRef} className={`${classes.modal} modal-animated`}>
         <button type="button" onClick={onClose} className={classes.closeBtn} aria-label="Close">
           <X size={16} />
         </button>
