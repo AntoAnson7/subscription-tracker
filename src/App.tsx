@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { SkullMaster } from '@skullmaster/react';
 import { AuthModals } from '@/modules/auth/components/AuthModals';
 import { useAuth } from '@/modules/auth/hooks/useAuth';
 import { useProfile } from '@/modules/auth/hooks/useProfile';
@@ -18,6 +17,7 @@ import { SubscriptionModal } from '@/modules/subscriptions/components/Subscripti
 import { useAppSubscriptions } from '@/modules/subscriptions/hooks/useAppSubscriptions';
 
 export function App() {
+  const [mockLoading, setMockLoading] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
   const [activeTab, setActiveTab] = useState<'subscriptions' | 'calendar' | 'analytics'>(
     'subscriptions'
@@ -29,6 +29,7 @@ export function App() {
   const { profile, needsOnboarding, createProfile } = useProfile(user);
   const subManager = useAppSubscriptions(user?.id ?? null);
   const classes = layoutStyles();
+  const isSkeletonActive = mockLoading || subManager.subsLoading;
 
   return (
     <CurrencyProvider
@@ -39,14 +40,14 @@ export function App() {
         <Header
           user={user}
           profile={profile}
-          isLoading={authLoading}
+          isLoading={mockLoading || authLoading}
           onOpenAuth={() => setIsAuthModalOpen(true)}
           onOpenProfile={() => setIsProfileModalOpen(true)}
         />
         <main className={classes.mainContainer}>
           <TrialAlertBanner trialSubscription={subManager.expiringTrial} />
 
-          {subManager.subsLoading ? (
+          {isSkeletonActive ? (
             <RunRateHeroSkeleton />
           ) : (
             <RunRateHero metrics={subManager.metrics} onAddClick={subManager.handleOpenAdd} />
@@ -75,6 +76,7 @@ export function App() {
             <SubscriptionContentView
               viewMode={viewMode}
               isLoading={subManager.subsLoading}
+              showAllSkeletons={mockLoading}
               subscriptions={subManager.filter.filteredSubscriptions}
               onEdit={subManager.handleOpenEdit}
             />
@@ -103,7 +105,29 @@ export function App() {
           onSignOut={signOut}
         />
 
-        {import.meta.env.DEV && <SkullMaster />}
+        {import.meta.env.DEV && (
+          <button
+            type="button"
+            onClick={() => setMockLoading((p) => !p)}
+            style={{
+              position: 'fixed',
+              bottom: '16px',
+              left: '16px',
+              zIndex: 90,
+              background: mockLoading ? '#D97706' : 'rgba(0,0,0,0.6)',
+              color: '#FFFFFF',
+              border: 'none',
+              borderRadius: '9999px',
+              padding: '6px 14px',
+              fontSize: '11px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              backdropFilter: 'blur(10px)',
+            }}
+          >
+            {mockLoading ? 'Skeletons Preview: ON' : 'Skeletons Preview: OFF'}
+          </button>
+        )}
       </AppBackground>
     </CurrencyProvider>
   );

@@ -1,7 +1,7 @@
 import { CreditCard, Moon, Sun, User as UserIcon } from 'lucide-react';
 import { UserProfile } from '@/modules/auth/types/auth.types';
-import { CurrencySelector } from '@/modules/common/components/CurrencySelector';
 import { HeaderAvatarSkeleton } from '@/modules/common/components/HeaderAvatarSkeleton';
+import { CurrencySelector } from '@/modules/common/components/CurrencySelector';
 import { useTheme } from '@/modules/common/hooks/useTheme';
 import { headerStyles } from '@/modules/common/recipes/header.recipe';
 

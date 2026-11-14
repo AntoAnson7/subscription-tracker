@@ -8,8 +8,7 @@ export function HeaderAvatarSkeleton() {
       role="status"
       aria-label="Loading user profile"
       aria-busy="true"
-      className={`${classes.circle} empty-set__skeleton`}
-      data-depth="0"
+      className={`${classes.circle} skeleton-shimmer`}
       style={{ width: '34px', height: '34px' }}
     >
       <span className="sr-only">Loading user profile...</span>

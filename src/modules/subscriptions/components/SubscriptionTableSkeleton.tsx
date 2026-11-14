@@ -36,71 +36,61 @@ export function SubscriptionTableSkeleton({ rows = 5 }: SubscriptionTableSkeleto
               <td className={tableClasses.td}>
                 <div className={tableClasses.brandCell}>
                   <div
-                    className={`${skelClasses.circle} empty-set__skeleton`}
-                    data-depth="0"
+                    className={`${skelClasses.circle} skeleton-shimmer`}
                     style={{ width: '20px', height: '20px' }}
                   />
                   <div
-                    className={`${skelClasses.bone} empty-set__skeleton`}
-                    data-depth="1"
-                    style={{ width: '90px', height: '16px' }}
+                    className={`${skelClasses.bone} skeleton-shimmer`}
+                    style={{ width: '90px', height: '16px', borderRadius: '6px' }}
                   />
                 </div>
               </td>
               <td className={tableClasses.td}>
                 <div
-                  className={`${skelClasses.bone} empty-set__skeleton`}
-                  data-depth="0"
-                  style={{ width: '70px', height: '14px' }}
+                  className={`${skelClasses.bone} skeleton-shimmer`}
+                  style={{ width: '70px', height: '14px', borderRadius: '6px' }}
                 />
               </td>
               <td className={tableClasses.td}>
                 <div
-                  className={`${skelClasses.bone} empty-set__skeleton`}
-                  data-depth="1"
-                  style={{ width: '50px', height: '14px' }}
+                  className={`${skelClasses.bone} skeleton-shimmer`}
+                  style={{ width: '50px', height: '14px', borderRadius: '6px' }}
                 />
               </td>
               <td className={tableClasses.td}>
                 <div
-                  className={`${skelClasses.bone} empty-set__skeleton`}
-                  data-depth="0"
-                  style={{ width: '40px', height: '14px' }}
+                  className={`${skelClasses.bone} skeleton-shimmer`}
+                  style={{ width: '40px', height: '14px', borderRadius: '6px' }}
                 />
               </td>
               <td className={tableClasses.td}>
                 <div
-                  className={`${skelClasses.bone} empty-set__skeleton`}
-                  data-depth="1"
-                  style={{ width: '50px', height: '14px' }}
+                  className={`${skelClasses.bone} skeleton-shimmer`}
+                  style={{ width: '50px', height: '14px', borderRadius: '6px' }}
                 />
               </td>
               <td className={tableClasses.td}>
                 <div
-                  className={`${skelClasses.bone} empty-set__skeleton`}
-                  data-depth="0"
-                  style={{ width: '80px', height: '14px' }}
+                  className={`${skelClasses.bone} skeleton-shimmer`}
+                  style={{ width: '80px', height: '14px', borderRadius: '6px' }}
                 />
               </td>
               <td className={tableClasses.td}>
                 <div
-                  className={`${skelClasses.pill} empty-set__skeleton`}
-                  data-depth="1"
+                  className={`${skelClasses.pill} skeleton-shimmer`}
                   style={{ width: '56px', height: '20px' }}
                 />
               </td>
               <td className={tableClasses.td}>
                 <div
-                  className={`${skelClasses.bone} empty-set__skeleton`}
-                  data-depth="0"
-                  style={{ width: '45px', height: '14px' }}
+                  className={`${skelClasses.pill} skeleton-shimmer`}
+                  style={{ width: '45px', height: '20px' }}
                 />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <span className="sr-only">Loading subscriptions table...</span>
     </div>
   );
 }

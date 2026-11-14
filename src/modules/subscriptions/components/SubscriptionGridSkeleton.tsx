@@ -14,7 +14,6 @@ export function SubscriptionGridSkeleton({ count = 6 }: SubscriptionGridSkeleton
       {placeholders.map((idx) => (
         <SubscriptionCardSkeleton key={idx} />
       ))}
-      <span className="sr-only">Loading subscriptions...</span>
     </div>
   );
 }

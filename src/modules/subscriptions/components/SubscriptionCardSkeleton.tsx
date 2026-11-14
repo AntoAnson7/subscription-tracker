@@ -14,26 +14,22 @@ export function SubscriptionCardSkeleton() {
         <div className={classes.cardHeader}>
           <div className={classes.cardTitleGroup}>
             <div
-              className={`${classes.bone} empty-set__skeleton`}
-              data-depth="0"
+              className={`${classes.bone} skeleton-shimmer`}
               style={{ width: '42px', height: '42px', borderRadius: '12px' }}
             />
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <div
-                className={`${classes.bone} empty-set__skeleton`}
-                data-depth="1"
-                style={{ width: '120px', height: '18px' }}
+                className={`${classes.bone} skeleton-shimmer`}
+                style={{ width: '120px', height: '18px', borderRadius: '6px' }}
               />
               <div
-                className={`${classes.bone} empty-set__skeleton`}
-                data-depth="0"
-                style={{ width: '70px', height: '12px' }}
+                className={`${classes.bone} skeleton-shimmer`}
+                style={{ width: '70px', height: '12px', borderRadius: '6px' }}
               />
             </div>
           </div>
           <div
-            className={`${classes.pill} empty-set__skeleton`}
-            data-depth="1"
+            className={`${classes.pill} skeleton-shimmer`}
             style={{ width: '64px', height: '22px' }}
           />
         </div>
@@ -41,14 +37,12 @@ export function SubscriptionCardSkeleton() {
         <div className={classes.cardPriceGroup}>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
             <div
-              className={`${classes.bone} empty-set__skeleton`}
-              data-depth="1"
-              style={{ width: '90px', height: '26px' }}
+              className={`${classes.bone} skeleton-shimmer`}
+              style={{ width: '100px', height: '28px', borderRadius: '8px' }}
             />
             <div
-              className={`${classes.bone} empty-set__skeleton`}
-              data-depth="0"
-              style={{ width: '48px', height: '16px' }}
+              className={`${classes.bone} skeleton-shimmer`}
+              style={{ width: '48px', height: '16px', borderRadius: '6px' }}
             />
           </div>
         </div>
@@ -56,18 +50,14 @@ export function SubscriptionCardSkeleton() {
 
       <div className={classes.cardFooter}>
         <div
-          className={`${classes.bone} empty-set__skeleton`}
-          data-depth="0"
-          style={{ width: '96px', height: '14px' }}
+          className={`${classes.bone} skeleton-shimmer`}
+          style={{ width: '96px', height: '14px', borderRadius: '6px' }}
         />
         <div
-          className={`${classes.bone} empty-set__skeleton`}
-          data-depth="0"
-          style={{ width: '56px', height: '14px' }}
+          className={`${classes.pill} skeleton-shimmer`}
+          style={{ width: '56px', height: '24px' }}
         />
       </div>
-
-      <span className="sr-only">Loading subscription...</span>
     </article>
   );
 }

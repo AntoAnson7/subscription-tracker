@@ -7,6 +7,7 @@ import { Subscription } from '@/modules/subscriptions/types/subscription.types';
 interface SubscriptionContentViewProps {
   viewMode: 'grid' | 'table';
   isLoading: boolean;
+  showAllSkeletons?: boolean;
   subscriptions: Subscription[];
   onEdit: (subscription: Subscription) => void;
 }
@@ -14,11 +15,16 @@ interface SubscriptionContentViewProps {
 export function SubscriptionContentView({
   viewMode,
   isLoading,
+  showAllSkeletons = false,
   subscriptions,
   onEdit,
 }: SubscriptionContentViewProps) {
-  if (isLoading) {
-    return viewMode === 'grid' ? <SubscriptionGridSkeleton /> : <SubscriptionTableSkeleton />;
+  if (isLoading || showAllSkeletons) {
+    return viewMode === 'grid' ? (
+      <SubscriptionGridSkeleton count={6} />
+    ) : (
+      <SubscriptionTableSkeleton rows={5} />
+    );
   }
 
   return viewMode === 'grid' ? (

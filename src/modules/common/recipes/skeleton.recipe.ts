@@ -92,8 +92,6 @@ export const skeletonStyles = sva({
       alignItems: 'center',
       justifyContent: 'space-between',
       pt: '200',
-      borderTop: '1px solid',
-      borderColor: 'border.subtle',
     },
     tableRow: {
       borderBottom: '1px solid',
