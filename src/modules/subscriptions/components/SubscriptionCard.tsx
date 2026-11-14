@@ -1,6 +1,7 @@
 import { ExternalLink } from 'lucide-react';
 import { css } from 'styled-system/css';
 import { StatusBadge } from '@/modules/common/components/StatusBadge';
+import { useCurrency } from '@/modules/common/hooks/useCurrency';
 import { getBrandIconUrl } from '@/modules/common/utils/icons.utils';
 import { subscriptionCardStyles } from '@/modules/subscriptions/recipes/subscriptionCard.recipe';
 import { Subscription } from '@/modules/subscriptions/types/subscription.types';
@@ -10,6 +11,7 @@ interface SubscriptionCardProps {
 }
 
 export function SubscriptionCard({ subscription }: SubscriptionCardProps) {
+  const { format } = useCurrency();
   const classes = subscriptionCardStyles();
   const iconUrl = getBrandIconUrl(subscription.iconSlug, subscription.websiteUrl);
   const isUrgent = subscription.daysRemaining <= 3;
@@ -54,15 +56,13 @@ export function SubscriptionCard({ subscription }: SubscriptionCardProps) {
 
         <div className={classes.priceSection}>
           <div className={classes.priceRow}>
-            <span className={`${classes.price} tabular-nums`}>${subscription.cost.toFixed(2)}</span>
+            <span className={`${classes.price} tabular-nums`}>{format(subscription.cost)}</span>
             <span className={classes.cycle}>/{subscription.cycle}</span>
           </div>
           {subscription.cycle === 'yearly' && (
             <p className={classes.normalizedText}>
               Normalized to{' '}
-              <strong className="tabular-nums">
-                ${subscription.monthlyEquivalent.toFixed(2)}/mo
-              </strong>
+              <strong className="tabular-nums">{format(subscription.monthlyEquivalent)}/mo</strong>
             </p>
           )}
         </div>

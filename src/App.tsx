@@ -4,9 +4,11 @@ import { OnboardingModal } from '@/modules/auth/components/OnboardingModal';
 import { useAuth } from '@/modules/auth/hooks/useAuth';
 import { useProfile } from '@/modules/auth/hooks/useProfile';
 import { AppBackground } from '@/modules/common/components/AppBackground';
+import { CurrencyProvider } from '@/modules/common/context/CurrencyProvider';
 import { Header } from '@/modules/common/components/Header';
 import { ViewControls } from '@/modules/common/components/ViewControls';
 import { layoutStyles } from '@/modules/common/recipes/layout.recipe';
+import { CurrencyCode } from '@/modules/common/types/currency.types';
 import { RunRateHero } from '@/modules/dashboard/components/RunRateHero';
 import { TrialAlertBanner } from '@/modules/dashboard/components/TrialAlertBanner';
 import { useRunRateMetrics } from '@/modules/dashboard/hooks/useRunRateMetrics';
@@ -44,61 +46,66 @@ export function App() {
     subscriptions.find((sub) => sub.status === 'trial' && sub.daysRemaining <= 7) ?? null;
 
   return (
-    <AppBackground>
-      <Header
-        user={user}
-        profile={profile}
-        onOpenAuth={() => setIsAuthModalOpen(true)}
-        onSignOut={signOut}
-      />
-      <main className={classes.mainContainer}>
-        <TrialAlertBanner trialSubscription={expiringTrial} />
+    <CurrencyProvider
+      key={profile?.preferredCurrency || 'default'}
+      initialCurrency={profile?.preferredCurrency as CurrencyCode | undefined}
+    >
+      <AppBackground>
+        <Header
+          user={user}
+          profile={profile}
+          onOpenAuth={() => setIsAuthModalOpen(true)}
+          onSignOut={signOut}
+        />
+        <main className={classes.mainContainer}>
+          <TrialAlertBanner trialSubscription={expiringTrial} />
 
-        <RunRateHero metrics={metrics} onAddClick={() => setIsAddModalOpen(true)} />
+          <RunRateHero metrics={metrics} onAddClick={() => setIsAddModalOpen(true)} />
 
-        <ViewControls
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-          viewMode={viewMode}
-          onViewModeChange={setViewMode}
-          subscriptionsCount={subscriptions.length}
+          <ViewControls
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
+            subscriptionsCount={subscriptions.length}
+          />
+
+          <SubscriptionFilterBar
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            selectedCategory={selectedCategory}
+            onCategoryChange={setSelectedCategory}
+            categories={categories}
+          />
+
+          <div className={classes.contentSection}>
+            {viewMode === 'grid' ? (
+              <SubscriptionGrid subscriptions={filteredSubscriptions} />
+            ) : (
+              <SubscriptionTable subscriptions={filteredSubscriptions} />
+            )}
+          </div>
+        </main>
+
+        <SubscriptionModal
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+          onAdd={addSubscription}
         />
 
-        <SubscriptionFilterBar
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
-          categories={categories}
+        <AuthModal
+          isOpen={isAuthModalOpen}
+          onClose={() => setIsAuthModalOpen(false)}
+          onGoogleSignIn={async () => {
+            await signInWithGoogle();
+            setIsAuthModalOpen(false);
+          }}
+          error={authError}
         />
 
-        <div className={classes.contentSection}>
-          {viewMode === 'grid' ? (
-            <SubscriptionGrid subscriptions={filteredSubscriptions} />
-          ) : (
-            <SubscriptionTable subscriptions={filteredSubscriptions} />
-          )}
-        </div>
-      </main>
-
-      <SubscriptionModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        onAdd={addSubscription}
-      />
-
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        onGoogleSignIn={async () => {
-          await signInWithGoogle();
-          setIsAuthModalOpen(false);
-        }}
-        error={authError}
-      />
-
-      <OnboardingModal isOpen={needsOnboarding} user={user} onSubmit={createProfile} />
-    </AppBackground>
+        <OnboardingModal isOpen={needsOnboarding} user={user} onSubmit={createProfile} />
+      </AppBackground>
+    </CurrencyProvider>
   );
 }
 

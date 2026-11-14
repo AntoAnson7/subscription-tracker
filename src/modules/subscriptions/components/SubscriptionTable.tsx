@@ -1,5 +1,6 @@
 import { ExternalLink } from 'lucide-react';
 import { StatusBadge } from '@/modules/common/components/StatusBadge';
+import { useCurrency } from '@/modules/common/hooks/useCurrency';
 import { getBrandIconUrl } from '@/modules/common/utils/icons.utils';
 import { subscriptionTableStyles } from '@/modules/subscriptions/recipes/subscriptionTable.recipe';
 import { Subscription } from '@/modules/subscriptions/types/subscription.types';
@@ -9,6 +10,7 @@ interface SubscriptionTableProps {
 }
 
 export function SubscriptionTable({ subscriptions }: SubscriptionTableProps) {
+  const { format } = useCurrency();
   const classes = subscriptionTableStyles();
 
   return (
@@ -43,10 +45,10 @@ export function SubscriptionTable({ subscriptions }: SubscriptionTableProps) {
                   </div>
                 </td>
                 <td className={classes.td}>{sub.category}</td>
-                <td className={`${classes.td} tabular-nums`}>${sub.cost.toFixed(2)}</td>
+                <td className={`${classes.td} tabular-nums`}>{format(sub.cost)}</td>
                 <td className={classes.td}>{sub.cycle}</td>
                 <td className={`${classes.td} tabular-nums`}>
-                  <strong>${sub.monthlyEquivalent.toFixed(2)}</strong>
+                  <strong>{format(sub.monthlyEquivalent)}</strong>
                 </td>
                 <td className={`${classes.td} tabular-nums`}>
                   {sub.renewalDate} ({sub.daysRemaining}d)

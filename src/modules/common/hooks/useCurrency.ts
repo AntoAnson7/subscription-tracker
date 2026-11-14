@@ -1,26 +1,26 @@
-import { useState } from 'react';
-import { CurrencyCode } from '@/modules/common/types/currency.types';
-import { SUPPORTED_CURRENCIES } from '@/modules/common/utils/currency.utils';
+import { useContext } from 'react';
+import { CurrencyContext, CurrencyContextValue } from '@/modules/common/context/currency.context';
+import {
+  formatCurrency,
+  getCurrencySymbol,
+  SUPPORTED_CURRENCIES,
+} from '@/modules/common/utils/currency.utils';
 
-export function useCurrency() {
-  const [currency, setCurrency] = useState<CurrencyCode>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('subtrack-currency');
-      if (saved && SUPPORTED_CURRENCIES.some((c) => c.code === saved)) {
-        return saved as CurrencyCode;
-      }
-    }
-    return 'USD';
-  });
+const FALLBACK_VALUE: CurrencyContextValue = {
+  currency: 'USD',
+  symbol: '$',
+  setCurrency: () => {},
+  format: (amount: number) => formatCurrency(amount, 'USD'),
+  currencies: SUPPORTED_CURRENCIES,
+};
 
-  const changeCurrency = (nextCode: CurrencyCode) => {
-    setCurrency(nextCode);
-    localStorage.setItem('subtrack-currency', nextCode);
-  };
-
-  return {
-    currency,
-    changeCurrency,
-    currencies: SUPPORTED_CURRENCIES,
-  };
+export function useCurrency(): CurrencyContextValue {
+  const context = useContext(CurrencyContext);
+  if (!context) {
+    return {
+      ...FALLBACK_VALUE,
+      symbol: getCurrencySymbol('USD'),
+    };
+  }
+  return context;
 }

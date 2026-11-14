@@ -37,6 +37,16 @@ Welcome to the SubTrack codebase. All contributors and AI agents must strictly a
 
 ---
 
+## 3. Accessibility is Priority 1 (A11y Standard)
+
+- **Top Priority**: Accessibility (a11y) is a first-class requirement across every component, form, modal, and interactive control.
+- **Keyboard Navigation & Focus Rings**: Every focusable element (inputs, custom selects, buttons, dropdown items) must have a high-contrast, accessible focus ring on `:focus-visible` (e.g. `outline: 2px solid`, `outlineColor: accent.primary`, `outlineOffset: 2px`).
+- **Escape Key Handling**: Pressing `Escape` must close any open modal, dialog, autocomplete panel, or dropdown.
+- **Reduced Motion Support**: All animations and transitions throughout the application must respect `prefers-reduced-motion: reduce`. When reduced motion is enabled, disable or minimize animations to zero duration.
+- **ARIA & Semantics**: Use proper ARIA attributes (`aria-expanded`, `aria-haspopup`, `aria-label`, `role="dialog"`, `role="listbox"`, `role="option"`, `tabIndex`).
+
+---
+
 ## 3. Directory & Module Organization
 
 All feature modules and reusable domain code live under `src/modules/`.

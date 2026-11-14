@@ -12,15 +12,20 @@ export const SUPPORTED_CURRENCIES: CurrencyInfo[] = [
   { code: 'BRL', symbol: 'R$', name: 'Brazilian Real' },
 ];
 
+export function getCurrencySymbol(code: CurrencyCode): string {
+  return SUPPORTED_CURRENCIES.find((c) => c.code === code)?.symbol ?? '$';
+}
+
 export function formatCurrency(
   amount: number,
   currencyCode: CurrencyCode = 'USD',
   locale: string = 'en-US'
 ): string {
+  const isZeroDecimal = currencyCode === 'JPY';
   return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: currencyCode,
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    minimumFractionDigits: isZeroDecimal ? 0 : 2,
+    maximumFractionDigits: isZeroDecimal ? 0 : 2,
   }).format(amount);
 }

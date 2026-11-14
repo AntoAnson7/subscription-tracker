@@ -1,6 +1,6 @@
 import { CreditCard, Moon, Sun, User as UserIcon } from 'lucide-react';
 import { UserProfile } from '@/modules/auth/types/auth.types';
-import { useCurrency } from '@/modules/common/hooks/useCurrency';
+import { CurrencySelector } from '@/modules/common/components/CurrencySelector';
 import { useTheme } from '@/modules/common/hooks/useTheme';
 import { headerStyles } from '@/modules/common/recipes/header.recipe';
 
@@ -13,7 +13,6 @@ interface HeaderProps {
 
 export function Header({ user, profile, onOpenAuth, onSignOut }: HeaderProps) {
   const { isDark, toggleMode } = useTheme();
-  const { currency } = useCurrency();
   const classes = headerStyles();
 
   const avatarUrl =
@@ -36,9 +35,7 @@ export function Header({ user, profile, onOpenAuth, onSignOut }: HeaderProps) {
         </div>
 
         <div className={classes.controls}>
-          <button type="button" className={classes.currencyBtn}>
-            <span className="tabular-nums">{currency} ($)</span>
-          </button>
+          <CurrencySelector />
 
           <button
             type="button"

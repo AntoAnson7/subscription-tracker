@@ -1,4 +1,5 @@
 import { Calendar, Plus, TrendingUp } from 'lucide-react';
+import { useCurrency } from '@/modules/common/hooks/useCurrency';
 import { heroStyles } from '@/modules/dashboard/recipes/hero.recipe';
 import { RunRateMetrics } from '@/modules/dashboard/types/dashboard.types';
 
@@ -8,6 +9,7 @@ interface RunRateHeroProps {
 }
 
 export function RunRateHero({ metrics, onAddClick }: RunRateHeroProps) {
+  const { format } = useCurrency();
   const classes = heroStyles();
 
   return (
@@ -22,14 +24,14 @@ export function RunRateHero({ metrics, onAddClick }: RunRateHeroProps) {
 
       <div className={classes.amountRow}>
         <span className={`${classes.amount} tabular-nums`}>
-          ${metrics.totalMonthlySpend.toFixed(2)}
+          {format(metrics.totalMonthlySpend)}
         </span>
         <span className={classes.perMonth}>/ month</span>
       </div>
 
       <div className={classes.annualRow}>
         <span className={`${classes.annualText} tabular-nums`}>
-          <strong>${metrics.totalAnnualSpend.toFixed(2)}</strong> projected annually
+          <strong>{format(metrics.totalAnnualSpend)}</strong> projected annually
         </span>
 
         {metrics.nextBillName && metrics.nextBillDays !== null && (
