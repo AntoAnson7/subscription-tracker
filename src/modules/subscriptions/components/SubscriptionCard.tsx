@@ -1,9 +1,10 @@
-import { ExternalLink, Pencil, RotateCcw } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
 import { css } from 'styled-system/css';
 import { StatusBadge } from '@/modules/common/components/StatusBadge';
 import { useCurrency } from '@/modules/common/hooks/useCurrency';
 import { formatDisplayDate } from '@/modules/common/utils/date.utils';
 import { getBrandIconUrl } from '@/modules/common/utils/icons.utils';
+import { SubscriptionCardMenu } from '@/modules/subscriptions/components/SubscriptionCardMenu';
 import { subscriptionCardStyles } from '@/modules/subscriptions/recipes/subscriptionCard.recipe';
 import { Subscription } from '@/modules/subscriptions/types/subscription.types';
 
@@ -88,7 +89,7 @@ export function SubscriptionCard({
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          {isCancelled && onRenew && (
+          {isCancelled && onRenew ? (
             <button
               type="button"
               onClick={() => onRenew(subscription)}
@@ -98,42 +99,14 @@ export function SubscriptionCard({
               <RotateCcw size={12} />
               <span>Renew</span>
             </button>
-          )}
+          ) : null}
 
-          {!isCancelled && onCancel && (
-            <button
-              type="button"
-              onClick={() => onCancel(subscription.id)}
-              className={classes.manageBtn}
-              aria-label={`Cancel ${subscription.name}`}
-            >
-              <span>Cancel</span>
-            </button>
-          )}
-
-          {onEdit && (
-            <button
-              type="button"
-              onClick={() => onEdit(subscription)}
-              className={classes.manageBtn}
-              aria-label={`Edit ${subscription.name}`}
-            >
-              <Pencil size={11} />
-              <span>Edit</span>
-            </button>
-          )}
-
-          {subscription.cancellationUrl && (
-            <a
-              href={subscription.cancellationUrl}
-              target="_blank"
-              rel="noreferrer"
-              className={classes.manageBtn}
-            >
-              <span>Manage</span>
-              <ExternalLink size={12} />
-            </a>
-          )}
+          <SubscriptionCardMenu
+            subscription={subscription}
+            onEdit={onEdit}
+            onCancel={onCancel}
+            onRenew={onRenew}
+          />
         </div>
       </div>
     </article>
