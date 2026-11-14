@@ -36,10 +36,7 @@ export function Header({
           <div className={classes.brandIcon}>
             <CreditCard size={18} strokeWidth={2.2} />
           </div>
-          <div>
-            <span className={classes.brandText}>SubTrack</span>
-            <span className={classes.brandPill}>TITANIUM</span>
-          </div>
+          <span className={classes.brandText}>SubTrack</span>
         </div>
 
         <div className={classes.controls}>
