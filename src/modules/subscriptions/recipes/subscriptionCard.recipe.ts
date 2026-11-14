@@ -17,6 +17,7 @@ export const subscriptionCardStyles = sva({
     'renewalLabel',
     'renewalValue',
     'manageBtn',
+    'renewBtn',
   ],
   base: {
     root: {
@@ -41,12 +42,7 @@ export const subscriptionCardStyles = sva({
         _hover: { boxShadow: '0 14px 40px rgba(0, 0, 0, 0.6)' },
       },
     },
-    header: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      mb: '200',
-    },
+    header: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: '200' },
     brandWrapper: { display: 'flex', alignItems: 'center', gap: '150' },
     iconBox: {
       width: '46px',
@@ -67,28 +63,12 @@ export const subscriptionCardStyles = sva({
       margin: 0,
       color: 'text.primary',
     },
-    category: {
-      fontSize: '13px',
-      color: 'text.secondary',
-    },
+    category: { fontSize: '13px', color: 'text.secondary' },
     priceSection: { my: '200' },
     priceRow: { display: 'flex', alignItems: 'baseline', gap: '100' },
-    price: {
-      fontSize: '28px',
-      fontWeight: '800',
-      letterSpacing: '-0.8px',
-      color: 'text.primary',
-    },
-    cycle: {
-      fontSize: '14px',
-      fontWeight: '500',
-      color: 'text.secondary',
-    },
-    normalizedText: {
-      fontSize: '13px',
-      mt: '50',
-      color: 'text.secondary',
-    },
+    price: { fontSize: '28px', fontWeight: '800', letterSpacing: '-0.8px', color: 'text.primary' },
+    cycle: { fontSize: '14px', fontWeight: '500', color: 'text.secondary' },
+    normalizedText: { fontSize: '13px', mt: '50', color: 'text.secondary' },
     footer: {
       pt: '150',
       borderTop: '1px solid',
@@ -98,13 +78,7 @@ export const subscriptionCardStyles = sva({
       justifyContent: 'space-between',
       fontSize: '13px',
     },
-    renewalLabel: {
-      fontSize: '11px',
-      display: 'block',
-      textTransform: 'uppercase',
-      letterSpacing: '0.5px',
-      color: 'text.secondary',
-    },
+    renewalLabel: { fontSize: '11px', display: 'block', color: 'text.secondary' },
     renewalValue: { fontWeight: '700' },
     manageBtn: {
       display: 'inline-flex',
@@ -118,7 +92,41 @@ export const subscriptionCardStyles = sva({
       textDecoration: 'none',
       background: 'bg.hover',
       color: 'text.primary',
+      border: 'none',
+      cursor: 'pointer',
       transition: 'all 0.15s ease',
+      _hover: { background: 'bg.muted' },
+    },
+    renewBtn: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '50',
+      px: '150',
+      py: '50',
+      borderRadius: 'pill',
+      fontWeight: '600',
+      fontSize: '12px',
+      border: 'none',
+      background: 'accent.primary',
+      color: 'white',
+      cursor: 'pointer',
+      transition: 'all 0.15s ease',
+      _hover: { opacity: 0.9 },
+    },
+  },
+  variants: {
+    isCancelled: {
+      true: {
+        root: {
+          opacity: 0.72,
+          filter: 'grayscale(0.35)',
+          background: 'bg.canvas',
+          _hover: {
+            opacity: 0.95,
+            filter: 'grayscale(0.1)',
+          },
+        },
+      },
     },
   },
 });

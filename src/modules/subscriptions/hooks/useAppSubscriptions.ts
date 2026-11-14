@@ -46,6 +46,18 @@ export function useAppSubscriptions(userId: string | null = null) {
     }
   };
 
+  const cancelSubscription = async (id: string) => {
+    const sub = subscriptions.find((s) => s.id === id);
+    if (!sub) return;
+    const { id: _id, daysRemaining: _d, monthlyEquivalent: _m, ...rest } = sub;
+    await updateSubscription(id, { ...rest, status: 'cancelled' });
+  };
+
+  const handleOpenRenew = (sub: Subscription) => {
+    setActiveSub({ ...sub, status: 'active' });
+    setIsModalOpen(true);
+  };
+
   return {
     isModalOpen,
     activeSub,
@@ -55,6 +67,8 @@ export function useAppSubscriptions(userId: string | null = null) {
     expiringTrial,
     handleOpenAdd,
     handleOpenEdit,
+    handleOpenRenew,
+    cancelSubscription,
     handleCloseModal,
     handleModalSubmit,
     deleteSubscription,

@@ -79,6 +79,8 @@ export function App() {
               showAllSkeletons={mockLoading}
               subscriptions={subManager.filter.filteredSubscriptions}
               onEdit={subManager.handleOpenEdit}
+              onCancel={subManager.cancelSubscription}
+              onRenew={subManager.handleOpenRenew}
             />
           </div>
         </main>

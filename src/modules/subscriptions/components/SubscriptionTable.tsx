@@ -1,4 +1,4 @@
-import { ExternalLink, Pencil } from 'lucide-react';
+import { ExternalLink, Pencil, RotateCcw } from 'lucide-react';
 import { StatusBadge } from '@/modules/common/components/StatusBadge';
 import { useCurrency } from '@/modules/common/hooks/useCurrency';
 import { formatDisplayDate } from '@/modules/common/utils/date.utils';
@@ -9,9 +9,16 @@ import { Subscription } from '@/modules/subscriptions/types/subscription.types';
 interface SubscriptionTableProps {
   subscriptions: Subscription[];
   onEdit?: (subscription: Subscription) => void;
+  onCancel?: (id: string) => void;
+  onRenew?: (subscription: Subscription) => void;
 }
 
-export function SubscriptionTable({ subscriptions, onEdit }: SubscriptionTableProps) {
+export function SubscriptionTable({
+  subscriptions,
+  onEdit,
+  onCancel,
+  onRenew,
+}: SubscriptionTableProps) {
   const { format } = useCurrency();
   const classes = subscriptionTableStyles();
 
@@ -60,22 +67,33 @@ export function SubscriptionTable({ subscriptions, onEdit }: SubscriptionTablePr
                 </td>
                 <td className={classes.td}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    {sub.status === 'cancelled' && onRenew ? (
+                      <button
+                        type="button"
+                        onClick={() => onRenew(sub)}
+                        className={classes.manageLink}
+                        aria-label={`Renew ${sub.name}`}
+                      >
+                        <RotateCcw size={11} />
+                        <span>Renew</span>
+                      </button>
+                    ) : null}
+                    {sub.status !== 'cancelled' && onCancel ? (
+                      <button
+                        type="button"
+                        onClick={() => onCancel(sub.id)}
+                        className={classes.manageLink}
+                        aria-label={`Cancel ${sub.name}`}
+                      >
+                        <span>Cancel</span>
+                      </button>
+                    ) : null}
                     {onEdit && (
                       <button
                         type="button"
                         onClick={() => onEdit(sub)}
                         className={classes.manageLink}
                         aria-label={`Edit ${sub.name}`}
-                        style={{
-                          background: 'none',
-                          border: 'none',
-                          cursor: 'pointer',
-                          padding: 0,
-                          color: 'inherit',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '4px',
-                        }}
                       >
                         <Pencil size={11} />
                         <span>Edit</span>
@@ -88,9 +106,10 @@ export function SubscriptionTable({ subscriptions, onEdit }: SubscriptionTablePr
                         rel="noreferrer"
                         className={classes.manageLink}
                       >
-                        Manage <ExternalLink size={12} style={{ display: 'inline' }} />
+                        <span>Manage</span>
+                        <ExternalLink size={12} />
                       </a>
-                    ) : !onEdit ? (
+                    ) : !onEdit && !onCancel && !onRenew ? (
                       <span>—</span>
                     ) : null}
                   </div>

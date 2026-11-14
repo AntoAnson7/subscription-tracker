@@ -5,9 +5,16 @@ import { Subscription } from '@/modules/subscriptions/types/subscription.types';
 interface SubscriptionGridProps {
   subscriptions: Subscription[];
   onEdit?: (subscription: Subscription) => void;
+  onCancel?: (id: string) => void;
+  onRenew?: (subscription: Subscription) => void;
 }
 
-export function SubscriptionGrid({ subscriptions, onEdit }: SubscriptionGridProps) {
+export function SubscriptionGrid({
+  subscriptions,
+  onEdit,
+  onCancel,
+  onRenew,
+}: SubscriptionGridProps) {
   const classes = subscriptionGridStyles();
 
   if (subscriptions.length === 0) {
@@ -19,11 +26,44 @@ export function SubscriptionGrid({ subscriptions, onEdit }: SubscriptionGridProp
     );
   }
 
+  const activeSubs = subscriptions.filter((sub) => sub.status !== 'cancelled');
+  const cancelledSubs = subscriptions.filter((sub) => sub.status === 'cancelled');
+
   return (
-    <div className={classes.root}>
-      {subscriptions.map((subscription) => (
-        <SubscriptionCard key={subscription.id} subscription={subscription} onEdit={onEdit} />
-      ))}
+    <div>
+      {activeSubs.length > 0 ? (
+        <div className={classes.root}>
+          {activeSubs.map((subscription) => (
+            <SubscriptionCard
+              key={subscription.id}
+              subscription={subscription}
+              onEdit={onEdit}
+              onCancel={onCancel}
+              onRenew={onRenew}
+            />
+          ))}
+        </div>
+      ) : null}
+
+      {cancelledSubs.length > 0 ? (
+        <section className={classes.cancelledSection}>
+          <div className={classes.cancelledHeader}>
+            <h3 className={classes.cancelledTitle}>Cancelled subscriptions</h3>
+            <span className={classes.cancelledBadge}>{cancelledSubs.length}</span>
+          </div>
+          <div className={classes.root}>
+            {cancelledSubs.map((subscription) => (
+              <SubscriptionCard
+                key={subscription.id}
+                subscription={subscription}
+                onEdit={onEdit}
+                onCancel={onCancel}
+                onRenew={onRenew}
+              />
+            ))}
+          </div>
+        </section>
+      ) : null}
     </div>
   );
 }

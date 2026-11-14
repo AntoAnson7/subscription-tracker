@@ -1,4 +1,4 @@
-import { ExternalLink, Pencil } from 'lucide-react';
+import { ExternalLink, Pencil, RotateCcw } from 'lucide-react';
 import { css } from 'styled-system/css';
 import { StatusBadge } from '@/modules/common/components/StatusBadge';
 import { useCurrency } from '@/modules/common/hooks/useCurrency';
@@ -10,16 +10,34 @@ import { Subscription } from '@/modules/subscriptions/types/subscription.types';
 interface SubscriptionCardProps {
   subscription: Subscription;
   onEdit?: (subscription: Subscription) => void;
+  onCancel?: (id: string) => void;
+  onRenew?: (subscription: Subscription) => void;
 }
 
-export function SubscriptionCard({ subscription, onEdit }: SubscriptionCardProps) {
+export function SubscriptionCard({
+  subscription,
+  onEdit,
+  onCancel,
+  onRenew,
+}: SubscriptionCardProps) {
   const { format } = useCurrency();
-  const classes = subscriptionCardStyles();
+  const isCancelled = subscription.status === 'cancelled';
+  const classes = subscriptionCardStyles({ isCancelled });
   const iconUrl = getBrandIconUrl(subscription.iconSlug, subscription.websiteUrl);
   const isUrgent = subscription.daysRemaining <= 3;
   const isSoon = subscription.daysRemaining <= 7 && !isUrgent;
 
-  const renewalColor = isUrgent ? '#EF4444' : isSoon ? '#F59E0B' : '#27272A';
+  const renewalColor = isCancelled
+    ? '#71717A'
+    : isUrgent
+      ? '#EF4444'
+      : isSoon
+        ? '#F59E0B'
+        : '#27272A';
+  const shouldInvert =
+    subscription.iconSlug === 'apple' ||
+    subscription.iconSlug === 'openai' ||
+    subscription.iconSlug === 'github';
 
   return (
     <article className={classes.root}>
@@ -33,16 +51,7 @@ export function SubscriptionCard({ subscription, onEdit }: SubscriptionCardProps
                   alt={`${subscription.name} logo`}
                   width={22}
                   height={22}
-                  className={css({
-                    _dark: {
-                      filter:
-                        subscription.iconSlug === 'apple' ||
-                        subscription.iconSlug === 'openai' ||
-                        subscription.iconSlug === 'github'
-                          ? 'invert(1)'
-                          : 'none',
-                    },
-                  })}
+                  className={css({ _dark: { filter: shouldInvert ? 'invert(1)' : 'none' } })}
                 />
               ) : (
                 <span>{subscription.name.slice(0, 2).toUpperCase()}</span>
@@ -72,13 +81,36 @@ export function SubscriptionCard({ subscription, onEdit }: SubscriptionCardProps
 
       <div className={classes.footer}>
         <div>
-          <span className={classes.renewalLabel}>Renewal</span>
+          <span className={classes.renewalLabel}>{isCancelled ? 'Ended' : 'Renewal'}</span>
           <span style={{ color: renewalColor }} className={`${classes.renewalValue} tabular-nums`}>
             {formatDisplayDate(subscription.renewalDate)}
           </span>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {isCancelled && onRenew && (
+            <button
+              type="button"
+              onClick={() => onRenew(subscription)}
+              className={classes.renewBtn}
+              aria-label={`Renew ${subscription.name}`}
+            >
+              <RotateCcw size={12} />
+              <span>Renew</span>
+            </button>
+          )}
+
+          {!isCancelled && onCancel && (
+            <button
+              type="button"
+              onClick={() => onCancel(subscription.id)}
+              className={classes.manageBtn}
+              aria-label={`Cancel ${subscription.name}`}
+            >
+              <span>Cancel</span>
+            </button>
+          )}
+
           {onEdit && (
             <button
               type="button"
