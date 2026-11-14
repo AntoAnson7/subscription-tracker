@@ -1,5 +1,6 @@
 import { CustomInput } from '@/modules/common/components/CustomInput';
 import { CustomSelect } from '@/modules/common/components/CustomSelect';
+import { DatePicker } from '@/modules/common/components/DatePicker';
 import { BrandAutocomplete } from '@/modules/subscriptions/components/BrandAutocomplete';
 import { subscriptionModalStyles } from '@/modules/subscriptions/recipes/subscriptionModal.recipe';
 import { SubscriptionFormData } from '@/modules/subscriptions/types/form.types';
@@ -64,12 +65,11 @@ export function SubscriptionFormFields({
           onChange={(val) => updateField('category', val as SubscriptionCategory)}
           options={CATEGORY_OPTIONS}
         />
-        <CustomInput
+        <DatePicker
           label="Next renewal date"
-          type="date"
           required
           value={formData.renewalDate}
-          onChange={(e) => updateField('renewalDate', e.target.value)}
+          onChange={(val) => updateField('renewalDate', val)}
         />
       </div>
 
