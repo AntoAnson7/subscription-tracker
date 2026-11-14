@@ -22,8 +22,9 @@ export const customInputStyles = sva({
     },
     input: {
       width: '100%',
+      minHeight: '44px',
       px: '150',
-      py: '100',
+      py: '150',
       borderRadius: 'md',
       border: '1px solid',
       borderColor: 'border.default',

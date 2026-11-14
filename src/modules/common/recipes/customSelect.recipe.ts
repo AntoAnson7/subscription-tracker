@@ -31,11 +31,12 @@ export const customSelectStyles = sva({
     },
     trigger: {
       width: '100%',
+      minHeight: '44px',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
       px: '150',
-      py: '100',
+      py: '150',
       borderRadius: 'md',
       border: '1px solid',
       borderColor: 'border.default',

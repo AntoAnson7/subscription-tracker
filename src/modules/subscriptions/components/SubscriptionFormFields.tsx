@@ -1,6 +1,7 @@
 import { CustomInput } from '@/modules/common/components/CustomInput';
 import { CustomSelect } from '@/modules/common/components/CustomSelect';
 import { DatePicker } from '@/modules/common/components/DatePicker';
+import { useCurrency } from '@/modules/common/hooks/useCurrency';
 import { BrandAutocomplete } from '@/modules/subscriptions/components/BrandAutocomplete';
 import { subscriptionModalStyles } from '@/modules/subscriptions/recipes/subscriptionModal.recipe';
 import { SubscriptionFormData } from '@/modules/subscriptions/types/form.types';
@@ -30,6 +31,7 @@ export function SubscriptionFormFields({
   onSelectPreset,
 }: SubscriptionFormFieldsProps) {
   const classes = subscriptionModalStyles();
+  const { symbol } = useCurrency();
 
   return (
     <>
@@ -49,6 +51,7 @@ export function SubscriptionFormFields({
           step="0.01"
           min="0"
           required
+          leftAdornment={<span style={{ fontSize: '13px', fontWeight: 600 }}>{symbol}</span>}
           value={formData.cost}
           onChange={(e) => updateField('cost', parseFloat(e.target.value) || 0)}
         />

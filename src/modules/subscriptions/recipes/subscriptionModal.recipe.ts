@@ -34,7 +34,7 @@ export const subscriptionModalStyles = sva({
     },
     modal: {
       width: '100%',
-      maxWidth: '480px',
+      maxWidth: '560px',
       background: 'bg.primary',
       borderRadius: '2xl',
       border: '1px solid',
@@ -71,8 +71,8 @@ export const subscriptionModalStyles = sva({
       _hover: { color: 'text.primary' },
       _focusVisible: focusRing,
     },
-    form: { display: 'flex', flexDirection: 'column', gap: '200' },
-    grid: { display: 'grid', gridTemplateColumns: { base: '1fr', sm: '1fr 1fr' }, gap: '200' },
+    form: { display: 'flex', flexDirection: 'column', gap: '250' },
+    grid: { display: 'grid', gridTemplateColumns: { base: '1fr', sm: '1fr 1fr' }, gap: '250' },
     footer: {
       display: 'flex',
       alignItems: 'center',
