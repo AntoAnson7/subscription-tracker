@@ -78,18 +78,35 @@ export function ProfileModal({ isOpen, onClose, user, profile, onSignOut }: Prof
         <div className={classes.infoGrid}>
           <div className={classes.infoCard}>
             <span className={classes.infoLabel}>Currency</span>
-            <span className={classes.infoValue}>{profile?.preferredCurrency ?? 'USD ($)'}</span>
+            <span className={classes.infoValue}>{profile?.preferredCurrency ?? 'INR (₹)'}</span>
           </div>
 
           <div className={classes.infoCard}>
-            <span className={classes.infoLabel}>Tracking Focus</span>
+            <span className={classes.infoLabel}>Tracking focus</span>
             <span className={classes.infoValue}>{profile?.trackingFocus ?? 'Personal'}</span>
+          </div>
+
+          <div className={classes.infoCard}>
+            <span className={classes.infoLabel}>Account status</span>
+            <span className={classes.infoValue}>Active</span>
+          </div>
+
+          <div className={classes.infoCard}>
+            <span className={classes.infoLabel}>Member since</span>
+            <span className={classes.infoValue}>
+              {user.created_at
+                ? new Date(user.created_at).toLocaleDateString('en-US', {
+                    month: 'short',
+                    year: 'numeric',
+                  })
+                : 'Recently'}
+            </span>
           </div>
         </div>
 
         <button type="button" onClick={handleSignOut} className={classes.signOutBtn}>
           <LogOut size={16} />
-          <span>Sign Out</span>
+          <span>Sign out</span>
         </button>
       </div>
     </div>
