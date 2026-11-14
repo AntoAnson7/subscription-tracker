@@ -33,32 +33,18 @@ export function useAuth() {
     };
   }, []);
 
-  const signIn = async (email: string, pass: string): Promise<boolean> => {
-    if (!supabase) return false;
+  const signInWithGoogle = async (): Promise<void> => {
+    if (!supabase) return;
     setError(null);
-    const { error: err } = await supabase.auth.signInWithPassword({
-      email,
-      password: pass,
+    const { error: err } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin,
+      },
     });
     if (err) {
       setError(err.message);
-      return false;
     }
-    return true;
-  };
-
-  const signUp = async (email: string, pass: string): Promise<boolean> => {
-    if (!supabase) return false;
-    setError(null);
-    const { error: err } = await supabase.auth.signUp({
-      email,
-      password: pass,
-    });
-    if (err) {
-      setError(err.message);
-      return false;
-    }
-    return true;
   };
 
   const signOut = async () => {
@@ -72,8 +58,7 @@ export function useAuth() {
     loading,
     error,
     isConfigured: isSupabaseConfigured,
-    signIn,
-    signUp,
+    signInWithGoogle,
     signOut,
   };
 }

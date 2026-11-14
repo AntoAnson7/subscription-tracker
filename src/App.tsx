@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { AuthModal } from '@/modules/auth/components/AuthModal';
+import { OnboardingModal } from '@/modules/auth/components/OnboardingModal';
 import { useAuth } from '@/modules/auth/hooks/useAuth';
+import { useProfile } from '@/modules/auth/hooks/useProfile';
 import { AppBackground } from '@/modules/common/components/AppBackground';
 import { Header } from '@/modules/common/components/Header';
 import { ViewControls } from '@/modules/common/components/ViewControls';
@@ -23,7 +25,8 @@ export function App() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
-  const { user, signIn, signUp, signOut, error: authError } = useAuth();
+  const { user, signInWithGoogle, signOut, error: authError } = useAuth();
+  const { profile, needsOnboarding, createProfile } = useProfile(user);
   const { subscriptions, addSubscription } = useSubscriptions(user?.id ?? null);
   const metrics = useRunRateMetrics(subscriptions);
   const {
@@ -42,7 +45,12 @@ export function App() {
 
   return (
     <AppBackground>
-      <Header user={user} onOpenAuth={() => setIsAuthModalOpen(true)} onSignOut={signOut} />
+      <Header
+        user={user}
+        profile={profile}
+        onOpenAuth={() => setIsAuthModalOpen(true)}
+        onSignOut={signOut}
+      />
       <main className={classes.mainContainer}>
         <TrialAlertBanner trialSubscription={expiringTrial} />
 
@@ -82,10 +90,14 @@ export function App() {
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
-        onSignIn={signIn}
-        onSignUp={signUp}
+        onGoogleSignIn={async () => {
+          await signInWithGoogle();
+          setIsAuthModalOpen(false);
+        }}
         error={authError}
       />
+
+      <OnboardingModal isOpen={needsOnboarding} user={user} onSubmit={createProfile} />
     </AppBackground>
   );
 }

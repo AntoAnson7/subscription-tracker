@@ -109,6 +109,7 @@ export const headerStyles = sva({
       width: '34px',
       height: '34px',
       borderRadius: 'pill',
+      overflow: 'hidden',
       bg: 'bg.tertiary',
       color: 'text.primary',
       display: 'flex',
