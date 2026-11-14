@@ -15,7 +15,7 @@ export function RunRateHero({ metrics, onAddClick }: RunRateHeroProps) {
   return (
     <section className={classes.root}>
       <div className={classes.topRow}>
-        <span className={classes.kpiLabel}>Monthly Commitment</span>
+        <span className={classes.kpiLabel}>Monthly commitment</span>
         <span className={classes.nextBillPill}>
           <TrendingUp size={13} />
           <span>Active: {metrics.activeCount}</span>
@@ -47,7 +47,7 @@ export function RunRateHero({ metrics, onAddClick }: RunRateHeroProps) {
       <div className={classes.actionsRow}>
         <button type="button" onClick={onAddClick} className={classes.primaryBtn}>
           <Plus size={16} />
-          <span>Add Subscription</span>
+          <span>Add subscription</span>
         </button>
       </div>
     </section>

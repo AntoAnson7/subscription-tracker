@@ -33,7 +33,7 @@ export function TrialAlertBanner({ trialSubscription }: TrialAlertBannerProps) {
           rel="noreferrer"
           className={classes.actionLink}
         >
-          Manage Trial <ExternalLink size={12} style={{ display: 'inline' }} />
+          Manage trial <ExternalLink size={12} style={{ display: 'inline' }} />
         </a>
       )}
     </aside>

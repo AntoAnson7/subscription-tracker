@@ -24,8 +24,8 @@ export function SubscriptionTableSkeleton({ rows = 5 }: SubscriptionTableSkeleto
             <th className={tableClasses.th}>Category</th>
             <th className={tableClasses.th}>Cost</th>
             <th className={tableClasses.th}>Cycle</th>
-            <th className={tableClasses.th}>Monthly Equiv.</th>
-            <th className={tableClasses.th}>Next Renewal</th>
+            <th className={tableClasses.th}>Monthly equiv.</th>
+            <th className={tableClasses.th}>Next renewal</th>
             <th className={tableClasses.th}>Status</th>
             <th className={tableClasses.th}>Action</th>
           </tr>

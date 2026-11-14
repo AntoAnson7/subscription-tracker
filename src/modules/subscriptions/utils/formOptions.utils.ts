@@ -8,11 +8,11 @@ export const CYCLE_OPTIONS = [
 export const CATEGORY_OPTIONS = [
   { value: 'Entertainment', label: 'Entertainment' },
   { value: 'Productivity & AI', label: 'Productivity & AI' },
-  { value: 'Bundled Services', label: 'Bundled Services' },
-  { value: 'Developer Tools', label: 'Developer Tools' },
-  { value: 'Design & Craft', label: 'Design & Craft' },
-  { value: 'Health & Fitness', label: 'Health & Fitness' },
-  { value: 'Cloud & Hosting', label: 'Cloud & Hosting' },
+  { value: 'Bundled Services', label: 'Bundled services' },
+  { value: 'Developer Tools', label: 'Developer tools' },
+  { value: 'Design & Craft', label: 'Design & craft' },
+  { value: 'Health & Fitness', label: 'Health & fitness' },
+  { value: 'Cloud & Hosting', label: 'Cloud & hosting' },
   { value: 'Utilities', label: 'Utilities' },
   { value: 'Other', label: 'Other' },
 ];

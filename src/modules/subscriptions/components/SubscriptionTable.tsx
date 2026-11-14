@@ -31,8 +31,8 @@ export function SubscriptionTable({
             <th className={classes.th}>Category</th>
             <th className={classes.th}>Cost</th>
             <th className={classes.th}>Cycle</th>
-            <th className={classes.th}>Monthly Equiv.</th>
-            <th className={classes.th}>Next Renewal</th>
+            <th className={classes.th}>Monthly equiv.</th>
+            <th className={classes.th}>Next renewal</th>
             <th className={classes.th}>Status</th>
             <th className={classes.th}>Action</th>
           </tr>

@@ -82,7 +82,7 @@ export function ViewControls({
         <button
           type="button"
           onClick={() => onViewModeChange('grid')}
-          aria-label="Grid View"
+          aria-label="Grid view"
           className={`${classes.viewToggleBtn} ${viewMode === 'grid' ? activeToggleStyle : ''}`}
         >
           <Grid3X3 size={16} />
@@ -90,7 +90,7 @@ export function ViewControls({
         <button
           type="button"
           onClick={() => onViewModeChange('table')}
-          aria-label="Table View"
+          aria-label="Table view"
           className={`${classes.viewToggleBtn} ${viewMode === 'table' ? activeToggleStyle : ''}`}
         >
           <TableIcon size={16} />

@@ -41,8 +41,7 @@ export const heroStyles = sva({
     kpiLabel: {
       fontSize: '13px',
       fontWeight: '600',
-      letterSpacing: '0.5px',
-      textTransform: 'uppercase',
+      letterSpacing: '0.2px',
       color: 'accent.primary',
     },
     amountRow: { display: 'flex', alignItems: 'baseline', gap: '100', mt: '50' },

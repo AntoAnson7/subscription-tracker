@@ -48,7 +48,7 @@ export function Header({
           <button
             type="button"
             onClick={toggleMode}
-            title={`Switch to ${isDark ? 'Light' : 'Dark'} Mode`}
+            title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
             className={classes.themeBtn}
           >
             {isDark ? <Sun size={14} color="#FBBF24" /> : <Moon size={14} color="#6366F1" />}
@@ -60,7 +60,7 @@ export function Header({
             <button
               type="button"
               onClick={onOpenProfile}
-              title={`Signed in as ${displayName} • View Profile`}
+              title={`Signed in as ${displayName} • View profile`}
               className={classes.avatar}
             >
               {avatarUrl ? (
@@ -76,7 +76,7 @@ export function Header({
           ) : (
             <button type="button" onClick={onOpenAuth} className={classes.authBtn}>
               <UserIcon size={13} />
-              <span>Sign In</span>
+              <span>Sign in</span>
             </button>
           )}
         </div>
