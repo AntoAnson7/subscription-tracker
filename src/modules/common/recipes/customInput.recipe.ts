@@ -10,11 +10,9 @@ export const customInputStyles = sva({
       width: '100%',
     },
     label: {
-      fontSize: '12px',
-      fontWeight: '600',
+      fontSize: '13px',
+      fontWeight: '500',
       color: 'text.secondary',
-      textTransform: 'uppercase',
-      letterSpacing: '0.4px',
     },
     inputWrapper: {
       position: 'relative',

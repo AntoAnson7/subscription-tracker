@@ -20,7 +20,7 @@ export function BrandAutocomplete({
   return (
     <div className={classes.root}>
       <CustomInput
-        label="Service Name"
+        label="Service name"
         required
         placeholder="e.g. Netflix, Spotify, Claude, AWS"
         value={value}

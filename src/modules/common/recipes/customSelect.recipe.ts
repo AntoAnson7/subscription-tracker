@@ -25,11 +25,9 @@ export const customSelectStyles = sva({
       width: '100%',
     },
     label: {
-      fontSize: '12px',
-      fontWeight: '600',
+      fontSize: '13px',
+      fontWeight: '500',
       color: 'text.secondary',
-      textTransform: 'uppercase',
-      letterSpacing: '0.4px',
     },
     trigger: {
       width: '100%',

@@ -50,7 +50,7 @@ export function SubscriptionFormFields({
           onChange={(e) => updateField('cost', parseFloat(e.target.value) || 0)}
         />
         <CustomSelect
-          label="Billing Cycle"
+          label="Billing cycle"
           value={formData.cycle}
           onChange={(val) => updateField('cycle', val as BillingCycle)}
           options={CYCLE_OPTIONS}
@@ -65,7 +65,7 @@ export function SubscriptionFormFields({
           options={CATEGORY_OPTIONS}
         />
         <CustomInput
-          label="Next Renewal Date"
+          label="Next renewal date"
           type="date"
           required
           value={formData.renewalDate}
