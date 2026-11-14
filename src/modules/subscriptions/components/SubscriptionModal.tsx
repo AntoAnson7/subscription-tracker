@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { Trash2, X } from 'lucide-react';
 import { useClickOutside } from '@/modules/common/hooks/useClickOutside';
 import { useFocusTrap } from '@/modules/common/hooks/useFocusTrap';
+import { getBrandIconUrl } from '@/modules/common/utils/icons.utils';
 import { SubscriptionFormFields } from '@/modules/subscriptions/components/SubscriptionFormFields';
 import { useSubscriptionForm } from '@/modules/subscriptions/hooks/useSubscriptionForm';
 import { subscriptionModalStyles } from '@/modules/subscriptions/recipes/subscriptionModal.recipe';
@@ -50,6 +51,7 @@ export function SubscriptionModal({
 
   if (!isOpen) return null;
   const { formData } = form;
+  const headerIconUrl = getBrandIconUrl(formData.iconSlug, formData.websiteUrl);
 
   return (
     <div
@@ -60,9 +62,20 @@ export function SubscriptionModal({
     >
       <div ref={modalRef} className={`${classes.modal} modal-animated`}>
         <header className={classes.header}>
-          <h2 id="sub-modal-title" className={classes.title}>
-            {isEditing ? 'Edit Subscription' : 'Add Subscription'}
-          </h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            {headerIconUrl && (
+              <img
+                src={headerIconUrl}
+                alt=""
+                width={24}
+                height={24}
+                style={{ borderRadius: '6px', objectFit: 'contain' }}
+              />
+            )}
+            <h2 id="sub-modal-title" className={classes.title}>
+              {isEditing ? 'Edit subscription' : 'Add subscription'}
+            </h2>
+          </div>
           <button
             type="button"
             onClick={handleClose}

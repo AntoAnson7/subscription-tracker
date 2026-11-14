@@ -38,6 +38,8 @@ export function SubscriptionFormFields({
         onChange={onNameChange}
         suggestions={suggestions}
         onSelectPreset={onSelectPreset}
+        iconSlug={formData.iconSlug}
+        websiteUrl={formData.websiteUrl}
       />
 
       <div className={classes.grid}>
