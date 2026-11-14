@@ -1,8 +1,14 @@
 @import url('https://fonts.cdnfonts.com/css/sf-pro-display');
+@import '@skullmaster/react/style.css';
 
 @layer reset, base, tokens, recipes, utilities;
 
 :root {
+  --skeleton-bg-100: rgba(0, 0, 0, 0.05);
+  --skeleton-bg-200: rgba(0, 0, 0, 0.08);
+  --skeleton-bg-300: rgba(0, 0, 0, 0.12);
+  --skeleton-bg-400: rgba(0, 0, 0, 0.16);
+  --skeleton-border-radius: 12px;
   font-family:
     'SF Pro Display',
     -apple-system,
@@ -103,6 +109,13 @@ body {
   animation: tabFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+.dark {
+  --skeleton-bg-100: rgba(255, 255, 255, 0.06);
+  --skeleton-bg-200: rgba(255, 255, 255, 0.1);
+  --skeleton-bg-300: rgba(255, 255, 255, 0.15);
+  --skeleton-bg-400: rgba(255, 255, 255, 0.2);
+}
+
 /* Accessibility: Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -115,7 +128,8 @@ body {
   .ambient-animated,
   .backdrop-animated,
   .modal-animated,
-  .tab-content-animated {
+  .tab-content-animated,
+  .empty-set__skeleton:after {
     animation: none !important;
     transition: none !important;
   }

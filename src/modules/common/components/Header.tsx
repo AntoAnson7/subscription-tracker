@@ -1,17 +1,25 @@
 import { CreditCard, Moon, Sun, User as UserIcon } from 'lucide-react';
 import { UserProfile } from '@/modules/auth/types/auth.types';
 import { CurrencySelector } from '@/modules/common/components/CurrencySelector';
+import { HeaderAvatarSkeleton } from '@/modules/common/components/HeaderAvatarSkeleton';
 import { useTheme } from '@/modules/common/hooks/useTheme';
 import { headerStyles } from '@/modules/common/recipes/header.recipe';
 
 interface HeaderProps {
   user: { email?: string; user_metadata?: Record<string, string | undefined> } | null;
   profile?: UserProfile | null;
+  isLoading?: boolean;
   onOpenAuth: () => void;
   onOpenProfile: () => void;
 }
 
-export function Header({ user, profile, onOpenAuth, onOpenProfile }: HeaderProps) {
+export function Header({
+  user,
+  profile,
+  isLoading = false,
+  onOpenAuth,
+  onOpenProfile,
+}: HeaderProps) {
   const { isDark, toggleMode } = useTheme();
   const classes = headerStyles();
 
@@ -46,7 +54,9 @@ export function Header({ user, profile, onOpenAuth, onOpenProfile }: HeaderProps
             {isDark ? <Sun size={14} color="#FBBF24" /> : <Moon size={14} color="#6366F1" />}
           </button>
 
-          {user ? (
+          {isLoading ? (
+            <HeaderAvatarSkeleton />
+          ) : user ? (
             <button
               type="button"
               onClick={onOpenProfile}

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { SkullMaster } from '@skullmaster/react';
 import { AuthModal } from '@/modules/auth/components/AuthModal';
 import { OnboardingModal } from '@/modules/auth/components/OnboardingModal';
 import { ProfileModal } from '@/modules/auth/components/ProfileModal';
@@ -11,12 +12,15 @@ import { ViewControls } from '@/modules/common/components/ViewControls';
 import { layoutStyles } from '@/modules/common/recipes/layout.recipe';
 import { CurrencyCode } from '@/modules/common/types/currency.types';
 import { RunRateHero } from '@/modules/dashboard/components/RunRateHero';
+import { RunRateHeroSkeleton } from '@/modules/dashboard/components/RunRateHeroSkeleton';
 import { TrialAlertBanner } from '@/modules/dashboard/components/TrialAlertBanner';
 import { useRunRateMetrics } from '@/modules/dashboard/hooks/useRunRateMetrics';
 import { SubscriptionFilterBar } from '@/modules/subscriptions/components/SubscriptionFilterBar';
 import { SubscriptionGrid } from '@/modules/subscriptions/components/SubscriptionGrid';
+import { SubscriptionGridSkeleton } from '@/modules/subscriptions/components/SubscriptionGridSkeleton';
 import { SubscriptionModal } from '@/modules/subscriptions/components/SubscriptionModal';
 import { SubscriptionTable } from '@/modules/subscriptions/components/SubscriptionTable';
+import { SubscriptionTableSkeleton } from '@/modules/subscriptions/components/SubscriptionTableSkeleton';
 import { useSubscriptionFilter } from '@/modules/subscriptions/hooks/useSubscriptionFilter';
 import { useSubscriptions } from '@/modules/subscriptions/hooks/useSubscriptions';
 
@@ -29,9 +33,13 @@ export function App() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
-  const { user, signInWithGoogle, signOut, error: authError } = useAuth();
+  const { user, loading: authLoading, signInWithGoogle, signOut, error: authError } = useAuth();
   const { profile, needsOnboarding, createProfile } = useProfile(user);
-  const { subscriptions, addSubscription } = useSubscriptions(user?.id ?? null);
+  const {
+    subscriptions,
+    loading: subsLoading,
+    addSubscription,
+  } = useSubscriptions(user?.id ?? null);
   const metrics = useRunRateMetrics(subscriptions);
   const {
     searchQuery,
@@ -56,13 +64,18 @@ export function App() {
         <Header
           user={user}
           profile={profile}
+          isLoading={authLoading}
           onOpenAuth={() => setIsAuthModalOpen(true)}
           onOpenProfile={() => setIsProfileModalOpen(true)}
         />
         <main className={classes.mainContainer}>
           <TrialAlertBanner trialSubscription={expiringTrial} />
 
-          <RunRateHero metrics={metrics} onAddClick={() => setIsAddModalOpen(true)} />
+          {subsLoading ? (
+            <RunRateHeroSkeleton />
+          ) : (
+            <RunRateHero metrics={metrics} onAddClick={() => setIsAddModalOpen(true)} />
+          )}
 
           <ViewControls
             activeTab={activeTab}
@@ -84,7 +97,13 @@ export function App() {
             key={`${activeTab}-${viewMode}`}
             className={`${classes.contentSection} tab-content-animated`}
           >
-            {viewMode === 'grid' ? (
+            {subsLoading ? (
+              viewMode === 'grid' ? (
+                <SubscriptionGridSkeleton />
+              ) : (
+                <SubscriptionTableSkeleton />
+              )
+            ) : viewMode === 'grid' ? (
               <SubscriptionGrid subscriptions={filteredSubscriptions} />
             ) : (
               <SubscriptionTable subscriptions={filteredSubscriptions} />
@@ -117,6 +136,7 @@ export function App() {
           profile={profile}
           onSignOut={signOut}
         />
+        {import.meta.env.DEV && <SkullMaster />}
       </AppBackground>
     </CurrencyProvider>
   );
