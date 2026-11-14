@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { CheckCircle2, User as UserIcon } from 'lucide-react';
 import { User } from '@supabase/supabase-js';
 import { useOnboardingForm } from '@/modules/auth/hooks/useOnboardingForm';
@@ -5,6 +6,7 @@ import { onboardingModalStyles } from '@/modules/auth/recipes/onboardingModal.re
 import { CreateProfileData, TrackingFocus } from '@/modules/auth/types/auth.types';
 import { CustomInput } from '@/modules/common/components/CustomInput';
 import { CustomSelect } from '@/modules/common/components/CustomSelect';
+import { useFocusTrap } from '@/modules/common/hooks/useFocusTrap';
 
 interface OnboardingModalProps {
   isOpen: boolean;
@@ -29,8 +31,11 @@ const FOCUS_OPTIONS = [
 ];
 
 export function OnboardingModal({ isOpen, user, onSubmit }: OnboardingModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null);
   const classes = onboardingModalStyles();
   const { formData, submitting, updateField, handleSubmit } = useOnboardingForm(user, onSubmit);
+
+  useFocusTrap(modalRef, isOpen);
 
   if (!isOpen || !user) return null;
 
@@ -45,7 +50,7 @@ export function OnboardingModal({ isOpen, user, onSubmit }: OnboardingModalProps
       aria-modal="true"
       aria-labelledby="onboarding-title"
     >
-      <div className={`${classes.modal} modal-animated`}>
+      <div ref={modalRef} className={`${classes.modal} modal-animated`}>
         <header className={classes.header}>
           <div className={classes.avatarWrapper}>
             {avatarUrl ? (

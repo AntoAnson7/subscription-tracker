@@ -3,6 +3,7 @@ import { Sparkles, X } from 'lucide-react';
 import { GoogleIcon } from '@/modules/auth/components/GoogleIcon';
 import { authModalStyles } from '@/modules/auth/recipes/authModal.recipe';
 import { useClickOutside } from '@/modules/common/hooks/useClickOutside';
+import { useFocusTrap } from '@/modules/common/hooks/useFocusTrap';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -16,6 +17,7 @@ export function AuthModal({ isOpen, onClose, onGoogleSignIn, error }: AuthModalP
   const classes = authModalStyles();
 
   useClickOutside(modalRef, onClose, isOpen);
+  useFocusTrap(modalRef, isOpen, { onEscape: onClose });
 
   if (!isOpen) return null;
 

@@ -4,6 +4,7 @@ import { User } from '@supabase/supabase-js';
 import { profileModalStyles } from '@/modules/auth/recipes/profileModal.recipe';
 import { UserProfile } from '@/modules/auth/types/auth.types';
 import { useClickOutside } from '@/modules/common/hooks/useClickOutside';
+import { useFocusTrap } from '@/modules/common/hooks/useFocusTrap';
 
 interface ProfileModalProps {
   isOpen: boolean;
@@ -18,6 +19,7 @@ export function ProfileModal({ isOpen, onClose, user, profile, onSignOut }: Prof
   const classes = profileModalStyles();
 
   useClickOutside(modalRef, onClose, isOpen);
+  useFocusTrap(modalRef, isOpen, { onEscape: onClose });
 
   if (!isOpen || !user) return null;
 

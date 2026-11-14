@@ -1,6 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { Trash2, X } from 'lucide-react';
 import { useClickOutside } from '@/modules/common/hooks/useClickOutside';
+import { useFocusTrap } from '@/modules/common/hooks/useFocusTrap';
 import { SubscriptionFormFields } from '@/modules/subscriptions/components/SubscriptionFormFields';
 import { useSubscriptionForm } from '@/modules/subscriptions/hooks/useSubscriptionForm';
 import { subscriptionModalStyles } from '@/modules/subscriptions/recipes/subscriptionModal.recipe';
@@ -45,18 +46,7 @@ export function SubscriptionModal({
   };
 
   useClickOutside(modalRef, handleClose, isOpen);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        form.resetForm();
-        onClose();
-      }
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [isOpen, onClose, form]);
+  useFocusTrap(modalRef, isOpen, { onEscape: handleClose });
 
   if (!isOpen) return null;
   const { formData } = form;
