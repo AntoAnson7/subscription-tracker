@@ -8,10 +8,10 @@ interface HeaderProps {
   user: { email?: string; user_metadata?: Record<string, string | undefined> } | null;
   profile?: UserProfile | null;
   onOpenAuth: () => void;
-  onSignOut: () => void;
+  onOpenProfile: () => void;
 }
 
-export function Header({ user, profile, onOpenAuth, onSignOut }: HeaderProps) {
+export function Header({ user, profile, onOpenAuth, onOpenProfile }: HeaderProps) {
   const { isDark, toggleMode } = useTheme();
   const classes = headerStyles();
 
@@ -49,8 +49,8 @@ export function Header({ user, profile, onOpenAuth, onSignOut }: HeaderProps) {
           {user ? (
             <button
               type="button"
-              onClick={onSignOut}
-              title={`Signed in as ${displayName} (Click to Sign Out)`}
+              onClick={onOpenProfile}
+              title={`Signed in as ${displayName} • View Profile`}
               className={classes.avatar}
             >
               {avatarUrl ? (

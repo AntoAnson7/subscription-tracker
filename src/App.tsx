@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { AuthModal } from '@/modules/auth/components/AuthModal';
 import { OnboardingModal } from '@/modules/auth/components/OnboardingModal';
+import { ProfileModal } from '@/modules/auth/components/ProfileModal';
 import { useAuth } from '@/modules/auth/hooks/useAuth';
 import { useProfile } from '@/modules/auth/hooks/useProfile';
 import { AppBackground } from '@/modules/common/components/AppBackground';
@@ -26,6 +27,7 @@ export function App() {
   );
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   const { user, signInWithGoogle, signOut, error: authError } = useAuth();
   const { profile, needsOnboarding, createProfile } = useProfile(user);
@@ -55,7 +57,7 @@ export function App() {
           user={user}
           profile={profile}
           onOpenAuth={() => setIsAuthModalOpen(true)}
-          onSignOut={signOut}
+          onOpenProfile={() => setIsProfileModalOpen(true)}
         />
         <main className={classes.mainContainer}>
           <TrialAlertBanner trialSubscription={expiringTrial} />
@@ -104,6 +106,14 @@ export function App() {
         />
 
         <OnboardingModal isOpen={needsOnboarding} user={user} onSubmit={createProfile} />
+
+        <ProfileModal
+          isOpen={isProfileModalOpen}
+          onClose={() => setIsProfileModalOpen(false)}
+          user={user}
+          profile={profile}
+          onSignOut={signOut}
+        />
       </AppBackground>
     </CurrencyProvider>
   );
