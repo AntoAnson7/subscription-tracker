@@ -50,7 +50,10 @@ export const filterBarStyles = sva({
       alignItems: 'center',
       gap: '100',
       overflowX: 'auto',
-      pb: { base: '100', md: '0' },
+      py: '100',
+      px: '50',
+      scrollbarWidth: 'none',
+      '&::-webkit-scrollbar': { display: 'none' },
     },
     pill: {
       px: '150',

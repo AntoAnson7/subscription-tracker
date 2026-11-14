@@ -17,7 +17,7 @@ import { SubscriptionModal } from '@/modules/subscriptions/components/Subscripti
 import { useAppSubscriptions } from '@/modules/subscriptions/hooks/useAppSubscriptions';
 
 export function App() {
-  const [mockLoading, setMockLoading] = useState(false);
+  const [mockLoading] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
   const [activeTab, setActiveTab] = useState<'subscriptions' | 'calendar' | 'analytics'>(
     'subscriptions'
@@ -105,6 +105,7 @@ export function App() {
           onSignOut={signOut}
         />
 
+        {/* Shelved for future debug/testing: Skeleton preview toggle
         {import.meta.env.DEV && (
           <button
             type="button"
@@ -127,7 +128,7 @@ export function App() {
           >
             {mockLoading ? 'Skeletons Preview: ON' : 'Skeletons Preview: OFF'}
           </button>
-        )}
+        )} */}
       </AppBackground>
     </CurrencyProvider>
   );
