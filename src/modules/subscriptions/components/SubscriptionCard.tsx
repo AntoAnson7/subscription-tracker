@@ -2,6 +2,7 @@ import { ExternalLink } from 'lucide-react';
 import { css } from 'styled-system/css';
 import { StatusBadge } from '@/modules/common/components/StatusBadge';
 import { useCurrency } from '@/modules/common/hooks/useCurrency';
+import { formatDisplayDate } from '@/modules/common/utils/date.utils';
 import { getBrandIconUrl } from '@/modules/common/utils/icons.utils';
 import { subscriptionCardStyles } from '@/modules/subscriptions/recipes/subscriptionCard.recipe';
 import { Subscription } from '@/modules/subscriptions/types/subscription.types';
@@ -72,7 +73,7 @@ export function SubscriptionCard({ subscription }: SubscriptionCardProps) {
         <div>
           <span className={classes.renewalLabel}>Renewal</span>
           <span style={{ color: renewalColor }} className={`${classes.renewalValue} tabular-nums`}>
-            {subscription.renewalDate} ({subscription.daysRemaining}d)
+            {formatDisplayDate(subscription.renewalDate)}
           </span>
         </div>
 

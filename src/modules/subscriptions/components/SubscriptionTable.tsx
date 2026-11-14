@@ -1,6 +1,7 @@
 import { ExternalLink } from 'lucide-react';
 import { StatusBadge } from '@/modules/common/components/StatusBadge';
 import { useCurrency } from '@/modules/common/hooks/useCurrency';
+import { formatDisplayDate } from '@/modules/common/utils/date.utils';
 import { getBrandIconUrl } from '@/modules/common/utils/icons.utils';
 import { subscriptionTableStyles } from '@/modules/subscriptions/recipes/subscriptionTable.recipe';
 import { Subscription } from '@/modules/subscriptions/types/subscription.types';
@@ -51,7 +52,7 @@ export function SubscriptionTable({ subscriptions }: SubscriptionTableProps) {
                   <strong>{format(sub.monthlyEquivalent)}</strong>
                 </td>
                 <td className={`${classes.td} tabular-nums`}>
-                  {sub.renewalDate} ({sub.daysRemaining}d)
+                  {formatDisplayDate(sub.renewalDate)}
                 </td>
                 <td className={classes.td}>
                   <StatusBadge status={sub.status} />
