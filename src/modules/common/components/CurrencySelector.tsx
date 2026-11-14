@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Check, ChevronDown } from 'lucide-react';
 import { useClickOutside } from '@/modules/common/hooks/useClickOutside';
 import { useCurrency } from '@/modules/common/hooks/useCurrency';
@@ -10,6 +10,15 @@ export function CurrencySelector() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { currency, symbol, setCurrency, currencies } = useCurrency();
   const classes = currencySelectorStyles();
+
+  // Currently only INR is supported
+  const supportedCurrencies = currencies.filter((item) => item.code === 'INR');
+
+  useEffect(() => {
+    if (currency !== 'INR') {
+      setCurrency('INR');
+    }
+  }, [currency, setCurrency]);
 
   useClickOutside(containerRef, () => setIsOpen(false), isOpen);
 
@@ -41,7 +50,7 @@ export function CurrencySelector() {
 
       {isOpen && (
         <div className={classes.menu} role="listbox" aria-label="Available currencies">
-          {currencies.map((item) => {
+          {supportedCurrencies.map((item) => {
             const isSelected = item.code === currency;
             return (
               <button

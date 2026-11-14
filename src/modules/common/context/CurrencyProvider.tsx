@@ -19,11 +19,11 @@ export function CurrencyProvider({ children, initialCurrency }: CurrencyProvider
     }
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('subtrack-currency');
-      if (saved && SUPPORTED_CURRENCIES.some((c) => c.code === saved)) {
-        return saved as CurrencyCode;
+      if (saved === 'INR') {
+        return 'INR';
       }
     }
-    return 'USD';
+    return 'INR';
   });
 
   const setCurrency = useCallback((nextCode: CurrencyCode) => {
