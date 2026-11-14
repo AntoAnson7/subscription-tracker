@@ -1,4 +1,4 @@
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Pencil } from 'lucide-react';
 import { StatusBadge } from '@/modules/common/components/StatusBadge';
 import { useCurrency } from '@/modules/common/hooks/useCurrency';
 import { formatDisplayDate } from '@/modules/common/utils/date.utils';
@@ -8,9 +8,10 @@ import { Subscription } from '@/modules/subscriptions/types/subscription.types';
 
 interface SubscriptionTableProps {
   subscriptions: Subscription[];
+  onEdit?: (subscription: Subscription) => void;
 }
 
-export function SubscriptionTable({ subscriptions }: SubscriptionTableProps) {
+export function SubscriptionTable({ subscriptions, onEdit }: SubscriptionTableProps) {
   const { format } = useCurrency();
   const classes = subscriptionTableStyles();
 
@@ -58,18 +59,41 @@ export function SubscriptionTable({ subscriptions }: SubscriptionTableProps) {
                   <StatusBadge status={sub.status} />
                 </td>
                 <td className={classes.td}>
-                  {sub.cancellationUrl ? (
-                    <a
-                      href={sub.cancellationUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={classes.manageLink}
-                    >
-                      Manage <ExternalLink size={12} style={{ display: 'inline' }} />
-                    </a>
-                  ) : (
-                    <span>—</span>
-                  )}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    {onEdit && (
+                      <button
+                        type="button"
+                        onClick={() => onEdit(sub)}
+                        className={classes.manageLink}
+                        aria-label={`Edit ${sub.name}`}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          cursor: 'pointer',
+                          padding: 0,
+                          color: 'inherit',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                        }}
+                      >
+                        <Pencil size={11} />
+                        <span>Edit</span>
+                      </button>
+                    )}
+                    {sub.cancellationUrl ? (
+                      <a
+                        href={sub.cancellationUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={classes.manageLink}
+                      >
+                        Manage <ExternalLink size={12} style={{ display: 'inline' }} />
+                      </a>
+                    ) : !onEdit ? (
+                      <span>—</span>
+                    ) : null}
+                  </div>
                 </td>
               </tr>
             );

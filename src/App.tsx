@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { SkullMaster } from '@skullmaster/react';
-import { AuthModal } from '@/modules/auth/components/AuthModal';
-import { OnboardingModal } from '@/modules/auth/components/OnboardingModal';
-import { ProfileModal } from '@/modules/auth/components/ProfileModal';
+import { AuthModals } from '@/modules/auth/components/AuthModals';
 import { useAuth } from '@/modules/auth/hooks/useAuth';
 import { useProfile } from '@/modules/auth/hooks/useProfile';
 import { AppBackground } from '@/modules/common/components/AppBackground';
@@ -14,46 +12,23 @@ import { CurrencyCode } from '@/modules/common/types/currency.types';
 import { RunRateHero } from '@/modules/dashboard/components/RunRateHero';
 import { RunRateHeroSkeleton } from '@/modules/dashboard/components/RunRateHeroSkeleton';
 import { TrialAlertBanner } from '@/modules/dashboard/components/TrialAlertBanner';
-import { useRunRateMetrics } from '@/modules/dashboard/hooks/useRunRateMetrics';
+import { SubscriptionContentView } from '@/modules/subscriptions/components/SubscriptionContentView';
 import { SubscriptionFilterBar } from '@/modules/subscriptions/components/SubscriptionFilterBar';
-import { SubscriptionGrid } from '@/modules/subscriptions/components/SubscriptionGrid';
-import { SubscriptionGridSkeleton } from '@/modules/subscriptions/components/SubscriptionGridSkeleton';
 import { SubscriptionModal } from '@/modules/subscriptions/components/SubscriptionModal';
-import { SubscriptionTable } from '@/modules/subscriptions/components/SubscriptionTable';
-import { SubscriptionTableSkeleton } from '@/modules/subscriptions/components/SubscriptionTableSkeleton';
-import { useSubscriptionFilter } from '@/modules/subscriptions/hooks/useSubscriptionFilter';
-import { useSubscriptions } from '@/modules/subscriptions/hooks/useSubscriptions';
+import { useAppSubscriptions } from '@/modules/subscriptions/hooks/useAppSubscriptions';
 
 export function App() {
   const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
   const [activeTab, setActiveTab] = useState<'subscriptions' | 'calendar' | 'analytics'>(
     'subscriptions'
   );
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   const { user, loading: authLoading, signInWithGoogle, signOut, error: authError } = useAuth();
   const { profile, needsOnboarding, createProfile } = useProfile(user);
-  const {
-    subscriptions,
-    loading: subsLoading,
-    addSubscription,
-  } = useSubscriptions(user?.id ?? null);
-  const metrics = useRunRateMetrics(subscriptions);
-  const {
-    searchQuery,
-    setSearchQuery,
-    selectedCategory,
-    setSelectedCategory,
-    categories,
-    filteredSubscriptions,
-  } = useSubscriptionFilter(subscriptions);
-
+  const subManager = useAppSubscriptions(user?.id ?? null);
   const classes = layoutStyles();
-
-  const expiringTrial =
-    subscriptions.find((sub) => sub.status === 'trial' && sub.daysRemaining <= 7) ?? null;
 
   return (
     <CurrencyProvider
@@ -69,12 +44,12 @@ export function App() {
           onOpenProfile={() => setIsProfileModalOpen(true)}
         />
         <main className={classes.mainContainer}>
-          <TrialAlertBanner trialSubscription={expiringTrial} />
+          <TrialAlertBanner trialSubscription={subManager.expiringTrial} />
 
-          {subsLoading ? (
+          {subManager.subsLoading ? (
             <RunRateHeroSkeleton />
           ) : (
-            <RunRateHero metrics={metrics} onAddClick={() => setIsAddModalOpen(true)} />
+            <RunRateHero metrics={subManager.metrics} onAddClick={subManager.handleOpenAdd} />
           )}
 
           <ViewControls
@@ -82,60 +57,52 @@ export function App() {
             onTabChange={setActiveTab}
             viewMode={viewMode}
             onViewModeChange={setViewMode}
-            subscriptionsCount={subscriptions.length}
+            subscriptionsCount={subManager.subscriptionsCount}
           />
 
           <SubscriptionFilterBar
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
-            categories={categories}
+            searchQuery={subManager.filter.searchQuery}
+            onSearchChange={subManager.filter.setSearchQuery}
+            selectedCategory={subManager.filter.selectedCategory}
+            onCategoryChange={subManager.filter.setSelectedCategory}
+            categories={subManager.filter.categories}
           />
 
           <div
             key={`${activeTab}-${viewMode}`}
             className={`${classes.contentSection} tab-content-animated`}
           >
-            {subsLoading ? (
-              viewMode === 'grid' ? (
-                <SubscriptionGridSkeleton />
-              ) : (
-                <SubscriptionTableSkeleton />
-              )
-            ) : viewMode === 'grid' ? (
-              <SubscriptionGrid subscriptions={filteredSubscriptions} />
-            ) : (
-              <SubscriptionTable subscriptions={filteredSubscriptions} />
-            )}
+            <SubscriptionContentView
+              viewMode={viewMode}
+              isLoading={subManager.subsLoading}
+              subscriptions={subManager.filter.filteredSubscriptions}
+              onEdit={subManager.handleOpenEdit}
+            />
           </div>
         </main>
 
         <SubscriptionModal
-          isOpen={isAddModalOpen}
-          onClose={() => setIsAddModalOpen(false)}
-          onAdd={addSubscription}
+          isOpen={subManager.isModalOpen}
+          onClose={subManager.handleCloseModal}
+          onSubmit={subManager.handleModalSubmit}
+          onDelete={subManager.deleteSubscription}
+          initialSubscription={subManager.activeSub}
         />
 
-        <AuthModal
-          isOpen={isAuthModalOpen}
-          onClose={() => setIsAuthModalOpen(false)}
-          onGoogleSignIn={async () => {
-            await signInWithGoogle();
-            setIsAuthModalOpen(false);
-          }}
-          error={authError}
-        />
-
-        <OnboardingModal isOpen={needsOnboarding} user={user} onSubmit={createProfile} />
-
-        <ProfileModal
-          isOpen={isProfileModalOpen}
-          onClose={() => setIsProfileModalOpen(false)}
+        <AuthModals
+          isAuthOpen={isAuthModalOpen}
+          onCloseAuth={() => setIsAuthModalOpen(false)}
+          onGoogleSignIn={signInWithGoogle}
+          authError={authError}
+          needsOnboarding={needsOnboarding}
           user={user}
+          onCreateProfile={createProfile}
+          isProfileOpen={isProfileModalOpen}
+          onCloseProfile={() => setIsProfileModalOpen(false)}
           profile={profile}
           onSignOut={signOut}
         />
+
         {import.meta.env.DEV && <SkullMaster />}
       </AppBackground>
     </CurrencyProvider>

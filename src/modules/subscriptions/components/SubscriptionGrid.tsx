@@ -4,9 +4,10 @@ import { Subscription } from '@/modules/subscriptions/types/subscription.types';
 
 interface SubscriptionGridProps {
   subscriptions: Subscription[];
+  onEdit?: (subscription: Subscription) => void;
 }
 
-export function SubscriptionGrid({ subscriptions }: SubscriptionGridProps) {
+export function SubscriptionGrid({ subscriptions, onEdit }: SubscriptionGridProps) {
   const classes = subscriptionGridStyles();
 
   if (subscriptions.length === 0) {
@@ -21,7 +22,7 @@ export function SubscriptionGrid({ subscriptions }: SubscriptionGridProps) {
   return (
     <div className={classes.root}>
       {subscriptions.map((subscription) => (
-        <SubscriptionCard key={subscription.id} subscription={subscription} />
+        <SubscriptionCard key={subscription.id} subscription={subscription} onEdit={onEdit} />
       ))}
     </div>
   );

@@ -24,7 +24,7 @@ export function SubscriptionFilterBar({
         <Search size={16} className={classes.searchIcon} />
         <input
           type="text"
-          placeholder="Search subscriptions or categories..."
+          placeholder="Search"
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
           className={classes.input}

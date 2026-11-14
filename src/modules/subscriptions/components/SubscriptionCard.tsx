@@ -1,4 +1,4 @@
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Pencil } from 'lucide-react';
 import { css } from 'styled-system/css';
 import { StatusBadge } from '@/modules/common/components/StatusBadge';
 import { useCurrency } from '@/modules/common/hooks/useCurrency';
@@ -9,9 +9,10 @@ import { Subscription } from '@/modules/subscriptions/types/subscription.types';
 
 interface SubscriptionCardProps {
   subscription: Subscription;
+  onEdit?: (subscription: Subscription) => void;
 }
 
-export function SubscriptionCard({ subscription }: SubscriptionCardProps) {
+export function SubscriptionCard({ subscription, onEdit }: SubscriptionCardProps) {
   const { format } = useCurrency();
   const classes = subscriptionCardStyles();
   const iconUrl = getBrandIconUrl(subscription.iconSlug, subscription.websiteUrl);
@@ -77,17 +78,31 @@ export function SubscriptionCard({ subscription }: SubscriptionCardProps) {
           </span>
         </div>
 
-        {subscription.cancellationUrl && (
-          <a
-            href={subscription.cancellationUrl}
-            target="_blank"
-            rel="noreferrer"
-            className={classes.manageBtn}
-          >
-            <span>Manage</span>
-            <ExternalLink size={12} />
-          </a>
-        )}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {onEdit && (
+            <button
+              type="button"
+              onClick={() => onEdit(subscription)}
+              className={classes.manageBtn}
+              aria-label={`Edit ${subscription.name}`}
+            >
+              <Pencil size={11} />
+              <span>Edit</span>
+            </button>
+          )}
+
+          {subscription.cancellationUrl && (
+            <a
+              href={subscription.cancellationUrl}
+              target="_blank"
+              rel="noreferrer"
+              className={classes.manageBtn}
+            >
+              <span>Manage</span>
+              <ExternalLink size={12} />
+            </a>
+          )}
+        </div>
       </div>
     </article>
   );

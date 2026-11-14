@@ -1,40 +1,63 @@
-import { useRef } from 'react';
-import { X } from 'lucide-react';
-import { CustomInput } from '@/modules/common/components/CustomInput';
-import { CustomSelect } from '@/modules/common/components/CustomSelect';
+import { useEffect, useRef } from 'react';
+import { Trash2, X } from 'lucide-react';
 import { useClickOutside } from '@/modules/common/hooks/useClickOutside';
+import { SubscriptionFormFields } from '@/modules/subscriptions/components/SubscriptionFormFields';
 import { useSubscriptionForm } from '@/modules/subscriptions/hooks/useSubscriptionForm';
-import { autocompleteStyles } from '@/modules/subscriptions/recipes/autocomplete.recipe';
 import { subscriptionModalStyles } from '@/modules/subscriptions/recipes/subscriptionModal.recipe';
 import { SubscriptionFormData } from '@/modules/subscriptions/types/form.types';
-import {
-  BillingCycle,
-  SubscriptionCategory,
-} from '@/modules/subscriptions/types/subscription.types';
-import { CATEGORY_OPTIONS, CYCLE_OPTIONS } from '@/modules/subscriptions/utils/formOptions.utils';
+import { Subscription } from '@/modules/subscriptions/types/subscription.types';
 
 interface SubscriptionModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAdd: (data: SubscriptionFormData) => Promise<void> | void;
+  onSubmit: (data: SubscriptionFormData) => Promise<void> | void;
+  onDelete?: (id: string) => Promise<void> | void;
+  initialSubscription?: Subscription | null;
 }
 
-export function SubscriptionModal({ isOpen, onClose, onAdd }: SubscriptionModalProps) {
+export function SubscriptionModal({
+  isOpen,
+  onClose,
+  onSubmit,
+  onDelete,
+  initialSubscription,
+}: SubscriptionModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const classes = subscriptionModalStyles();
-  const auto = autocompleteStyles();
+  const isEditing = Boolean(initialSubscription);
 
   const form = useSubscriptionForm(async (data) => {
-    await onAdd(data);
+    await onSubmit(data);
     onClose();
-  });
+  }, initialSubscription);
 
   const handleClose = () => {
     form.resetForm();
     onClose();
   };
 
+  const handleDelete = async () => {
+    if (!initialSubscription || !onDelete) return;
+    if (window.confirm(`Delete ${initialSubscription.name}?`)) {
+      await onDelete(initialSubscription.id);
+      onClose();
+    }
+  };
+
   useClickOutside(modalRef, handleClose, isOpen);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        form.resetForm();
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isOpen, onClose, form]);
+
   if (!isOpen) return null;
   const { formData } = form;
 
@@ -43,12 +66,12 @@ export function SubscriptionModal({ isOpen, onClose, onAdd }: SubscriptionModalP
       className={`${classes.backdrop} backdrop-animated`}
       role="dialog"
       aria-modal="true"
-      aria-labelledby="add-sub-title"
+      aria-labelledby="sub-modal-title"
     >
       <div ref={modalRef} className={`${classes.modal} modal-animated`}>
         <header className={classes.header}>
-          <h2 id="add-sub-title" className={classes.title}>
-            Add Subscription
+          <h2 id="sub-modal-title" className={classes.title}>
+            {isEditing ? 'Edit Subscription' : 'Add Subscription'}
           </h2>
           <button
             type="button"
@@ -61,84 +84,31 @@ export function SubscriptionModal({ isOpen, onClose, onAdd }: SubscriptionModalP
         </header>
 
         <form onSubmit={form.handleSubmit} className={classes.form}>
-          <div className={auto.root}>
-            <CustomInput
-              label="Service Name"
-              required
-              placeholder="e.g. Netflix, Spotify, Claude, AWS"
-              value={formData.name}
-              onChange={(e) => form.handleNameChange(e.target.value)}
-            />
-            {form.suggestions.length > 0 && (
-              <div className={auto.menu} role="listbox">
-                {form.suggestions.map((item) => (
-                  <button
-                    key={item.name}
-                    type="button"
-                    role="option"
-                    aria-selected="false"
-                    onClick={() => form.applyPreset(item)}
-                    className={auto.item}
-                  >
-                    <div className={auto.icon} style={{ background: item.brandColor }}>
-                      {item.name.slice(0, 2).toUpperCase()}
-                    </div>
-                    <span className={auto.name}>{item.name}</span>
-                    <span className={auto.category}>{item.category}</span>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div className={classes.grid}>
-            <CustomInput
-              label="Cost"
-              type="number"
-              step="0.01"
-              min="0"
-              required
-              value={formData.cost}
-              onChange={(e) => form.updateField('cost', parseFloat(e.target.value) || 0)}
-            />
-            <CustomSelect
-              label="Billing Cycle"
-              value={formData.cycle}
-              onChange={(val) => form.updateField('cycle', val as BillingCycle)}
-              options={CYCLE_OPTIONS}
-            />
-          </div>
-
-          <div className={classes.grid}>
-            <CustomSelect
-              label="Category"
-              value={formData.category}
-              onChange={(val) => form.updateField('category', val as SubscriptionCategory)}
-              options={CATEGORY_OPTIONS}
-            />
-            <CustomInput
-              label="Next Renewal Date"
-              type="date"
-              required
-              value={formData.renewalDate}
-              onChange={(e) => form.updateField('renewalDate', e.target.value)}
-            />
-          </div>
-
-          <CustomInput
-            label="Cancellation URL (optional)"
-            type="url"
-            placeholder="https://..."
-            value={formData.cancellationUrl || ''}
-            onChange={(e) => form.updateField('cancellationUrl', e.target.value || null)}
+          <SubscriptionFormFields
+            formData={formData}
+            updateField={form.updateField}
+            suggestions={form.suggestions}
+            onNameChange={form.handleNameChange}
+            onSelectPreset={form.applyPreset}
           />
 
           <div className={classes.footer}>
+            {isEditing && onDelete && (
+              <button
+                type="button"
+                onClick={handleDelete}
+                className={classes.deleteBtn}
+                aria-label="Delete subscription"
+              >
+                <Trash2 size={13} />
+                <span>Delete</span>
+              </button>
+            )}
             <button type="button" onClick={handleClose} className={classes.cancelBtn}>
               Cancel
             </button>
             <button type="submit" disabled={form.isSubmitting} className={classes.submitBtn}>
-              {form.isSubmitting ? 'Saving...' : 'Save Subscription'}
+              {form.isSubmitting ? 'Saving...' : isEditing ? 'Save Changes' : 'Save Subscription'}
             </button>
           </div>
         </form>

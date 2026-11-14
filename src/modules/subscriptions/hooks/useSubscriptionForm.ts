@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { SubscriptionFormData } from '@/modules/subscriptions/types/form.types';
+import { Subscription } from '@/modules/subscriptions/types/subscription.types';
 import { BrandPreset, findMatchingBrands } from '@/modules/subscriptions/utils/brandPresets.utils';
+import { toFormData } from '@/modules/subscriptions/utils/subscriptionMapper.utils';
 
 const INITIAL_FORM: SubscriptionFormData = {
   name: '',
@@ -19,11 +21,21 @@ const INITIAL_FORM: SubscriptionFormData = {
 };
 
 export function useSubscriptionForm(
-  onSubmit: (data: SubscriptionFormData) => Promise<void> | void
+  onSubmit: (data: SubscriptionFormData) => Promise<void> | void,
+  initialSubscription?: Subscription | null
 ) {
-  const [formData, setFormData] = useState<SubscriptionFormData>(INITIAL_FORM);
+  const [prevSub, setPrevSub] = useState<Subscription | null | undefined>(initialSubscription);
+  const [formData, setFormData] = useState<SubscriptionFormData>(() =>
+    initialSubscription ? toFormData(initialSubscription) : INITIAL_FORM
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [suggestions, setSuggestions] = useState<BrandPreset[]>([]);
+
+  if (initialSubscription !== prevSub) {
+    setPrevSub(initialSubscription);
+    setFormData(initialSubscription ? toFormData(initialSubscription) : INITIAL_FORM);
+    setSuggestions([]);
+  }
 
   const handleNameChange = (name: string) => {
     setFormData((prev) => ({ ...prev, name }));
@@ -58,12 +70,10 @@ export function useSubscriptionForm(
     setIsSubmitting(true);
     await onSubmit(formData);
     setIsSubmitting(false);
-    setFormData(INITIAL_FORM);
-    setSuggestions([]);
   };
 
   const resetForm = () => {
-    setFormData(INITIAL_FORM);
+    setFormData(initialSubscription ? toFormData(initialSubscription) : INITIAL_FORM);
     setSuggestions([]);
   };
 

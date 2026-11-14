@@ -1,11 +1,17 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getDaysUntil } from '@/modules/common/utils/date.utils';
 import { supabase } from '@/modules/common/utils/supabase';
 import { Subscription } from '@/modules/subscriptions/types/subscription.types';
+import { toMonthlyCost } from '@/modules/subscriptions/utils/normalization.utils';
 import {
   DbSubscriptionRow,
   fromDbRow,
   toDbInsert,
 } from '@/modules/subscriptions/utils/subscriptionMapper.utils';
+
+function saveLocal(subs: Subscription[]) {
+  localStorage.setItem('subtrack-subscriptions', JSON.stringify(subs));
+}
 
 export function useSubscriptions(userId: string | null = null) {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>(() => {
@@ -23,54 +29,30 @@ export function useSubscriptions(userId: string | null = null) {
   });
   const [loading, setLoading] = useState(() => Boolean(userId && supabase));
 
-  const fetchSubscriptions = useCallback(async () => {
+  useEffect(() => {
     if (!supabase || !userId) return;
-    setLoading(true);
-    const { data, error } = await supabase
+    supabase
       .from('subscriptions')
       .select('*')
       .eq('user_id', userId)
-      .order('renewal_date', { ascending: true });
-
-    if (!error && data) {
-      const parsed = (data as unknown as DbSubscriptionRow[]).map(fromDbRow);
-      setSubscriptions(parsed);
-      localStorage.setItem('subtrack-subscriptions', JSON.stringify(parsed));
-    }
-    setLoading(false);
-  }, [userId]);
-
-  useEffect(() => {
-    let ignore = false;
-    if (userId && supabase) {
-      supabase
-        .from('subscriptions')
-        .select('*')
-        .eq('user_id', userId)
-        .order('renewal_date', { ascending: true })
-        .then(({ data, error }) => {
-          if (ignore) return;
-          if (!error && data) {
-            const parsed = (data as unknown as DbSubscriptionRow[]).map(fromDbRow);
-            setSubscriptions(parsed);
-            localStorage.setItem('subtrack-subscriptions', JSON.stringify(parsed));
-          }
-          setLoading(false);
-        });
-    }
-    return () => {
-      ignore = true;
-    };
+      .order('renewal_date', { ascending: true })
+      .then(({ data, error }) => {
+        if (!error && data) {
+          const parsed = (data as unknown as DbSubscriptionRow[]).map(fromDbRow);
+          setSubscriptions(parsed);
+          saveLocal(parsed);
+        }
+        setLoading(false);
+      });
   }, [userId]);
 
   const addSubscription = async (
     newSub: Omit<Subscription, 'id' | 'daysRemaining' | 'monthlyEquivalent'>
   ) => {
     if (supabase && userId) {
-      const insertPayload = toDbInsert(newSub, userId);
       const { data, error } = await supabase
         .from('subscriptions')
-        .insert(insertPayload)
+        .insert(toDbInsert(newSub, userId))
         .select()
         .single();
 
@@ -81,17 +63,52 @@ export function useSubscriptions(userId: string | null = null) {
       }
     }
 
-    // Local fallback
     const localId = crypto.randomUUID();
     const created: Subscription = {
       ...newSub,
       id: localId,
-      monthlyEquivalent: newSub.cost,
-      daysRemaining: 30,
+      monthlyEquivalent: toMonthlyCost(newSub.cost, newSub.cycle),
+      daysRemaining: getDaysUntil(newSub.renewalDate),
     };
     setSubscriptions((prev) => {
       const updated = [created, ...prev];
-      localStorage.setItem('subtrack-subscriptions', JSON.stringify(updated));
+      saveLocal(updated);
+      return updated;
+    });
+  };
+
+  const updateSubscription = async (
+    id: string,
+    updatedData: Omit<Subscription, 'id' | 'daysRemaining' | 'monthlyEquivalent'>
+  ) => {
+    if (supabase && userId) {
+      const { data, error } = await supabase
+        .from('subscriptions')
+        .update(toDbInsert(updatedData, userId))
+        .eq('id', id)
+        .eq('user_id', userId)
+        .select()
+        .single();
+
+      if (!error && data) {
+        const mapped = fromDbRow(data as unknown as DbSubscriptionRow);
+        setSubscriptions((prev) => prev.map((s) => (s.id === id ? mapped : s)));
+        return;
+      }
+    }
+
+    setSubscriptions((prev) => {
+      const updated = prev.map((s) =>
+        s.id === id
+          ? {
+              ...s,
+              ...updatedData,
+              monthlyEquivalent: toMonthlyCost(updatedData.cost, updatedData.cycle),
+              daysRemaining: getDaysUntil(updatedData.renewalDate),
+            }
+          : s
+      );
+      saveLocal(updated);
       return updated;
     });
   };
@@ -102,7 +119,7 @@ export function useSubscriptions(userId: string | null = null) {
     }
     setSubscriptions((prev) => {
       const updated = prev.filter((s) => s.id !== id);
-      localStorage.setItem('subtrack-subscriptions', JSON.stringify(updated));
+      saveLocal(updated);
       return updated;
     });
   };
@@ -111,7 +128,7 @@ export function useSubscriptions(userId: string | null = null) {
     subscriptions,
     loading,
     addSubscription,
+    updateSubscription,
     deleteSubscription,
-    refresh: fetchSubscriptions,
   };
 }

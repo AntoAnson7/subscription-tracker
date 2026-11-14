@@ -1,4 +1,5 @@
 import { getDaysUntil } from '@/modules/common/utils/date.utils';
+import { SubscriptionFormData } from '@/modules/subscriptions/types/form.types';
 import {
   BillingCycle,
   Subscription,
@@ -68,6 +69,24 @@ export function toDbInsert(
     icon_slug: sub.iconSlug,
     cancellation_url: sub.cancellationUrl,
     website_url: sub.websiteUrl,
+    notes: sub.notes,
+  };
+}
+
+export function toFormData(sub: Subscription): SubscriptionFormData {
+  return {
+    name: sub.name,
+    category: sub.category,
+    cost: sub.cost,
+    currency: sub.currency,
+    cycle: sub.cycle,
+    startDate: sub.startDate,
+    renewalDate: sub.renewalDate,
+    status: sub.status,
+    brandColor: sub.brandColor,
+    iconSlug: sub.iconSlug,
+    cancellationUrl: sub.cancellationUrl,
+    websiteUrl: sub.websiteUrl,
     notes: sub.notes,
   };
 }
