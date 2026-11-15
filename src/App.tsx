@@ -19,6 +19,7 @@ import { useLegalModal } from '@/modules/legal/hooks/useLegalModal';
 import { SubscriptionFilterBar } from '@/modules/subscriptions/components/SubscriptionFilterBar';
 import { useAppSubscriptions } from '@/modules/subscriptions/hooks/useAppSubscriptions';
 import { CancellationAlertBanner } from '@/modules/sync/components/CancellationAlertBanner';
+import { PriceHikeAlertBanner } from '@/modules/sync/components/PriceHikeAlertBanner';
 import { useSyncManager } from '@/modules/sync/hooks/useSyncManager';
 
 export function App() {
@@ -39,6 +40,7 @@ export function App() {
     subscriptions: subManager.subscriptions,
     onAddSubscription: subManager.handleModalSubmit,
     onCancelSubscription: subManager.cancelSubscription,
+    onUpdateSubscriptionCost: subManager.updateSubscriptionCost,
   });
 
   const classes = layoutStyles();
@@ -58,6 +60,11 @@ export function App() {
           onOpenProfile={() => setIsProfileModalOpen(true)}
         />
         <main className={classes.mainContainer}>
+          <PriceHikeAlertBanner
+            alerts={syncManager.priceHikeAlerts}
+            onApply={syncManager.applyPriceHike}
+            onDismiss={syncManager.dismissPriceHike}
+          />
           <CancellationAlertBanner
             alerts={syncManager.cancellationAlerts}
             onConfirm={syncManager.confirmCancellation}

@@ -6,6 +6,7 @@ import { useEmailAccounts } from '@/modules/sync/hooks/useEmailAccounts';
 import { useEmailSync } from '@/modules/sync/hooks/useEmailSync';
 import { useGoogleOAuthCallback } from '@/modules/sync/hooks/useGoogleOAuthCallback';
 import { usePaymentHistory } from '@/modules/sync/hooks/usePaymentHistory';
+import { usePriceHikeAlerts } from '@/modules/sync/hooks/usePriceHikeAlerts';
 import { DiscoveredSubscription } from '@/modules/sync/types/sync.types';
 
 interface UseSyncManagerParams {
@@ -13,6 +14,7 @@ interface UseSyncManagerParams {
   subscriptions: Subscription[];
   onAddSubscription: (data: SubscriptionFormData) => Promise<void> | void;
   onCancelSubscription: (id: string) => Promise<void> | void;
+  onUpdateSubscriptionCost: (id: string, newCost: number) => Promise<void> | void;
 }
 
 export function useSyncManager({
@@ -20,6 +22,7 @@ export function useSyncManager({
   subscriptions,
   onAddSubscription,
   onCancelSubscription,
+  onUpdateSubscriptionCost,
 }: UseSyncManagerParams) {
   const [isConsentModalOpen, setIsConsentModalOpen] = useState(false);
   const [activeSubForPayments, setActiveSubForPayments] = useState<Subscription | null>(null);
@@ -42,6 +45,12 @@ export function useSyncManager({
     dismissAlert: dismissCancellation,
     addAlert: addCancellationAlert,
   } = useCancellationAlerts(onCancelSubscription);
+
+  const { priceHikeAlerts, applyPriceHike, dismissPriceHike } = usePriceHikeAlerts({
+    payments,
+    subscriptions,
+    onUpdateSubscriptionCost,
+  });
 
   const {
     isSyncing,
@@ -91,6 +100,7 @@ export function useSyncManager({
     isReviewOpen,
     lastSyncResult,
     cancellationAlerts,
+    priceHikeAlerts,
     payments,
     activeSubForPayments,
     setIsConsentModalOpen,
@@ -103,6 +113,8 @@ export function useSyncManager({
     confirmDiscoveredSubs,
     confirmCancellation,
     dismissCancellation,
+    applyPriceHike,
+    dismissPriceHike,
     getPaymentsForSubscription,
   };
 }
