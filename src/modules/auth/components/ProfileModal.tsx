@@ -5,6 +5,8 @@ import { profileModalStyles } from '@/modules/auth/recipes/profileModal.recipe';
 import { UserProfile } from '@/modules/auth/types/auth.types';
 import { useClickOutside } from '@/modules/common/hooks/useClickOutside';
 import { useFocusTrap } from '@/modules/common/hooks/useFocusTrap';
+import { LinkedAccountsSection } from '@/modules/sync/components/LinkedAccountsSection';
+import { LinkedEmailAccount } from '@/modules/sync/types/sync.types';
 
 interface ProfileModalProps {
   isOpen: boolean;
@@ -12,27 +14,43 @@ interface ProfileModalProps {
   user: User | null;
   profile: UserProfile | null;
   onSignOut: () => void;
+  linkedAccounts?: LinkedEmailAccount[];
+  isSyncing?: boolean;
+  onOpenLinkModal?: () => void;
+  onScanEmails?: (id: string) => void;
+  onUnlinkAccount?: (id: string) => void;
 }
 
-export function ProfileModal({ isOpen, onClose, user, profile, onSignOut }: ProfileModalProps) {
+export function ProfileModal({
+  isOpen,
+  onClose,
+  user,
+  profile,
+  onSignOut,
+  linkedAccounts = [],
+  isSyncing = false,
+  onOpenLinkModal = () => {},
+  onScanEmails = () => {},
+  onUnlinkAccount = () => {},
+}: ProfileModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const classes = profileModalStyles();
 
   useClickOutside(modalRef, onClose, isOpen);
   useFocusTrap(modalRef, isOpen, { onEscape: onClose });
 
-  if (!isOpen || !user) return null;
+  if (!isOpen) return null;
 
   const avatarUrl =
     profile?.avatarUrl ??
-    (user.user_metadata?.avatar_url as string | undefined) ??
-    (user.user_metadata?.picture as string | undefined);
+    (user?.user_metadata?.avatar_url as string | undefined) ??
+    (user?.user_metadata?.picture as string | undefined);
 
   const displayName =
     profile?.fullName ||
-    (user.user_metadata?.full_name as string | undefined) ||
-    user.email?.split('@')[0] ||
-    'User';
+    (user?.user_metadata?.full_name as string | undefined) ||
+    user?.email?.split('@')[0] ||
+    'Guest User';
 
   const userInitial = displayName.slice(0, 2).toUpperCase();
 
@@ -71,7 +89,7 @@ export function ProfileModal({ isOpen, onClose, user, profile, onSignOut }: Prof
           </h2>
           <div className={classes.emailBadge}>
             <CheckCircle2 size={13} color="#10B981" />
-            <span>{user.email}</span>
+            <span>{user?.email ?? 'Local guest'}</span>
           </div>
         </header>
 
@@ -80,21 +98,18 @@ export function ProfileModal({ isOpen, onClose, user, profile, onSignOut }: Prof
             <span className={classes.infoLabel}>Currency</span>
             <span className={classes.infoValue}>{profile?.preferredCurrency ?? 'INR (₹)'}</span>
           </div>
-
           <div className={classes.infoCard}>
             <span className={classes.infoLabel}>Tracking focus</span>
             <span className={classes.infoValue}>{profile?.trackingFocus ?? 'Personal'}</span>
           </div>
-
           <div className={classes.infoCard}>
             <span className={classes.infoLabel}>Account status</span>
             <span className={classes.infoValue}>Active</span>
           </div>
-
           <div className={classes.infoCard}>
             <span className={classes.infoLabel}>Member since</span>
             <span className={classes.infoValue}>
-              {user.created_at
+              {user?.created_at
                 ? new Date(user.created_at).toLocaleDateString('en-US', {
                     month: 'short',
                     year: 'numeric',
@@ -104,10 +119,20 @@ export function ProfileModal({ isOpen, onClose, user, profile, onSignOut }: Prof
           </div>
         </div>
 
-        <button type="button" onClick={handleSignOut} className={classes.signOutBtn}>
-          <LogOut size={16} />
-          <span>Sign out</span>
-        </button>
+        <LinkedAccountsSection
+          accounts={linkedAccounts}
+          isSyncing={isSyncing}
+          onOpenLinkModal={onOpenLinkModal}
+          onScan={onScanEmails}
+          onUnlink={onUnlinkAccount}
+        />
+
+        {user && (
+          <button type="button" onClick={handleSignOut} className={classes.signOutBtn}>
+            <LogOut size={16} />
+            <span>Sign out</span>
+          </button>
+        )}
       </div>
     </div>
   );

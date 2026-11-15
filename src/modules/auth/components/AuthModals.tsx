@@ -3,6 +3,7 @@ import { AuthModal } from '@/modules/auth/components/AuthModal';
 import { OnboardingModal } from '@/modules/auth/components/OnboardingModal';
 import { ProfileModal } from '@/modules/auth/components/ProfileModal';
 import { CreateProfileData, UserProfile } from '@/modules/auth/types/auth.types';
+import { LinkedEmailAccount } from '@/modules/sync/types/sync.types';
 
 interface AuthModalsProps {
   isAuthOpen: boolean;
@@ -16,6 +17,11 @@ interface AuthModalsProps {
   onCloseProfile: () => void;
   profile: UserProfile | null;
   onSignOut: () => Promise<void>;
+  linkedAccounts?: LinkedEmailAccount[];
+  isSyncing?: boolean;
+  onOpenLinkModal?: () => void;
+  onScanEmails?: (id: string) => void;
+  onUnlinkAccount?: (id: string) => void;
 }
 
 export function AuthModals({
@@ -30,6 +36,11 @@ export function AuthModals({
   onCloseProfile,
   profile,
   onSignOut,
+  linkedAccounts,
+  isSyncing,
+  onOpenLinkModal,
+  onScanEmails,
+  onUnlinkAccount,
 }: AuthModalsProps) {
   return (
     <>
@@ -51,6 +62,11 @@ export function AuthModals({
         user={user}
         profile={profile}
         onSignOut={onSignOut}
+        linkedAccounts={linkedAccounts}
+        isSyncing={isSyncing}
+        onOpenLinkModal={onOpenLinkModal}
+        onScanEmails={onScanEmails}
+        onUnlinkAccount={onUnlinkAccount}
       />
     </>
   );

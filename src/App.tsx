@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { AnalyticsDashboard } from '@/modules/analytics/components/AnalyticsDashboard';
-import { AuthModals } from '@/modules/auth/components/AuthModals';
 import { useAuth } from '@/modules/auth/hooks/useAuth';
 import { useProfile } from '@/modules/auth/hooks/useProfile';
 import { MonthlyCalendar } from '@/modules/calendar/components/MonthlyCalendar';
 import { AppBackground } from '@/modules/common/components/AppBackground';
+import { AppModals } from '@/modules/common/components/AppModals';
 import { Header } from '@/modules/common/components/Header';
 import { ViewControls } from '@/modules/common/components/ViewControls';
 import { CurrencyProvider } from '@/modules/common/context/CurrencyProvider';
@@ -16,8 +16,9 @@ import { RunRateHeroSkeleton } from '@/modules/dashboard/components/RunRateHeroS
 import { TrialAlertBanner } from '@/modules/dashboard/components/TrialAlertBanner';
 import { SubscriptionContentView } from '@/modules/subscriptions/components/SubscriptionContentView';
 import { SubscriptionFilterBar } from '@/modules/subscriptions/components/SubscriptionFilterBar';
-import { SubscriptionModal } from '@/modules/subscriptions/components/SubscriptionModal';
 import { useAppSubscriptions } from '@/modules/subscriptions/hooks/useAppSubscriptions';
+import { CancellationAlertBanner } from '@/modules/sync/components/CancellationAlertBanner';
+import { useSyncManager } from '@/modules/sync/hooks/useSyncManager';
 
 export function App() {
   const [mockLoading] = useState(false);
@@ -29,6 +30,14 @@ export function App() {
   const { user, loading: authLoading, signInWithGoogle, signOut, error: authError } = useAuth();
   const { profile, needsOnboarding, createProfile } = useProfile(user);
   const subManager = useAppSubscriptions(user?.id ?? null);
+
+  const syncManager = useSyncManager({
+    userId: user?.id ?? null,
+    subscriptions: subManager.subscriptions,
+    onAddSubscription: subManager.handleModalSubmit,
+    onCancelSubscription: subManager.cancelSubscription,
+  });
+
   const classes = layoutStyles();
   const isSkeletonActive = mockLoading || subManager.subsLoading;
 
@@ -46,6 +55,11 @@ export function App() {
           onOpenProfile={() => setIsProfileModalOpen(true)}
         />
         <main className={classes.mainContainer}>
+          <CancellationAlertBanner
+            alerts={syncManager.cancellationAlerts}
+            onConfirm={syncManager.confirmCancellation}
+            onDismiss={syncManager.dismissCancellation}
+          />
           <TrialAlertBanner trialSubscription={subManager.expiringTrial} />
 
           {isSkeletonActive ? (
@@ -103,15 +117,12 @@ export function App() {
           </div>
         </main>
 
-        <SubscriptionModal
-          isOpen={subManager.isModalOpen}
-          onClose={subManager.handleCloseModal}
-          onSubmit={subManager.handleModalSubmit}
-          onDelete={subManager.deleteSubscription}
-          initialSubscription={subManager.activeSub}
-        />
-
-        <AuthModals
+        <AppModals
+          isSubModalOpen={subManager.isModalOpen}
+          onCloseSubModal={subManager.handleCloseModal}
+          onSubmitSubModal={subManager.handleModalSubmit}
+          onDeleteSub={subManager.deleteSubscription}
+          activeSub={subManager.activeSub}
           isAuthOpen={isAuthModalOpen}
           onCloseAuth={() => setIsAuthModalOpen(false)}
           onGoogleSignIn={signInWithGoogle}
@@ -123,6 +134,7 @@ export function App() {
           onCloseProfile={() => setIsProfileModalOpen(false)}
           profile={profile}
           onSignOut={signOut}
+          syncManager={syncManager}
         />
       </AppBackground>
     </CurrencyProvider>
