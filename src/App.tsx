@@ -50,12 +50,12 @@ export function App() {
           <TrialAlertBanner trialSubscription={subManager.expiringTrial} />
 
           {isSkeletonActive ? (
-            <RunRateHeroSkeleton isCompact={activeTab === 'calendar'} />
+            <RunRateHeroSkeleton isCompact={activeTab !== 'subscriptions'} />
           ) : (
             <RunRateHero
               metrics={subManager.metrics}
               onAddClick={subManager.handleOpenAdd}
-              isCompact={activeTab === 'calendar'}
+              isCompact={activeTab !== 'subscriptions'}
             />
           )}
 
