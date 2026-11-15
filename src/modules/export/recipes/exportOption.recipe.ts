@@ -1,0 +1,65 @@
+import { sva } from 'styled-system/css';
+
+export const exportOptionStyles = sva({
+  slots: ['scopeSelector', 'optionsGrid', 'optionCard'],
+  base: {
+    scopeSelector: {
+      display: 'flex',
+      gap: '100',
+      p: '50',
+      bg: 'bg.secondary',
+      borderRadius: 'pill',
+      '& button': {
+        flex: 1,
+        py: '50',
+        fontSize: '12px',
+        fontWeight: '600',
+        borderRadius: 'pill',
+        border: 'none',
+        bg: 'transparent',
+        color: 'text.secondary',
+        cursor: 'pointer',
+        transition: 'all 0.15s ease',
+        '&[data-active="true"]': {
+          bg: 'bg.primary',
+          color: 'text.primary',
+          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)',
+        },
+      },
+    },
+    optionsGrid: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(2, 1fr)',
+      gap: '150',
+    },
+    optionCard: {
+      p: '200',
+      borderRadius: 'xl',
+      border: '1px solid',
+      borderColor: 'border.subtle',
+      bg: 'bg.secondary',
+      cursor: 'pointer',
+      textAlign: 'left',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '100',
+      transition: 'all 0.15s ease',
+      _hover: { borderColor: 'border.default', bg: 'bg.hover' },
+      _focusVisible: { outline: '2px solid', outlineColor: 'accent.primary', outlineOffset: '2px' },
+      '&[data-selected="true"]': {
+        borderColor: 'accent.primary',
+        bg: 'bg.primary',
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+      },
+      '& > div': {
+        fontSize: '14px',
+        fontWeight: '700',
+        color: 'text.primary',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '100',
+      },
+      '& p': { fontSize: '11px', lineHeight: '1.4', color: 'text.secondary', m: 0 },
+    },
+  },
+});

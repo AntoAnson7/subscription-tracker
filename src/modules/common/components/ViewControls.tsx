@@ -1,4 +1,4 @@
-import { Calendar, Grid3X3, PieChart, Table as TableIcon } from 'lucide-react';
+import { Calendar, Download, Grid3X3, PieChart, Table as TableIcon } from 'lucide-react';
 import { css } from 'styled-system/css';
 import { segmentedControlStyles } from '@/modules/common/recipes/segmentedControl.recipe';
 
@@ -8,6 +8,7 @@ interface ViewControlsProps {
   subscriptionsCount: number;
   onTabChange: (tab: 'subscriptions' | 'calendar' | 'analytics') => void;
   onViewModeChange: (mode: 'grid' | 'table') => void;
+  onOpenExport?: () => void;
 }
 
 const activeTabStyle = css({
@@ -36,6 +37,7 @@ export function ViewControls({
   subscriptionsCount,
   onTabChange,
   onViewModeChange,
+  onOpenExport,
 }: ViewControlsProps) {
   const classes = segmentedControlStyles();
 
@@ -101,6 +103,17 @@ export function ViewControls({
           >
             <TableIcon size={16} />
           </button>
+          {onOpenExport && (
+            <button
+              type="button"
+              onClick={onOpenExport}
+              aria-label="Export subscriptions"
+              title="Export subscriptions (CSV or Print)"
+              className={classes.viewToggleBtn}
+            >
+              <Download size={15} />
+            </button>
+          )}
         </div>
       )}
     </div>

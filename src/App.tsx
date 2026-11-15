@@ -13,6 +13,7 @@ import { CurrencyCode } from '@/modules/common/types/currency.types';
 import { RunRateHero } from '@/modules/dashboard/components/RunRateHero';
 import { RunRateHeroSkeleton } from '@/modules/dashboard/components/RunRateHeroSkeleton';
 import { TrialAlertBanner } from '@/modules/dashboard/components/TrialAlertBanner';
+import { useExport } from '@/modules/export/hooks/useExport';
 import { Footer } from '@/modules/legal/components/Footer';
 import { useLegalModal } from '@/modules/legal/hooks/useLegalModal';
 import { SubscriptionFilterBar } from '@/modules/subscriptions/components/SubscriptionFilterBar';
@@ -31,6 +32,7 @@ export function App() {
   const { profile, needsOnboarding, createProfile } = useProfile(user);
   const subManager = useAppSubscriptions(user?.id ?? null);
   const legalModal = useLegalModal();
+  const exportManager = useExport();
 
   const syncManager = useSyncManager({
     userId: user?.id ?? null,
@@ -79,6 +81,7 @@ export function App() {
             viewMode={viewMode}
             onViewModeChange={setViewMode}
             subscriptionsCount={subManager.subscriptionsCount}
+            onOpenExport={exportManager.openExport}
           />
 
           {activeTab === 'subscriptions' && (
@@ -127,6 +130,9 @@ export function App() {
           activeLegalTab={legalModal.activeLegalTab}
           onCloseLegal={legalModal.closeLegal}
           onLegalTabChange={legalModal.setActiveLegalTab}
+          exportManager={exportManager}
+          subscriptions={subManager.subscriptions}
+          currency={profile?.preferredCurrency || 'USD'}
         />
       </AppBackground>
     </CurrencyProvider>

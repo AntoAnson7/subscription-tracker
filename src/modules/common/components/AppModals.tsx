@@ -1,6 +1,8 @@
 import { User } from '@supabase/supabase-js';
 import { AuthModals } from '@/modules/auth/components/AuthModals';
 import { CreateProfileData, UserProfile } from '@/modules/auth/types/auth.types';
+import { ExportModal } from '@/modules/export/components/ExportModal';
+import { useExport } from '@/modules/export/hooks/useExport';
 import { LegalModal } from '@/modules/legal/components/LegalModal';
 import { LegalTab } from '@/modules/legal/types/legal.types';
 import { SubscriptionModal } from '@/modules/subscriptions/components/SubscriptionModal';
@@ -31,6 +33,9 @@ interface AppModalsProps {
   activeLegalTab: LegalTab;
   onCloseLegal: () => void;
   onLegalTabChange: (tab: LegalTab) => void;
+  exportManager: ReturnType<typeof useExport>;
+  subscriptions: Subscription[];
+  currency: string;
 }
 
 export function AppModals({
@@ -55,6 +60,9 @@ export function AppModals({
   activeLegalTab,
   onCloseLegal,
   onLegalTabChange,
+  exportManager,
+  subscriptions,
+  currency,
 }: AppModalsProps) {
   return (
     <>
@@ -104,6 +112,18 @@ export function AppModals({
         activeTab={activeLegalTab}
         onClose={onCloseLegal}
         onTabChange={onLegalTabChange}
+      />
+
+      <ExportModal
+        isOpen={exportManager.isExportOpen}
+        onClose={exportManager.closeExport}
+        format={exportManager.format}
+        scope={exportManager.scope}
+        onFormatChange={exportManager.setFormat}
+        onScopeChange={exportManager.setScope}
+        onExport={exportManager.executeExport}
+        subscriptions={subscriptions}
+        currency={currency}
       />
     </>
   );
