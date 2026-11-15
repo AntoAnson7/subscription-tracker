@@ -11,6 +11,7 @@ interface HeaderProps {
   isLoading?: boolean;
   onOpenAuth: () => void;
   onOpenProfile: () => void;
+  onBackToLanding?: () => void;
 }
 
 export function Header({
@@ -19,6 +20,7 @@ export function Header({
   isLoading = false,
   onOpenAuth,
   onOpenProfile,
+  onBackToLanding,
 }: HeaderProps) {
   const { isDark, toggleMode } = useTheme();
   const classes = headerStyles();
@@ -32,7 +34,14 @@ export function Header({
   return (
     <header className={classes.root}>
       <div className={classes.container}>
-        <div className={classes.brand}>
+        <div
+          className={classes.brand}
+          onClick={onBackToLanding}
+          role={onBackToLanding ? 'button' : undefined}
+          tabIndex={onBackToLanding ? 0 : undefined}
+          title={onBackToLanding ? 'Go to Home / Landing Page' : undefined}
+          style={{ cursor: onBackToLanding ? 'pointer' : 'default' }}
+        >
           <div className={classes.brandIcon}>
             <CreditCard size={18} strokeWidth={2.2} />
           </div>

@@ -173,6 +173,50 @@ body {
   animation: tabFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+@keyframes landingFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes landingFloatDelayed {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes pulseGleam {
+  0%,
+  100% {
+    opacity: 0.9;
+    box-shadow: 0 0 16px rgba(217, 119, 6, 0.2);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 28px rgba(217, 119, 6, 0.45);
+  }
+}
+
+.landing-float {
+  animation: landingFloat 5s ease-in-out infinite;
+}
+
+.landing-float-delayed {
+  animation: landingFloatDelayed 6s ease-in-out infinite 1.5s;
+}
+
+.landing-glow-pulse {
+  animation: pulseGleam 4s ease-in-out infinite;
+}
+
 /* Skeleton Shimmer Animation */
 @keyframes shimmer {
   0% {
