@@ -5,7 +5,6 @@ import { Checkbox } from '@/modules/common/components/Checkbox';
 import { useClickOutside } from '@/modules/common/hooks/useClickOutside';
 import { useFocusTrap } from '@/modules/common/hooks/useFocusTrap';
 import { useLockBodyScroll } from '@/modules/common/hooks/useLockBodyScroll';
-import { GoogleCloudConfigBox } from '@/modules/sync/components/GoogleCloudConfigBox';
 import { useGoogleLink } from '@/modules/sync/hooks/useGoogleLink';
 import { consentFormStyles } from '@/modules/sync/recipes/consentForm.recipe';
 import { consentModalStyles } from '@/modules/sync/recipes/consentModal.recipe';
@@ -78,13 +77,6 @@ export function LinkEmailConsentModal({ isOpen, onClose, onLink }: LinkEmailCons
 
         <div className={classes.form}>
           <div className={classes.body}>
-            <GoogleCloudConfigBox
-              clientId={googleAuth.clientId}
-              onUpdateClientId={googleAuth.updateClientId}
-              isOpen={googleAuth.showConfig}
-              onToggle={() => googleAuth.setShowConfig((prev) => !prev)}
-            />
-
             <div className={formClasses.privacyBox}>
               <div>
                 <ShieldCheck size={16} />
@@ -141,10 +133,9 @@ export function LinkEmailConsentModal({ isOpen, onClose, onLink }: LinkEmailCons
               disabled={!hasConsented || googleAuth.isAuthorizing}
               onClick={handleConnectClick}
               className={classes.submitBtn}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
             >
               <GoogleIcon size={16} />
-              <span>{googleAuth.isAuthorizing ? 'Connecting...' : 'Connect with Google'}</span>
+              <span>{googleAuth.isAuthorizing ? 'Connecting...' : 'Continue with Google'}</span>
             </button>
           </div>
         </div>

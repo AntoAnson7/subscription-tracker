@@ -4,6 +4,7 @@ import { Subscription } from '@/modules/subscriptions/types/subscription.types';
 import { useCancellationAlerts } from '@/modules/sync/hooks/useCancellationAlerts';
 import { useEmailAccounts } from '@/modules/sync/hooks/useEmailAccounts';
 import { useEmailSync } from '@/modules/sync/hooks/useEmailSync';
+import { useGoogleOAuthCallback } from '@/modules/sync/hooks/useGoogleOAuthCallback';
 import { usePaymentHistory } from '@/modules/sync/hooks/usePaymentHistory';
 import { DiscoveredSubscription } from '@/modules/sync/types/sync.types';
 
@@ -30,6 +31,8 @@ export function useSyncManager({
     unlinkAccount,
     updateAccountSync,
   } = useEmailAccounts(userId);
+
+  useGoogleOAuthCallback(linkAccount);
 
   const { payments, addPayment, getPaymentsForSubscription } = usePaymentHistory();
 
