@@ -1,38 +1,24 @@
-export type FeatureIconName =
-  'mail' | 'trending-up' | 'sparkles' | 'shield-alert' | 'file-spreadsheet' | 'users';
+export type ShowcaseTab = 'overview' | 'hikes' | 'savings';
 
-export interface LandingFeature {
+export interface AppleStory {
   id: string;
-  title: string;
-  catchphrase: string;
+  eyebrow: string;
+  headline: string;
   description: string;
-  badge: string;
-  iconName: FeatureIconName;
+  visualType: 'hike-radar' | 'annual-switch' | 'trial-shield' | 'local-privacy';
+  statValue?: string;
+  statLabel?: string;
+}
+
+export interface SpecRow {
+  feature: string;
+  subtrack: string | boolean;
+  traditional: string | boolean;
+  spreadsheets: string | boolean;
 }
 
 export interface LandingFaq {
   id: string;
   question: string;
   answer: string;
-}
-
-export type MetricIconName = 'wallet' | 'shield' | 'lock' | 'zap';
-
-export interface LandingMetric {
-  id: string;
-  value: string;
-  label: string;
-  subtext: string;
-  iconName: MetricIconName;
-}
-
-export interface DemoSubscription {
-  id: string;
-  name: string;
-  category: string;
-  monthlyCost: number;
-  annualOptimizedCost: number;
-  badgeType: 'price-hike' | 'trial' | 'savings' | 'shared';
-  badgeText: string;
-  subdetail: string;
 }

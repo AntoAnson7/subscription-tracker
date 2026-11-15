@@ -1,12 +1,12 @@
 import { Footer } from '@/modules/legal/components/Footer';
 import { LegalTab } from '@/modules/legal/types/legal.types';
-import { LandingCtaSection } from '@/modules/landing/components/LandingCtaSection';
-import { LandingFaqSection } from '@/modules/landing/components/LandingFaqSection';
-import { LandingFeatureShowcase } from '@/modules/landing/components/LandingFeatureShowcase';
-import { LandingHeader } from '@/modules/landing/components/LandingHeader';
-import { LandingHero } from '@/modules/landing/components/LandingHero';
-import { LandingInteractivePreview } from '@/modules/landing/components/LandingInteractivePreview';
-import { LandingMetricsBanner } from '@/modules/landing/components/LandingMetricsBanner';
+import { AppleCta } from '@/modules/landing/components/AppleCta';
+import { AppleDeviceShowcase } from '@/modules/landing/components/AppleDeviceShowcase';
+import { AppleFaq } from '@/modules/landing/components/AppleFaq';
+import { AppleHero } from '@/modules/landing/components/AppleHero';
+import { AppleNav } from '@/modules/landing/components/AppleNav';
+import { AppleSpecsTable } from '@/modules/landing/components/AppleSpecsTable';
+import { AppleStorySections } from '@/modules/landing/components/AppleStorySections';
 import { landingPageStyles } from '@/modules/landing/recipes/landingPage.recipe';
 
 interface LandingPageProps {
@@ -20,16 +20,15 @@ export function LandingPage({ onOpenAuth, onLaunchApp, onOpenLegal }: LandingPag
 
   return (
     <div className={classes.root}>
-      <LandingHeader onOpenAuth={onOpenAuth} onLaunchApp={onLaunchApp} />
+      <AppleNav onOpenAuth={onOpenAuth} onLaunchApp={onLaunchApp} />
 
       <main className={classes.content}>
-        <div className={`${classes.ambientGlow} ambient-animated`} />
-        <LandingHero onOpenAuth={onOpenAuth} onLaunchApp={onLaunchApp} />
-        <LandingInteractivePreview />
-        <LandingMetricsBanner />
-        <LandingFeatureShowcase />
-        <LandingFaqSection />
-        <LandingCtaSection onOpenAuth={onOpenAuth} onLaunchApp={onLaunchApp} />
+        <AppleHero onOpenAuth={onOpenAuth} onLaunchApp={onLaunchApp} />
+        <AppleDeviceShowcase />
+        <AppleStorySections />
+        <AppleSpecsTable />
+        <AppleFaq />
+        <AppleCta onOpenAuth={onOpenAuth} onLaunchApp={onLaunchApp} />
       </main>
 
       <Footer onOpenLegal={onOpenLegal} onOpenAuth={onOpenAuth} />
