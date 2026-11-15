@@ -56,7 +56,12 @@ export function ViewControls({
           onClick={() => onTabChange('subscriptions')}
           className={`${classes.tab} ${activeTab === 'subscriptions' ? activeTabStyle : ''}`}
         >
-          <span>Subscriptions ({subscriptionsCount})</span>
+          <span className={css({ display: { base: 'none', sm: 'inline' } })}>
+            Subscriptions ({subscriptionsCount})
+          </span>
+          <span className={css({ display: { base: 'inline', sm: 'none' } })}>
+            Subs ({subscriptionsCount})
+          </span>
         </button>
 
         <button
@@ -64,7 +69,7 @@ export function ViewControls({
           onClick={() => onTabChange('calendar')}
           className={`${classes.tab} ${activeTab === 'calendar' ? activeTabStyle : ''}`}
         >
-          <Calendar size={14} />
+          <Calendar size={14} className={css({ display: { base: 'none', sm: 'inline' } })} />
           <span>Calendar</span>
         </button>
 
@@ -73,7 +78,7 @@ export function ViewControls({
           onClick={() => onTabChange('analytics')}
           className={`${classes.tab} ${activeTab === 'analytics' ? activeTabStyle : ''}`}
         >
-          <PieChart size={14} />
+          <PieChart size={14} className={css({ display: { base: 'none', sm: 'inline' } })} />
           <span>Analytics</span>
         </button>
       </div>
