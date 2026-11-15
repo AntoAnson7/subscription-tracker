@@ -21,6 +21,8 @@ const familyPillStyle = {
   background: 'var(--colors-accent-subtle)',
   color: 'var(--colors-accent-primary)',
   border: '1px solid var(--colors-accent-border)',
+  whiteSpace: 'nowrap',
+  flexShrink: 0,
 } as const;
 
 const totalSubStyle = {

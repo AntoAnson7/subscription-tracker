@@ -10,6 +10,9 @@ export const statusBadgeStyle = cva({
     display: 'inline-flex',
     alignItems: 'center',
     gap: '50',
+    whiteSpace: 'nowrap',
+    flexShrink: 0,
+    lineHeight: '1.2',
     transition: 'all 0.15s ease',
   },
   variants: {

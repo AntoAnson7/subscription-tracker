@@ -1,8 +1,15 @@
 import { sva } from 'styled-system/css';
 
 export const sharedSubscriptionCardStyles = sva({
-  slots: ['badge', 'shareTag', 'breakdown', 'breakdownRow', 'breakdownSub'],
+  slots: ['badge', 'shareTag', 'breakdown', 'breakdownRow', 'breakdownSub', 'badgeGroup'],
   base: {
+    badgeGroup: {
+      display: 'flex',
+      flexDirection: { base: 'column', sm: 'row' },
+      alignItems: { base: 'flex-end', sm: 'center' },
+      gap: '50',
+      flexShrink: 0,
+    },
     badge: {
       display: 'inline-flex',
       alignItems: 'center',
@@ -17,6 +24,9 @@ export const sharedSubscriptionCardStyles = sva({
       fontSize: '11px',
       fontWeight: '700',
       letterSpacing: '-0.2px',
+      whiteSpace: 'nowrap',
+      flexShrink: 0,
+      lineHeight: '1.2',
     },
     shareTag: {
       fontSize: '10px',
@@ -25,6 +35,7 @@ export const sharedSubscriptionCardStyles = sva({
       textTransform: 'uppercase',
       letterSpacing: '0.5px',
       mb: '25',
+      whiteSpace: 'nowrap',
     },
     breakdown: {
       mt: '100',
@@ -43,6 +54,7 @@ export const sharedSubscriptionCardStyles = sva({
       gap: '50',
       fontSize: '12px',
       color: 'text.primary',
+      flexWrap: 'wrap',
       '& strong': {
         fontWeight: '700',
       },

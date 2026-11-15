@@ -63,6 +63,8 @@ export const familyPlanFieldsStyles = sva({
       bg: 'bg.primary',
       color: 'text.secondary',
       cursor: 'pointer',
+      whiteSpace: 'nowrap',
+      flexShrink: 0,
       transition: 'all 0.15s ease',
       _hover: { borderColor: 'accent.primary', color: 'text.primary' },
       _focusVisible: { outline: '2px solid', outlineColor: 'accent.primary', outlineOffset: '2px' },

@@ -67,7 +67,7 @@ export function SubscriptionCard({
               <span className={classes.category}>{subscription.category}</span>
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div className={sharedClasses.badgeGroup}>
             {subscription.isFamily && (
               <div className={sharedClasses.badge}>
                 <Users size={11} />

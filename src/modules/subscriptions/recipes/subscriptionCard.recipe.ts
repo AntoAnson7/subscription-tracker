@@ -42,8 +42,14 @@ export const subscriptionCardStyles = sva({
         _hover: { boxShadow: '0 14px 40px rgba(0, 0, 0, 0.6)' },
       },
     },
-    header: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: '200' },
-    brandWrapper: { display: 'flex', alignItems: 'center', gap: '150' },
+    header: {
+      display: 'flex',
+      alignItems: 'flex-start',
+      justifyContent: 'space-between',
+      gap: '100',
+      mb: '200',
+    },
+    brandWrapper: { display: 'flex', alignItems: 'center', gap: '150', minWidth: 0, flex: 1 },
     iconBox: {
       width: '46px',
       height: '46px',
