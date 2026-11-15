@@ -64,7 +64,6 @@ export const chartCardStyles = sva({
     },
     chartArea: {
       width: '100%',
-      minHeight: '260px',
       position: 'relative',
     },
     legendList: {

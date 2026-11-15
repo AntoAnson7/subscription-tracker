@@ -48,7 +48,7 @@ export function CategorySpendCard({
       </div>
 
       <div className={classes.chartArea} style={{ height: '220px' }}>
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height={220} minWidth={0} minHeight={0} debounce={50}>
           <PieChart>
             <Pie
               data={chartData}

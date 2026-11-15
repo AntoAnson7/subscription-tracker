@@ -8,6 +8,7 @@ import { AppBackground } from '@/modules/common/components/AppBackground';
 import { Header } from '@/modules/common/components/Header';
 import { ViewControls } from '@/modules/common/components/ViewControls';
 import { CurrencyProvider } from '@/modules/common/context/CurrencyProvider';
+import { useTabParam } from '@/modules/common/hooks/useTabParam';
 import { layoutStyles } from '@/modules/common/recipes/layout.recipe';
 import { CurrencyCode } from '@/modules/common/types/currency.types';
 import { RunRateHero } from '@/modules/dashboard/components/RunRateHero';
@@ -21,9 +22,7 @@ import { useAppSubscriptions } from '@/modules/subscriptions/hooks/useAppSubscri
 export function App() {
   const [mockLoading] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
-  const [activeTab, setActiveTab] = useState<'subscriptions' | 'calendar' | 'analytics'>(
-    'subscriptions'
-  );
+  const [activeTab, setActiveTab] = useTabParam();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 

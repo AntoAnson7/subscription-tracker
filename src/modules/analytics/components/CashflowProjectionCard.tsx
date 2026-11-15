@@ -28,7 +28,7 @@ export function CashflowProjectionCard({
       </div>
 
       <div className={classes.chartArea} style={{ height: '260px' }}>
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height={260} minWidth={0} minHeight={0} debounce={50}>
           <BarChart data={cashflow} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
             <XAxis
               dataKey="label"
