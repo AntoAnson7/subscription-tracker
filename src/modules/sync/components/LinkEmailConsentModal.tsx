@@ -3,6 +3,7 @@ import { Check, Mail, ShieldCheck, X } from 'lucide-react';
 import { Checkbox } from '@/modules/common/components/Checkbox';
 import { useClickOutside } from '@/modules/common/hooks/useClickOutside';
 import { useFocusTrap } from '@/modules/common/hooks/useFocusTrap';
+import { useLockBodyScroll } from '@/modules/common/hooks/useLockBodyScroll';
 import { consentFormStyles } from '@/modules/sync/recipes/consentForm.recipe';
 import { consentModalStyles } from '@/modules/sync/recipes/consentModal.recipe';
 import { EmailProvider } from '@/modules/sync/types/sync.types';
@@ -24,6 +25,7 @@ export function LinkEmailConsentModal({ isOpen, onClose, onLink }: LinkEmailCons
 
   useClickOutside(modalRef, onClose, isOpen);
   useFocusTrap(modalRef, isOpen, { onEscape: onClose });
+  useLockBodyScroll(isOpen);
 
   if (!isOpen) return null;
 

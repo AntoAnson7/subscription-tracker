@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, List } from 'lucide-react';
 import { useCurrency } from '@/modules/common/hooks/useCurrency';
 import { calendarStyles } from '@/modules/calendar/recipes/calendar.recipe';
 
@@ -6,6 +6,8 @@ interface CalendarHeaderProps {
   monthName: string;
   totalSpend: number;
   renewalCount: number;
+  viewMode: 'month' | 'schedule';
+  onViewModeChange: (mode: 'month' | 'schedule') => void;
   onPrevMonth: () => void;
   onNextMonth: () => void;
   onGoToToday: () => void;
@@ -15,6 +17,8 @@ export function CalendarHeader({
   monthName,
   totalSpend,
   renewalCount,
+  viewMode,
+  onViewModeChange,
   onPrevMonth,
   onNextMonth,
   onGoToToday,
@@ -30,6 +34,45 @@ export function CalendarHeader({
         </div>
 
         <div className={classes.navGroup}>
+          <div className={classes.viewToggle}>
+            <button
+              type="button"
+              onClick={() => onViewModeChange('month')}
+              className={classes.viewBtn}
+              style={{
+                background: viewMode === 'month' ? 'var(--colors-bg-primary)' : 'transparent',
+                color:
+                  viewMode === 'month'
+                    ? 'var(--colors-text-primary)'
+                    : 'var(--colors-text-secondary)',
+                boxShadow: viewMode === 'month' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+              }}
+              aria-label="Month view"
+              aria-pressed={viewMode === 'month'}
+            >
+              <CalendarIcon size={12} />
+              <span>Month</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => onViewModeChange('schedule')}
+              className={classes.viewBtn}
+              style={{
+                background: viewMode === 'schedule' ? 'var(--colors-bg-primary)' : 'transparent',
+                color:
+                  viewMode === 'schedule'
+                    ? 'var(--colors-text-primary)'
+                    : 'var(--colors-text-secondary)',
+                boxShadow: viewMode === 'schedule' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+              }}
+              aria-label="Schedule view"
+              aria-pressed={viewMode === 'schedule'}
+            >
+              <List size={12} />
+              <span>Schedule</span>
+            </button>
+          </div>
+
           <button
             type="button"
             onClick={onGoToToday}
@@ -44,7 +87,7 @@ export function CalendarHeader({
             className={classes.navBtn}
             aria-label="Previous month"
           >
-            <ChevronLeft size={18} />
+            <ChevronLeft size={16} />
           </button>
           <button
             type="button"
@@ -52,7 +95,7 @@ export function CalendarHeader({
             className={classes.navBtn}
             aria-label="Next month"
           >
-            <ChevronRight size={18} />
+            <ChevronRight size={16} />
           </button>
         </div>
       </div>

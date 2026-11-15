@@ -7,6 +7,7 @@ import { CreateProfileData, TrackingFocus } from '@/modules/auth/types/auth.type
 import { CustomInput } from '@/modules/common/components/CustomInput';
 import { CustomSelect } from '@/modules/common/components/CustomSelect';
 import { useFocusTrap } from '@/modules/common/hooks/useFocusTrap';
+import { useLockBodyScroll } from '@/modules/common/hooks/useLockBodyScroll';
 
 interface OnboardingModalProps {
   isOpen: boolean;
@@ -36,6 +37,7 @@ export function OnboardingModal({ isOpen, user, onSubmit }: OnboardingModalProps
   const { formData, submitting, updateField, handleSubmit } = useOnboardingForm(user, onSubmit);
 
   useFocusTrap(modalRef, isOpen);
+  useLockBodyScroll(isOpen);
 
   if (!isOpen || !user) return null;
 

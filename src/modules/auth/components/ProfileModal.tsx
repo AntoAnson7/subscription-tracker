@@ -5,6 +5,7 @@ import { profileModalStyles } from '@/modules/auth/recipes/profileModal.recipe';
 import { UserProfile } from '@/modules/auth/types/auth.types';
 import { useClickOutside } from '@/modules/common/hooks/useClickOutside';
 import { useFocusTrap } from '@/modules/common/hooks/useFocusTrap';
+import { useLockBodyScroll } from '@/modules/common/hooks/useLockBodyScroll';
 import { LinkedAccountsSection } from '@/modules/sync/components/LinkedAccountsSection';
 import { LinkedEmailAccount } from '@/modules/sync/types/sync.types';
 
@@ -38,6 +39,7 @@ export function ProfileModal({
 
   useClickOutside(modalRef, onClose, isOpen);
   useFocusTrap(modalRef, isOpen, { onEscape: onClose });
+  useLockBodyScroll(isOpen);
 
   if (!isOpen) return null;
 
@@ -128,10 +130,12 @@ export function ProfileModal({
         />
 
         {user && (
-          <button type="button" onClick={handleSignOut} className={classes.signOutBtn}>
-            <LogOut size={16} />
-            <span>Sign out</span>
-          </button>
+          <div className={classes.signOutSection}>
+            <button type="button" onClick={handleSignOut} className={classes.signOutBtn}>
+              <LogOut size={16} />
+              <span>Sign out</span>
+            </button>
+          </div>
         )}
       </div>
     </div>

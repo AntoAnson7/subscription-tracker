@@ -33,8 +33,8 @@ export const consentModalStyles = sva({
       borderColor: 'border.subtle',
       bg: 'bg.primary',
       boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-      p: { base: '300', sm: '400' },
-      maxHeight: '90vh',
+      p: { base: '250', sm: '400' },
+      maxHeight: { base: 'calc(100dvh - 32px)', sm: 'calc(100dvh - 64px)' },
       overflowY: 'auto',
     },
     closeBtn: {

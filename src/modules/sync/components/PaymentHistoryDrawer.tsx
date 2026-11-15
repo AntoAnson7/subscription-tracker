@@ -3,6 +3,7 @@ import { CreditCard, X } from 'lucide-react';
 import { useCurrency } from '@/modules/common/hooks/useCurrency';
 import { useClickOutside } from '@/modules/common/hooks/useClickOutside';
 import { useFocusTrap } from '@/modules/common/hooks/useFocusTrap';
+import { useLockBodyScroll } from '@/modules/common/hooks/useLockBodyScroll';
 import { paymentDrawerStyles } from '@/modules/sync/recipes/paymentDrawer.recipe';
 import { PaymentRecord } from '@/modules/sync/types/sync.types';
 
@@ -25,6 +26,7 @@ export function PaymentHistoryDrawer({
 
   useClickOutside(drawerRef, onClose, isOpen);
   useFocusTrap(drawerRef, isOpen, { onEscape: onClose });
+  useLockBodyScroll(isOpen);
 
   if (!isOpen) return null;
 

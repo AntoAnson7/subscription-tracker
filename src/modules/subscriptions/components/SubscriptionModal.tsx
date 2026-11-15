@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { Trash2, X } from 'lucide-react';
 import { useClickOutside } from '@/modules/common/hooks/useClickOutside';
 import { useFocusTrap } from '@/modules/common/hooks/useFocusTrap';
+import { useLockBodyScroll } from '@/modules/common/hooks/useLockBodyScroll';
 import { getBrandIconUrl } from '@/modules/common/utils/icons.utils';
 import { SubscriptionFormFields } from '@/modules/subscriptions/components/SubscriptionFormFields';
 import { useSubscriptionForm } from '@/modules/subscriptions/hooks/useSubscriptionForm';
@@ -48,6 +49,7 @@ export function SubscriptionModal({
 
   useClickOutside(modalRef, handleClose, isOpen);
   useFocusTrap(modalRef, isOpen, { onEscape: handleClose });
+  useLockBodyScroll(isOpen);
 
   if (!isOpen) return null;
   const { formData } = form;

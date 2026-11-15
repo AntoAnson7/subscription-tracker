@@ -7,6 +7,8 @@ export const calendarCellStyles = sva({
     'dayNumber',
     'todayIndicator',
     'renewalContent',
+    'dotsRow',
+    'brandDot',
     'iconsRow',
     'microIcon',
     'microMore',
@@ -18,8 +20,8 @@ export const calendarCellStyles = sva({
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
-      minHeight: { base: '64px', md: '84px' },
-      p: { base: '50', md: '100' },
+      minHeight: { base: '48px', sm: '64px', md: '84px' },
+      p: { base: '4px', md: '100' },
       borderRadius: 'lg',
       border: '1px solid',
       borderColor: 'border.subtle',
@@ -28,10 +30,7 @@ export const calendarCellStyles = sva({
       cursor: 'pointer',
       transition: 'all 0.15s ease',
       userSelect: 'none',
-      _hover: {
-        background: 'bg.hover',
-        borderColor: 'border.default',
-      },
+      _hover: { background: 'bg.hover', borderColor: 'border.default' },
       _focusVisible: {
         outline: '2px solid',
         outlineColor: 'accent.primary',
@@ -64,12 +63,24 @@ export const calendarCellStyles = sva({
     renewalContent: {
       display: 'flex',
       flexDirection: 'column',
-      gap: '50',
+      gap: '4px',
       mt: 'auto',
       width: '100%',
     },
+    dotsRow: {
+      display: { base: 'flex', sm: 'none' },
+      alignItems: 'center',
+      gap: '3px',
+      flexWrap: 'nowrap',
+    },
+    brandDot: {
+      width: '5px',
+      height: '5px',
+      borderRadius: 'full',
+      flexShrink: 0,
+    },
     iconsRow: {
-      display: 'flex',
+      display: { base: 'none', sm: 'flex' },
       alignItems: 'center',
       gap: '4px',
       flexWrap: 'wrap',
@@ -93,6 +104,7 @@ export const calendarCellStyles = sva({
       lineHeight: '1',
     },
     costPill: {
+      display: { base: 'none', sm: 'block' },
       fontSize: { base: '10px', md: '11px' },
       fontWeight: '700',
       fontVariantNumeric: 'tabular-nums',
@@ -106,18 +118,13 @@ export const calendarCellStyles = sva({
       overflow: 'hidden',
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
-      _dark: {
-        background: 'rgba(245, 158, 11, 0.15)',
-        color: '#F59E0B',
-      },
+      _dark: { background: 'rgba(245, 158, 11, 0.15)', color: '#F59E0B' },
     },
   },
   variants: {
     isCurrentMonth: {
       true: {},
-      false: {
-        cell: { opacity: 0.35 },
-      },
+      false: { cell: { opacity: 0.35 } },
     },
     isSelected: {
       true: {
@@ -125,17 +132,13 @@ export const calendarCellStyles = sva({
           borderColor: 'accent.primary',
           background: 'rgba(217, 119, 6, 0.04)',
           boxShadow: '0 0 0 1px var(--colors-accent-primary)',
-          _dark: {
-            background: 'rgba(245, 158, 11, 0.08)',
-          },
+          _dark: { background: 'rgba(245, 158, 11, 0.08)' },
         },
       },
       false: {},
     },
     isToday: {
-      true: {
-        cell: { borderColor: 'accent.primary' },
-      },
+      true: { cell: { borderColor: 'accent.primary' } },
       false: {},
     },
   },

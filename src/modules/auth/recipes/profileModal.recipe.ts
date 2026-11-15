@@ -21,6 +21,7 @@ export const profileModalStyles = sva({
     'infoCard',
     'infoLabel',
     'infoValue',
+    'signOutSection',
     'signOutBtn',
   ],
   base: {
@@ -36,11 +37,13 @@ export const profileModalStyles = sva({
     modal: {
       width: '100%',
       maxWidth: '420px',
+      maxHeight: { base: 'calc(100dvh - 32px)', sm: 'calc(100dvh - 64px)' },
+      overflowY: 'auto',
       background: 'bg.primary',
       borderRadius: '2xl',
       border: '1px solid',
       borderColor: 'border.default',
-      p: '400',
+      p: { base: '250', sm: '400' },
       boxShadow: '0 24px 60px rgba(0, 0, 0, 0.25)',
       position: 'relative',
       textAlign: 'center',
@@ -111,17 +114,14 @@ export const profileModalStyles = sva({
       border: '1px solid',
       borderColor: 'border.subtle',
     },
-    infoLabel: {
-      fontSize: '12px',
-      fontWeight: '500',
-      color: 'text.secondary',
-      display: 'block',
-    },
-    infoValue: {
-      fontSize: '14px',
-      fontWeight: '700',
-      color: 'text.primary',
-      display: 'block',
+    infoLabel: { fontSize: '12px', fontWeight: '500', color: 'text.secondary', display: 'block' },
+    infoValue: { fontSize: '14px', fontWeight: '700', color: 'text.primary', display: 'block' },
+    signOutSection: {
+      mt: '300',
+      pt: '250',
+      borderTop: '1px solid',
+      borderTopColor: 'border.subtle',
+      width: '100%',
     },
     signOutBtn: {
       width: '100%',

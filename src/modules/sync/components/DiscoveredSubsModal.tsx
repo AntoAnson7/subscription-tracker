@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { Sparkles, X } from 'lucide-react';
 import { useClickOutside } from '@/modules/common/hooks/useClickOutside';
 import { useFocusTrap } from '@/modules/common/hooks/useFocusTrap';
+import { useLockBodyScroll } from '@/modules/common/hooks/useLockBodyScroll';
 import { DiscoveredSubCard } from '@/modules/sync/components/DiscoveredSubCard';
 import { syncModalStyles } from '@/modules/sync/recipes/syncModal.recipe';
 import { DiscoveredSubscription } from '@/modules/sync/types/sync.types';
@@ -26,6 +27,7 @@ export function DiscoveredSubsModal({
 
   useClickOutside(modalRef, onClose, isOpen);
   useFocusTrap(modalRef, isOpen, { onEscape: onClose });
+  useLockBodyScroll(isOpen && discoveredSubs.length > 0);
 
   if (!isOpen || discoveredSubs.length === 0) return null;
 

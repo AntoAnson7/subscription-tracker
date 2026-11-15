@@ -4,6 +4,7 @@ import { GoogleIcon } from '@/modules/auth/components/GoogleIcon';
 import { authModalStyles } from '@/modules/auth/recipes/authModal.recipe';
 import { useClickOutside } from '@/modules/common/hooks/useClickOutside';
 import { useFocusTrap } from '@/modules/common/hooks/useFocusTrap';
+import { useLockBodyScroll } from '@/modules/common/hooks/useLockBodyScroll';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -18,6 +19,7 @@ export function AuthModal({ isOpen, onClose, onGoogleSignIn, error }: AuthModalP
 
   useClickOutside(modalRef, onClose, isOpen);
   useFocusTrap(modalRef, isOpen, { onEscape: onClose });
+  useLockBodyScroll(isOpen);
 
   if (!isOpen) return null;
 

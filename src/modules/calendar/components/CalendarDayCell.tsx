@@ -40,6 +40,18 @@ export function CalendarDayCell({ day, onSelect }: CalendarDayCellProps) {
 
       {day.subscriptions.length > 0 && (
         <div className={classes.renewalContent}>
+          <div className={classes.dotsRow}>
+            {visibleSubs.map((sub) => (
+              <span
+                key={sub.id}
+                className={classes.brandDot}
+                style={{ backgroundColor: sub.brandColor || '#F59E0B' }}
+                title={`${sub.name}: ${format(sub.cost)}`}
+              />
+            ))}
+            {remainingCount > 0 && <span className={classes.microMore}>+{remainingCount}</span>}
+          </div>
+
           <div className={classes.iconsRow}>
             {visibleSubs.map((sub) => {
               const iconUrl = getBrandIconUrl(sub.iconSlug, sub.websiteUrl);

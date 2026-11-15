@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { CalendarAgendaView } from '@/modules/calendar/components/CalendarAgendaView';
 import { CalendarDayDetails } from '@/modules/calendar/components/CalendarDayDetails';
 import { CalendarGrid } from '@/modules/calendar/components/CalendarGrid';
 import { CalendarHeader } from '@/modules/calendar/components/CalendarHeader';
@@ -12,6 +14,8 @@ interface MonthlyCalendarProps {
 
 export function MonthlyCalendar({ subscriptions, onEdit }: MonthlyCalendarProps) {
   const classes = calendarStyles();
+  const [viewMode, setViewMode] = useState<'month' | 'schedule'>('month');
+
   const {
     monthName,
     calendarDays,
@@ -31,14 +35,21 @@ export function MonthlyCalendar({ subscriptions, onEdit }: MonthlyCalendarProps)
             monthName={monthName}
             totalSpend={monthSummary.totalSpend}
             renewalCount={monthSummary.renewalCount}
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
             onPrevMonth={prevMonth}
             onNextMonth={nextMonth}
             onGoToToday={goToToday}
           />
-          <CalendarGrid days={calendarDays} onSelectDate={selectDate} />
+
+          {viewMode === 'month' ? (
+            <CalendarGrid days={calendarDays} onSelectDate={selectDate} />
+          ) : (
+            <CalendarAgendaView days={calendarDays} monthName={monthName} onEdit={onEdit} />
+          )}
         </div>
 
-        <CalendarDayDetails selectedDay={selectedDay} onEdit={onEdit} />
+        {viewMode === 'month' && <CalendarDayDetails selectedDay={selectedDay} onEdit={onEdit} />}
       </div>
     </section>
   );
