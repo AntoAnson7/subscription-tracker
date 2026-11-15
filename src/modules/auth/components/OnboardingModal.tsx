@@ -71,39 +71,43 @@ export function OnboardingModal({ isOpen, user, onSubmit }: OnboardingModalProps
         </header>
 
         <form onSubmit={handleSubmit} className={classes.form}>
-          <div className={classes.field}>
-            <label className={classes.label}>Connected Google account</label>
-            <div className={classes.emailBadge}>
-              <CheckCircle2 size={14} color="#10B981" />
-              <span>{user.email}</span>
+          <div className={classes.body}>
+            <div className={classes.field}>
+              <label className={classes.label}>Connected Google account</label>
+              <div className={classes.emailBadge}>
+                <CheckCircle2 size={14} color="#10B981" />
+                <span>{user.email}</span>
+              </div>
             </div>
+
+            <CustomInput
+              label="Full name"
+              required
+              value={formData.fullName}
+              onChange={(e) => updateField('fullName', e.target.value)}
+              placeholder="e.g. Jane Doe"
+            />
+
+            <CustomSelect
+              label="Preferred currency"
+              value={formData.preferredCurrency}
+              onChange={(val) => updateField('preferredCurrency', val)}
+              options={CURRENCY_OPTIONS}
+            />
+
+            <CustomSelect
+              label="Tracking focus"
+              value={formData.trackingFocus}
+              onChange={(val) => updateField('trackingFocus', val as TrackingFocus)}
+              options={FOCUS_OPTIONS}
+            />
           </div>
 
-          <CustomInput
-            label="Full name"
-            required
-            value={formData.fullName}
-            onChange={(e) => updateField('fullName', e.target.value)}
-            placeholder="e.g. Jane Doe"
-          />
-
-          <CustomSelect
-            label="Preferred currency"
-            value={formData.preferredCurrency}
-            onChange={(val) => updateField('preferredCurrency', val)}
-            options={CURRENCY_OPTIONS}
-          />
-
-          <CustomSelect
-            label="Tracking focus"
-            value={formData.trackingFocus}
-            onChange={(val) => updateField('trackingFocus', val as TrackingFocus)}
-            options={FOCUS_OPTIONS}
-          />
-
-          <button type="submit" disabled={submitting} className={classes.submitBtn}>
-            {submitting ? 'Setting up...' : 'Create account & start tracking'}
-          </button>
+          <div className={classes.footer}>
+            <button type="submit" disabled={submitting} className={classes.submitBtn}>
+              {submitting ? 'Setting up...' : 'Create account & start tracking'}
+            </button>
+          </div>
         </form>
       </div>
     </div>

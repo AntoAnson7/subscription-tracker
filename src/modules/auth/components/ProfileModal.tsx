@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { CheckCircle2, LogOut, X } from 'lucide-react';
 import { User } from '@supabase/supabase-js';
+import { profileInfoCardStyles } from '@/modules/auth/recipes/profileInfoCard.recipe';
 import { profileModalStyles } from '@/modules/auth/recipes/profileModal.recipe';
 import { UserProfile } from '@/modules/auth/types/auth.types';
 import { useClickOutside } from '@/modules/common/hooks/useClickOutside';
@@ -36,6 +37,7 @@ export function ProfileModal({
 }: ProfileModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const classes = profileModalStyles();
+  const cardClasses = profileInfoCardStyles();
 
   useClickOutside(modalRef, onClose, isOpen);
   useFocusTrap(modalRef, isOpen, { onEscape: onClose });
@@ -55,6 +57,9 @@ export function ProfileModal({
     'Guest User';
 
   const userInitial = displayName.slice(0, 2).toUpperCase();
+  const memberSince = user?.created_at
+    ? new Date(user.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+    : 'Recently';
 
   const handleSignOut = () => {
     onClose();
@@ -95,39 +100,34 @@ export function ProfileModal({
           </div>
         </header>
 
-        <div className={classes.infoGrid}>
-          <div className={classes.infoCard}>
-            <span className={classes.infoLabel}>Currency</span>
-            <span className={classes.infoValue}>{profile?.preferredCurrency ?? 'INR (₹)'}</span>
+        <div className={classes.body}>
+          <div className={classes.infoGrid}>
+            <div className={cardClasses.card}>
+              <span className={cardClasses.label}>Currency</span>
+              <span className={cardClasses.value}>{profile?.preferredCurrency ?? 'INR (₹)'}</span>
+            </div>
+            <div className={cardClasses.card}>
+              <span className={cardClasses.label}>Tracking focus</span>
+              <span className={cardClasses.value}>{profile?.trackingFocus ?? 'Personal'}</span>
+            </div>
+            <div className={cardClasses.card}>
+              <span className={cardClasses.label}>Account status</span>
+              <span className={cardClasses.value}>Active</span>
+            </div>
+            <div className={cardClasses.card}>
+              <span className={cardClasses.label}>Member since</span>
+              <span className={cardClasses.value}>{memberSince}</span>
+            </div>
           </div>
-          <div className={classes.infoCard}>
-            <span className={classes.infoLabel}>Tracking focus</span>
-            <span className={classes.infoValue}>{profile?.trackingFocus ?? 'Personal'}</span>
-          </div>
-          <div className={classes.infoCard}>
-            <span className={classes.infoLabel}>Account status</span>
-            <span className={classes.infoValue}>Active</span>
-          </div>
-          <div className={classes.infoCard}>
-            <span className={classes.infoLabel}>Member since</span>
-            <span className={classes.infoValue}>
-              {user?.created_at
-                ? new Date(user.created_at).toLocaleDateString('en-US', {
-                    month: 'short',
-                    year: 'numeric',
-                  })
-                : 'Recently'}
-            </span>
-          </div>
-        </div>
 
-        <LinkedAccountsSection
-          accounts={linkedAccounts}
-          isSyncing={isSyncing}
-          onOpenLinkModal={onOpenLinkModal}
-          onScan={onScanEmails}
-          onUnlink={onUnlinkAccount}
-        />
+          <LinkedAccountsSection
+            accounts={linkedAccounts}
+            isSyncing={isSyncing}
+            onOpenLinkModal={onOpenLinkModal}
+            onScan={onScanEmails}
+            onUnlink={onUnlinkAccount}
+          />
+        </div>
 
         {user && (
           <div className={classes.signOutSection}>

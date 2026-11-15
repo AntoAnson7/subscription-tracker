@@ -71,61 +71,64 @@ export function LinkEmailConsentModal({ isOpen, onClose, onLink }: LinkEmailCons
           <p className={classes.subtitle}>Auto-detect subscriptions, renewals, and debit alerts.</p>
         </header>
 
-        <form onSubmit={handleSubmit}>
-          <div className={formClasses.inputGroup}>
-            <label htmlFor="email-input">Email address</label>
-            <input
-              id="email-input"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="e.g. alex@gmail.com"
-              className={formClasses.textInput}
-              required
-            />
-          </div>
-
-          <div className={formClasses.privacyBox}>
-            <div>
-              <ShieldCheck size={16} />
-              <span>
-                <strong>Read-only:</strong> Only transactional receipts and debits are processed.
-              </span>
+        <form onSubmit={handleSubmit} className={classes.form}>
+          <div className={classes.body}>
+            <div className={formClasses.inputGroup}>
+              <label htmlFor="email-input">Email address</label>
+              <input
+                id="email-input"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="e.g. alex@gmail.com"
+                className={formClasses.textInput}
+                required
+              />
             </div>
-            <div>
-              <Mail size={16} />
-              <span>
-                <strong>Targeted search:</strong> Private personal emails are never accessed.
-              </span>
-            </div>
-            <div>
-              <Check size={16} />
-              <span>
-                <strong>Zero storage:</strong> Email bodies are never saved. You review every item.
-              </span>
-            </div>
-          </div>
 
-          <div className={formClasses.consentRow}>
-            <Checkbox
-              id="consent-checkbox"
-              checked={hasConsented}
-              onChange={setHasConsented}
-              label="I authorize SubTrack to scan transactional emails. I can unlink anytime."
-            />
-          </div>
+            <div className={formClasses.privacyBox}>
+              <div>
+                <ShieldCheck size={16} />
+                <span>
+                  <strong>Read-only:</strong> Only transactional receipts and debits are processed.
+                </span>
+              </div>
+              <div>
+                <Mail size={16} />
+                <span>
+                  <strong>Targeted search:</strong> Private personal emails are never accessed.
+                </span>
+              </div>
+              <div>
+                <Check size={16} />
+                <span>
+                  <strong>Zero storage:</strong> Email bodies are never saved. You review every
+                  item.
+                </span>
+              </div>
+            </div>
 
-          {error && (
-            <p
-              style={{
-                color: 'var(--colors-status-danger)',
-                fontSize: '12px',
-                marginBottom: '12px',
-              }}
-            >
-              {error}
-            </p>
-          )}
+            <div className={formClasses.consentRow}>
+              <Checkbox
+                id="consent-checkbox"
+                checked={hasConsented}
+                onChange={setHasConsented}
+                label="I authorize SubTrack to scan transactional emails. I can unlink anytime."
+              />
+            </div>
+
+            {error && (
+              <p
+                style={{
+                  color: 'var(--colors-status-danger)',
+                  fontSize: '12px',
+                  marginBottom: '12px',
+                }}
+              >
+                {error}
+              </p>
+            )}
+          </div>
 
           <div className={classes.actionsRow}>
             <button type="button" onClick={onClose} className={classes.cancelBtn}>

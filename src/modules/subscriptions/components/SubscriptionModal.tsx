@@ -89,13 +89,15 @@ export function SubscriptionModal({
         </header>
 
         <form onSubmit={form.handleSubmit} className={classes.form}>
-          <SubscriptionFormFields
-            formData={formData}
-            updateField={form.updateField}
-            suggestions={form.suggestions}
-            onNameChange={form.handleNameChange}
-            onSelectPreset={form.applyPreset}
-          />
+          <div className={classes.body}>
+            <SubscriptionFormFields
+              formData={formData}
+              updateField={form.updateField}
+              suggestions={form.suggestions}
+              onNameChange={form.handleNameChange}
+              onSelectPreset={form.applyPreset}
+            />
+          </div>
 
           <div className={classes.footer}>
             {isEditing && onDelete && (
