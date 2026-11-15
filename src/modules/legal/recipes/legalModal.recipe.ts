@@ -1,19 +1,7 @@
 import { sva } from 'styled-system/css';
 
 export const legalModalStyles = sva({
-  slots: [
-    'backdrop',
-    'modal',
-    'header',
-    'title',
-    'closeBtn',
-    'tabBar',
-    'tabBtn',
-    'body',
-    'section',
-    'calloutBox',
-    'footerNote',
-  ],
+  slots: ['backdrop', 'modal', 'header', 'title', 'closeBtn', 'tabBar', 'tabBtn', 'body'],
   base: {
     backdrop: {
       position: 'fixed',
@@ -46,6 +34,7 @@ export const legalModalStyles = sva({
       pb: '150',
       borderBottom: '1px solid',
       borderColor: 'border.subtle',
+      flexShrink: 0,
     },
     title: {
       fontSize: { base: '18px', sm: '20px' },
@@ -109,42 +98,6 @@ export const legalModalStyles = sva({
       overflowY: 'auto',
       px: { base: '250', sm: '350' },
       py: { base: '200', sm: '300' },
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '250',
-      '& p': { fontSize: '13px', lineHeight: '1.6', color: 'text.secondary' },
-    },
-    section: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '100',
-      '& h3': { fontSize: '14px', fontWeight: '700', color: 'text.primary' },
-    },
-    calloutBox: {
-      p: '200',
-      borderRadius: 'lg',
-      bg: 'bg.secondary',
-      border: '1px solid',
-      borderColor: 'accent.primary',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '100',
-      '& > div': {
-        fontSize: '13px',
-        fontWeight: '700',
-        color: 'accent.primary',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '100',
-      },
-    },
-    footerNote: {
-      fontSize: '11px',
-      color: 'text.tertiary',
-      mt: '150',
-      pt: '150',
-      borderTop: '1px solid',
-      borderColor: 'border.subtle',
     },
   },
 });

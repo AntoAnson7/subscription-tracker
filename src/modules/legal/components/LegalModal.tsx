@@ -3,7 +3,7 @@ import { X } from 'lucide-react';
 import { useClickOutside } from '@/modules/common/hooks/useClickOutside';
 import { useFocusTrap } from '@/modules/common/hooks/useFocusTrap';
 import { useLockBodyScroll } from '@/modules/common/hooks/useLockBodyScroll';
-import { LegalContentSection } from '@/modules/legal/components/LegalContentSection';
+import { MarkdownRenderer } from '@/modules/legal/components/MarkdownRenderer';
 import { ALL_LEGAL_DOCUMENTS, getLegalDocument } from '@/modules/legal/constants/legalDocuments';
 import { legalModalStyles } from '@/modules/legal/recipes/legalModal.recipe';
 import { LegalTab } from '@/modules/legal/types/legal.types';
@@ -45,7 +45,7 @@ export function LegalModal({ isOpen, activeTab, onTabChange, onClose }: LegalMod
 
         <header className={classes.header}>
           <h2 id="legal-modal-title" className={classes.title}>
-            {doc.title}
+            {doc.tabLabel}
           </h2>
 
           <nav className={classes.tabBar} aria-label="Legal document tabs">
@@ -64,13 +64,7 @@ export function LegalModal({ isOpen, activeTab, onTabChange, onClose }: LegalMod
         </header>
 
         <div className={classes.body}>
-          {doc.sections.map((section) => (
-            <LegalContentSection key={section.heading} section={section} />
-          ))}
-
-          <div className={classes.footerNote}>
-            Effective & Last Updated: {doc.lastUpdated} • SubTrack Application
-          </div>
+          <MarkdownRenderer content={doc.markdown} />
         </div>
       </div>
     </div>
