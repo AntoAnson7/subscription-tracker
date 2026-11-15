@@ -1,6 +1,8 @@
 import { User } from '@supabase/supabase-js';
 import { AuthModals } from '@/modules/auth/components/AuthModals';
 import { CreateProfileData, UserProfile } from '@/modules/auth/types/auth.types';
+import { LegalModal } from '@/modules/legal/components/LegalModal';
+import { LegalTab } from '@/modules/legal/types/legal.types';
 import { SubscriptionModal } from '@/modules/subscriptions/components/SubscriptionModal';
 import { SubscriptionFormData } from '@/modules/subscriptions/types/form.types';
 import { Subscription } from '@/modules/subscriptions/types/subscription.types';
@@ -25,6 +27,10 @@ interface AppModalsProps {
   profile: UserProfile | null;
   onSignOut: () => Promise<void>;
   syncManager: ReturnType<typeof useSyncManager>;
+  isLegalOpen: boolean;
+  activeLegalTab: LegalTab;
+  onCloseLegal: () => void;
+  onLegalTabChange: (tab: LegalTab) => void;
 }
 
 export function AppModals({
@@ -45,6 +51,10 @@ export function AppModals({
   profile,
   onSignOut,
   syncManager,
+  isLegalOpen,
+  activeLegalTab,
+  onCloseLegal,
+  onLegalTabChange,
 }: AppModalsProps) {
   return (
     <>
@@ -87,6 +97,13 @@ export function AppModals({
         activeSubForPayments={syncManager.activeSubForPayments}
         onClosePayments={() => syncManager.setActiveSubForPayments(null)}
         getPaymentsForSub={syncManager.getPaymentsForSubscription}
+      />
+
+      <LegalModal
+        isOpen={isLegalOpen}
+        activeTab={activeLegalTab}
+        onClose={onCloseLegal}
+        onTabChange={onLegalTabChange}
       />
     </>
   );
