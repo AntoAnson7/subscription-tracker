@@ -11,6 +11,7 @@ export const tokens = {
   spacing: {
     '0': { value: '0px' },
     '50': { value: '4px' },
+    '75': { value: '6px' },
     '100': { value: '8px' },
     '150': { value: '12px' },
     '200': { value: '16px' },
@@ -24,6 +25,7 @@ export const tokens = {
   sizes: {
     '0': { value: '0px' },
     '50': { value: '4px' },
+    '75': { value: '6px' },
     '100': { value: '8px' },
     '150': { value: '12px' },
     '200': { value: '16px' },
@@ -38,6 +40,7 @@ export const tokens = {
     none: { value: '0px' },
     '0': { value: '0px' },
     '50': { value: '4px' },
+    '75': { value: '6px' },
     '100': { value: '8px' },
     '150': { value: '12px' },
     '200': { value: '16px' },

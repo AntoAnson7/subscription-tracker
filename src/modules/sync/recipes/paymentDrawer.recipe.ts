@@ -108,6 +108,7 @@ export const paymentDrawerStyles = sva({
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
+      flexWrap: 'wrap',
       gap: '150',
       mb: '150',
     },

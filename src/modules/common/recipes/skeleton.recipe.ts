@@ -95,7 +95,7 @@ export const skeletonStyles = sva({
     },
     tableRow: {
       borderBottom: '1px solid',
-      borderColor: 'border.subtle',
+      borderBottomColor: 'border.subtle',
     },
     bone: {
       position: 'relative',

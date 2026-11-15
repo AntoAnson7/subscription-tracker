@@ -1,3 +1,4 @@
+import { Checkbox } from '@/modules/common/components/Checkbox';
 import { useCurrency } from '@/modules/common/hooks/useCurrency';
 import { getBrandIconUrl } from '@/modules/common/utils/icons.utils';
 import { syncCardStyles } from '@/modules/sync/recipes/syncCard.recipe';
@@ -16,9 +17,13 @@ export function DiscoveredSubCard({ item, onToggle }: DiscoveredSubCardProps) {
     item.iconSlug === 'apple' || item.iconSlug === 'openai' || item.iconSlug === 'github';
 
   return (
-    <label className={classes.card} style={{ cursor: 'pointer' }}>
+    <div className={classes.card} onClick={() => onToggle(item.id)} style={{ cursor: 'pointer' }}>
       <div className={classes.cardLeft}>
-        <input type="checkbox" checked={item.isSelected} onChange={() => onToggle(item.id)} />
+        <Checkbox
+          checked={item.isSelected}
+          onChange={() => onToggle(item.id)}
+          ariaLabel={`Select ${item.name}`}
+        />
         <div
           className={classes.iconBox}
           style={{ backgroundColor: `${item.brandColor}18`, color: item.brandColor }}
@@ -49,6 +54,6 @@ export function DiscoveredSubCard({ item, onToggle }: DiscoveredSubCardProps) {
         <div>{format(item.cost)}</div>
         <span>/ {item.cycle}</span>
       </div>
-    </label>
+    </div>
   );
 }

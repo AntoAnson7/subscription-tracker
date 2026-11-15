@@ -114,7 +114,7 @@ export const datePickerStyles = sva({
       mt: '100',
       pt: '100',
       borderTop: '1px solid',
-      borderColor: 'border.subtle',
+      borderTopColor: 'border.subtle',
     },
     quickBtn: {
       fontSize: '11px',

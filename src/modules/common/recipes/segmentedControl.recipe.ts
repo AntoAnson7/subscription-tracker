@@ -17,6 +17,7 @@ export const segmentedControlStyles = sva({
       alignItems: 'center',
       justifyContent: 'center',
       flex: { base: '1', sm: 'none' },
+      minWidth: 0,
       gap: { base: '50', sm: '100' },
       px: { base: '75', sm: '150', md: '200' },
       py: '100',

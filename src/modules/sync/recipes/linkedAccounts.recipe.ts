@@ -21,7 +21,7 @@ export const linkedAccountsStyles = sva({
     'syncPill',
   ],
   base: {
-    section: { mt: '300', pt: '300', borderTop: '1px solid', borderColor: 'border.subtle' },
+    section: { mt: '300', pt: '300', borderTop: '1px solid', borderTopColor: 'border.subtle' },
     sectionHeader: {
       display: 'flex',
       alignItems: 'center',

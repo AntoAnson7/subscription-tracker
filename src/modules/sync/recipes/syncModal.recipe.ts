@@ -93,7 +93,7 @@ export const syncModalStyles = sva({
       gap: '150',
       pt: '200',
       borderTop: '1px solid',
-      borderColor: 'border.subtle',
+      borderTopColor: 'border.subtle',
     },
     dismissBtn: {
       px: '200',

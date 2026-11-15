@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { Check, Mail, ShieldCheck, X } from 'lucide-react';
+import { Checkbox } from '@/modules/common/components/Checkbox';
 import { useClickOutside } from '@/modules/common/hooks/useClickOutside';
 import { useFocusTrap } from '@/modules/common/hooks/useFocusTrap';
 import { consentFormStyles } from '@/modules/sync/recipes/consentForm.recipe';
@@ -103,14 +104,14 @@ export function LinkEmailConsentModal({ isOpen, onClose, onLink }: LinkEmailCons
             </div>
           </div>
 
-          <label className={formClasses.consentRow}>
-            <input
-              type="checkbox"
+          <div className={formClasses.consentRow}>
+            <Checkbox
+              id="consent-checkbox"
               checked={hasConsented}
-              onChange={(e) => setHasConsented(e.target.checked)}
+              onChange={setHasConsented}
+              label="I authorize SubTrack to scan transactional emails. I can unlink anytime."
             />
-            <span>I authorize SubTrack to scan transactional emails. I can unlink anytime.</span>
-          </label>
+          </div>
 
           {error && (
             <p
