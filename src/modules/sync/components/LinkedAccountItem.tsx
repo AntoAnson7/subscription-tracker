@@ -1,5 +1,5 @@
-import { Mail, RefreshCw, Trash2 } from 'lucide-react';
-import { linkedAccountsStyles } from '@/modules/sync/recipes/linkedAccounts.recipe';
+import { Mail, RefreshCw, Unlink } from 'lucide-react';
+import { linkedAccountItemStyles } from '@/modules/sync/recipes/linkedAccountItem.recipe';
 import { LinkedEmailAccount } from '@/modules/sync/types/sync.types';
 
 interface LinkedAccountItemProps {
@@ -15,7 +15,7 @@ export function LinkedAccountItem({
   onScan,
   onUnlink,
 }: LinkedAccountItemProps) {
-  const classes = linkedAccountsStyles();
+  const classes = linkedAccountItemStyles();
 
   const handleUnlink = () => {
     if (window.confirm(`Unlink ${account.email}? SubTrack will stop scanning this inbox.`)) {
@@ -60,7 +60,8 @@ export function LinkedAccountItem({
           aria-label={`Unlink ${account.email}`}
           title="Unlink account"
         >
-          <Trash2 size={13} />
+          <Unlink size={12} />
+          <span>Unlink</span>
         </button>
       </div>
     </div>

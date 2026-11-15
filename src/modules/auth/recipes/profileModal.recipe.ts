@@ -113,6 +113,7 @@ export const profileModalStyles = sva({
       overflowY: 'auto',
       px: { base: '200', sm: '300' },
       py: '200',
+      textAlign: 'left',
     },
     infoGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '150', textAlign: 'left' },
     signOutSection: {
