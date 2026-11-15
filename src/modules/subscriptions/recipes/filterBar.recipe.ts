@@ -33,7 +33,7 @@ export const filterBarStyles = sva({
       border: '1px solid',
       borderColor: 'border.default',
       background: 'bg.secondary',
-      fontSize: '14px',
+      fontSize: { base: '16px', sm: '14px' },
       outline: 'none',
       backdropFilter: 'blur(12px)',
       color: 'text.primary',

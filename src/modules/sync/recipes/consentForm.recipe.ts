@@ -22,7 +22,7 @@ export const consentFormStyles = sva({
       borderColor: 'border.default',
       bg: 'bg.secondary',
       color: 'text.primary',
-      fontSize: '14px',
+      fontSize: { base: '16px', sm: '14px' },
       _focus: { borderColor: 'accent.primary', outline: 'none' },
     },
     privacyBox: {

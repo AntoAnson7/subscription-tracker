@@ -42,7 +42,7 @@ export const customSelectStyles = sva({
       borderColor: 'border.default',
       background: 'bg.secondary',
       color: 'text.primary',
-      fontSize: '14px',
+      fontSize: { base: '16px', sm: '14px' },
       outline: 'none',
       cursor: 'pointer',
       textAlign: 'left',

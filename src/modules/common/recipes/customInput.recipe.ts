@@ -30,7 +30,7 @@ export const customInputStyles = sva({
       borderColor: 'border.default',
       background: 'bg.secondary',
       color: 'text.primary',
-      fontSize: '14px',
+      fontSize: { base: '16px', sm: '14px' },
       outline: 'none',
       transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
       _placeholder: {

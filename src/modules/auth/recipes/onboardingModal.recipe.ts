@@ -9,9 +9,9 @@ const inputBase = {
   borderColor: 'border.default',
   background: 'bg.secondary',
   color: 'text.primary',
-  fontSize: '14px',
+  fontSize: { base: '16px', sm: '14px' },
   outline: 'none',
-} as const;
+};
 
 export const onboardingModalStyles = sva({
   slots: [
