@@ -1,9 +1,12 @@
 import { useRef, useState } from 'react';
 import { Check, Mail, ShieldCheck, X } from 'lucide-react';
+import { GoogleIcon } from '@/modules/auth/components/GoogleIcon';
 import { Checkbox } from '@/modules/common/components/Checkbox';
 import { useClickOutside } from '@/modules/common/hooks/useClickOutside';
 import { useFocusTrap } from '@/modules/common/hooks/useFocusTrap';
 import { useLockBodyScroll } from '@/modules/common/hooks/useLockBodyScroll';
+import { GoogleCloudConfigBox } from '@/modules/sync/components/GoogleCloudConfigBox';
+import { useGoogleLink } from '@/modules/sync/hooks/useGoogleLink';
 import { consentFormStyles } from '@/modules/sync/recipes/consentForm.recipe';
 import { consentModalStyles } from '@/modules/sync/recipes/consentModal.recipe';
 import { EmailProvider } from '@/modules/sync/types/sync.types';
@@ -11,17 +14,26 @@ import { EmailProvider } from '@/modules/sync/types/sync.types';
 interface LinkEmailConsentModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onLink: (email: string, provider: EmailProvider, isSimulated?: boolean) => boolean;
+  onLink: (
+    email: string,
+    provider: EmailProvider,
+    isSimulated?: boolean,
+    accessToken?: string,
+    tokenExpiresAt?: number
+  ) => boolean;
 }
 
 export function LinkEmailConsentModal({ isOpen, onClose, onLink }: LinkEmailConsentModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const classes = consentModalStyles();
   const formClasses = consentFormStyles();
-  const [email, setEmail] = useState('alex.tech@gmail.com');
-  const [provider] = useState<EmailProvider>('gmail');
   const [hasConsented, setHasConsented] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [consentError, setConsentError] = useState<string | null>(null);
+
+  const googleAuth = useGoogleLink((email, token, expires) => {
+    onLink(email, 'gmail', false, token, Date.now() + expires * 1000);
+    onClose();
+  });
 
   useClickOutside(modalRef, onClose, isOpen);
   useFocusTrap(modalRef, isOpen, { onEscape: onClose });
@@ -29,23 +41,16 @@ export function LinkEmailConsentModal({ isOpen, onClose, onLink }: LinkEmailCons
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !email.includes('@')) {
-      setError('Please enter a valid email address.');
-      return;
-    }
+  const handleConnectClick = () => {
     if (!hasConsented) {
-      setError('You must authorize receipt scanning to link this email.');
+      setConsentError('Please authorize email scanning before connecting.');
       return;
     }
-    if (!onLink(email.trim(), provider, true)) {
-      setError('This email is already linked.');
-      return;
-    }
-    setError(null);
-    onClose();
+    setConsentError(null);
+    googleAuth.handleLinkGoogle();
   };
+
+  const activeError = consentError || googleAuth.error;
 
   return (
     <div
@@ -66,25 +71,19 @@ export function LinkEmailConsentModal({ isOpen, onClose, onLink }: LinkEmailCons
 
         <header className={classes.header}>
           <h2 id="consent-title" className={classes.title}>
-            Link email account
+            Link Gmail account
           </h2>
           <p className={classes.subtitle}>Auto-detect subscriptions, renewals, and debit alerts.</p>
         </header>
 
-        <form onSubmit={handleSubmit} className={classes.form}>
+        <div className={classes.form}>
           <div className={classes.body}>
-            <div className={formClasses.inputGroup}>
-              <label htmlFor="email-input">Email address</label>
-              <input
-                id="email-input"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="e.g. alex@gmail.com"
-                className={formClasses.textInput}
-                required
-              />
-            </div>
+            <GoogleCloudConfigBox
+              clientId={googleAuth.clientId}
+              onUpdateClientId={googleAuth.updateClientId}
+              isOpen={googleAuth.showConfig}
+              onToggle={() => googleAuth.setShowConfig((prev) => !prev)}
+            />
 
             <div className={formClasses.privacyBox}>
               <div>
@@ -112,12 +111,15 @@ export function LinkEmailConsentModal({ isOpen, onClose, onLink }: LinkEmailCons
               <Checkbox
                 id="consent-checkbox"
                 checked={hasConsented}
-                onChange={setHasConsented}
+                onChange={(checked) => {
+                  setHasConsented(checked);
+                  if (checked) setConsentError(null);
+                }}
                 label="I authorize SubTrack to scan transactional emails. I can unlink anytime."
               />
             </div>
 
-            {error && (
+            {activeError && (
               <p
                 style={{
                   color: 'var(--colors-status-danger)',
@@ -125,7 +127,7 @@ export function LinkEmailConsentModal({ isOpen, onClose, onLink }: LinkEmailCons
                   marginBottom: '12px',
                 }}
               >
-                {error}
+                {activeError}
               </p>
             )}
           </div>
@@ -134,11 +136,18 @@ export function LinkEmailConsentModal({ isOpen, onClose, onLink }: LinkEmailCons
             <button type="button" onClick={onClose} className={classes.cancelBtn}>
               Cancel
             </button>
-            <button type="submit" disabled={!hasConsented || !email} className={classes.submitBtn}>
-              Authorize & link
+            <button
+              type="button"
+              disabled={!hasConsented || googleAuth.isAuthorizing}
+              onClick={handleConnectClick}
+              className={classes.submitBtn}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+            >
+              <GoogleIcon size={16} />
+              <span>{googleAuth.isAuthorizing ? 'Connecting...' : 'Connect with Google'}</span>
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

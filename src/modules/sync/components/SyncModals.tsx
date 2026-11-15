@@ -11,7 +11,13 @@ import {
 interface SyncModalsProps {
   isConsentOpen: boolean;
   onCloseConsent: () => void;
-  onLinkAccount: (email: string, provider: EmailProvider, isSimulated?: boolean) => boolean;
+  onLinkAccount: (
+    email: string,
+    provider: EmailProvider,
+    isSimulated?: boolean,
+    accessToken?: string,
+    tokenExpiresAt?: number
+  ) => boolean;
   isReviewOpen: boolean;
   onCloseReview: () => void;
   discoveredSubs: DiscoveredSubscription[];

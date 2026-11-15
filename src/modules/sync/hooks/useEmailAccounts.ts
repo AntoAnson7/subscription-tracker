@@ -9,7 +9,12 @@ function loadAccounts(userId: string | null): LinkedEmailAccount[] {
   const raw = localStorage.getItem(key);
   if (!raw) return [];
   try {
-    return JSON.parse(raw) as LinkedEmailAccount[];
+    const parsed = JSON.parse(raw) as LinkedEmailAccount[];
+    const cleaned = parsed.filter((a) => a.email !== 'alex.tech@gmail.com');
+    if (cleaned.length !== parsed.length) {
+      localStorage.setItem(key, JSON.stringify(cleaned));
+    }
+    return cleaned;
   } catch {
     return [];
   }
@@ -32,10 +37,25 @@ export function useEmailAccounts(userId: string | null = null) {
   const linkAccount = (
     email: string,
     provider: EmailProvider = 'gmail',
-    isSimulated = true
+    isSimulated = false,
+    accessToken?: string,
+    tokenExpiresAt?: number
   ): boolean => {
     const existing = accounts.find((a) => a.email.toLowerCase() === email.toLowerCase());
-    if (existing) return false;
+    if (existing) {
+      if (accessToken) {
+        setAccounts((prev) => {
+          const updated = prev.map((a) =>
+            a.id === existing.id
+              ? { ...a, accessToken, tokenExpiresAt, isSimulated, status: 'active' as const }
+              : a
+          );
+          saveAccounts(userId, updated);
+          return updated;
+        });
+      }
+      return true;
+    }
 
     const newAccount: LinkedEmailAccount = {
       id: crypto.randomUUID(),
@@ -46,7 +66,9 @@ export function useEmailAccounts(userId: string | null = null) {
       lastSyncedAt: null,
       status: 'active',
       isSimulated,
-      grantedPermissions: ['receipts.read', 'invoices.read', 'debits.read'],
+      accessToken,
+      tokenExpiresAt,
+      grantedPermissions: ['gmail.readonly', 'userinfo.email'],
     };
 
     setAccounts((prev) => {

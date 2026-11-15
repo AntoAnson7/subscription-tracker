@@ -17,6 +17,8 @@ export interface LinkedEmailAccount {
   status: 'active' | 'syncing' | 'error';
   isSimulated: boolean;
   grantedPermissions: string[];
+  accessToken?: string;
+  tokenExpiresAt?: number;
 }
 
 export interface EmailReceipt {
