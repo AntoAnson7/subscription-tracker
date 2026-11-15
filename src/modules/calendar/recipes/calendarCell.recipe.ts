@@ -1,0 +1,142 @@
+import { sva } from 'styled-system/css';
+
+export const calendarCellStyles = sva({
+  slots: [
+    'cell',
+    'topRow',
+    'dayNumber',
+    'todayIndicator',
+    'renewalContent',
+    'iconsRow',
+    'microIcon',
+    'microMore',
+    'costPill',
+  ],
+  base: {
+    cell: {
+      position: 'relative',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      minHeight: { base: '64px', md: '84px' },
+      p: { base: '50', md: '100' },
+      borderRadius: 'lg',
+      border: '1px solid',
+      borderColor: 'border.subtle',
+      background: 'bg.secondary',
+      textAlign: 'left',
+      cursor: 'pointer',
+      transition: 'all 0.15s ease',
+      userSelect: 'none',
+      _hover: {
+        background: 'bg.hover',
+        borderColor: 'border.default',
+      },
+      _focusVisible: {
+        outline: '2px solid',
+        outlineColor: 'accent.primary',
+        outlineOffset: '2px',
+        zIndex: 10,
+      },
+    },
+    topRow: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '100%',
+    },
+    dayNumber: {
+      fontSize: { base: '11px', md: '13px' },
+      fontWeight: '600',
+      color: 'text.primary',
+      fontVariantNumeric: 'tabular-nums',
+      lineHeight: '1',
+    },
+    todayIndicator: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '6px',
+      height: '6px',
+      borderRadius: 'full',
+      background: 'accent.primary',
+    },
+    renewalContent: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '50',
+      mt: 'auto',
+      width: '100%',
+    },
+    iconsRow: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '4px',
+      flexWrap: 'wrap',
+    },
+    microIcon: {
+      width: '18px',
+      height: '18px',
+      borderRadius: '50',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      overflow: 'hidden',
+      background: 'bg.primary',
+      boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+      flexShrink: 0,
+    },
+    microMore: {
+      fontSize: '10px',
+      fontWeight: '700',
+      color: 'text.secondary',
+      lineHeight: '1',
+    },
+    costPill: {
+      fontSize: { base: '10px', md: '11px' },
+      fontWeight: '700',
+      fontVariantNumeric: 'tabular-nums',
+      color: 'accent.primary',
+      background: 'rgba(217, 119, 6, 0.08)',
+      px: '4px',
+      py: '2px',
+      borderRadius: '4px',
+      alignSelf: 'flex-start',
+      maxWidth: '100%',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      _dark: {
+        background: 'rgba(245, 158, 11, 0.15)',
+        color: '#F59E0B',
+      },
+    },
+  },
+  variants: {
+    isCurrentMonth: {
+      true: {},
+      false: {
+        cell: { opacity: 0.35 },
+      },
+    },
+    isSelected: {
+      true: {
+        cell: {
+          borderColor: 'accent.primary',
+          background: 'rgba(217, 119, 6, 0.04)',
+          boxShadow: '0 0 0 1px var(--colors-accent-primary)',
+          _dark: {
+            background: 'rgba(245, 158, 11, 0.08)',
+          },
+        },
+      },
+      false: {},
+    },
+    isToday: {
+      true: {
+        cell: { borderColor: 'accent.primary' },
+      },
+      false: {},
+    },
+  },
+});

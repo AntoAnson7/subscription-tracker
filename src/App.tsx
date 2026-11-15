@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { AuthModals } from '@/modules/auth/components/AuthModals';
 import { useAuth } from '@/modules/auth/hooks/useAuth';
 import { useProfile } from '@/modules/auth/hooks/useProfile';
+import { MonthlyCalendar } from '@/modules/calendar/components/MonthlyCalendar';
 import { AppBackground } from '@/modules/common/components/AppBackground';
-import { CurrencyProvider } from '@/modules/common/context/CurrencyProvider';
 import { Header } from '@/modules/common/components/Header';
 import { ViewControls } from '@/modules/common/components/ViewControls';
+import { CurrencyProvider } from '@/modules/common/context/CurrencyProvider';
 import { layoutStyles } from '@/modules/common/recipes/layout.recipe';
 import { CurrencyCode } from '@/modules/common/types/currency.types';
 import { RunRateHero } from '@/modules/dashboard/components/RunRateHero';
@@ -73,15 +74,23 @@ export function App() {
             key={`${activeTab}-${viewMode}`}
             className={`${classes.contentSection} tab-content-animated`}
           >
-            <SubscriptionContentView
-              viewMode={viewMode}
-              isLoading={subManager.subsLoading}
-              showAllSkeletons={mockLoading}
-              subscriptions={subManager.filter.filteredSubscriptions}
-              onEdit={subManager.handleOpenEdit}
-              onCancel={subManager.cancelSubscription}
-              onRenew={subManager.handleOpenRenew}
-            />
+            {activeTab === 'subscriptions' && (
+              <SubscriptionContentView
+                viewMode={viewMode}
+                isLoading={subManager.subsLoading}
+                showAllSkeletons={mockLoading}
+                subscriptions={subManager.filter.filteredSubscriptions}
+                onEdit={subManager.handleOpenEdit}
+                onCancel={subManager.cancelSubscription}
+                onRenew={subManager.handleOpenRenew}
+              />
+            )}
+            {activeTab === 'calendar' && (
+              <MonthlyCalendar
+                subscriptions={subManager.filter.filteredSubscriptions}
+                onEdit={subManager.handleOpenEdit}
+              />
+            )}
           </div>
         </main>
 
@@ -106,31 +115,6 @@ export function App() {
           profile={profile}
           onSignOut={signOut}
         />
-
-        {/* Shelved for future debug/testing: Skeleton preview toggle
-        {import.meta.env.DEV && (
-          <button
-            type="button"
-            onClick={() => setMockLoading((p) => !p)}
-            style={{
-              position: 'fixed',
-              bottom: '16px',
-              left: '16px',
-              zIndex: 90,
-              background: mockLoading ? '#D97706' : 'rgba(0,0,0,0.6)',
-              color: '#FFFFFF',
-              border: 'none',
-              borderRadius: '9999px',
-              padding: '6px 14px',
-              fontSize: '11px',
-              fontWeight: 700,
-              cursor: 'pointer',
-              backdropFilter: 'blur(10px)',
-            }}
-          >
-            {mockLoading ? 'Skeletons Preview: ON' : 'Skeletons Preview: OFF'}
-          </button>
-        )} */}
       </AppBackground>
     </CurrencyProvider>
   );

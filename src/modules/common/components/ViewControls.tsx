@@ -78,24 +78,26 @@ export function ViewControls({
         </button>
       </div>
 
-      <div className={classes.viewToggleWrapper}>
-        <button
-          type="button"
-          onClick={() => onViewModeChange('grid')}
-          aria-label="Grid view"
-          className={`${classes.viewToggleBtn} ${viewMode === 'grid' ? activeToggleStyle : ''}`}
-        >
-          <Grid3X3 size={16} />
-        </button>
-        <button
-          type="button"
-          onClick={() => onViewModeChange('table')}
-          aria-label="Table view"
-          className={`${classes.viewToggleBtn} ${viewMode === 'table' ? activeToggleStyle : ''}`}
-        >
-          <TableIcon size={16} />
-        </button>
-      </div>
+      {activeTab === 'subscriptions' && (
+        <div className={classes.viewToggleWrapper}>
+          <button
+            type="button"
+            onClick={() => onViewModeChange('grid')}
+            aria-label="Grid view"
+            className={`${classes.viewToggleBtn} ${viewMode === 'grid' ? activeToggleStyle : ''}`}
+          >
+            <Grid3X3 size={16} />
+          </button>
+          <button
+            type="button"
+            onClick={() => onViewModeChange('table')}
+            aria-label="Table view"
+            className={`${classes.viewToggleBtn} ${viewMode === 'table' ? activeToggleStyle : ''}`}
+          >
+            <TableIcon size={16} />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
