@@ -1,6 +1,7 @@
 import { AnalyticsSummaryCards } from '@/modules/analytics/components/AnalyticsSummaryCards';
 import { CashflowProjectionCard } from '@/modules/analytics/components/CashflowProjectionCard';
 import { CategorySpendCard } from '@/modules/analytics/components/CategorySpendCard';
+import { SavingsOptimizerCard } from '@/modules/analytics/components/SavingsOptimizerCard';
 import { TopExpensesCard } from '@/modules/analytics/components/TopExpensesCard';
 import { useAnalytics } from '@/modules/analytics/hooks/useAnalytics';
 import { analyticsStyles } from '@/modules/analytics/recipes/analytics.recipe';
@@ -32,6 +33,10 @@ export function AnalyticsDashboard({ subscriptions }: AnalyticsDashboardProps) {
           cashflow={cashflow12Month}
           prefersReducedMotion={prefersReducedMotion}
         />
+      </div>
+
+      <div className={classes.fullWidthCol}>
+        <SavingsOptimizerCard subscriptions={subscriptions} />
       </div>
     </section>
   );
