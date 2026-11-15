@@ -66,13 +66,15 @@ export function App() {
             subscriptionsCount={subManager.subscriptionsCount}
           />
 
-          <SubscriptionFilterBar
-            searchQuery={subManager.filter.searchQuery}
-            onSearchChange={subManager.filter.setSearchQuery}
-            selectedCategory={subManager.filter.selectedCategory}
-            onCategoryChange={subManager.filter.setSelectedCategory}
-            categories={subManager.filter.categories}
-          />
+          {activeTab === 'subscriptions' && (
+            <SubscriptionFilterBar
+              searchQuery={subManager.filter.searchQuery}
+              onSearchChange={subManager.filter.setSearchQuery}
+              selectedCategory={subManager.filter.selectedCategory}
+              onCategoryChange={subManager.filter.setSelectedCategory}
+              categories={subManager.filter.categories}
+            />
+          )}
 
           <div
             key={`${activeTab}-${viewMode}`}
@@ -91,7 +93,7 @@ export function App() {
             )}
             {activeTab === 'calendar' && (
               <MonthlyCalendar
-                subscriptions={subManager.filter.filteredSubscriptions}
+                subscriptions={subManager.subscriptions}
                 onEdit={subManager.handleOpenEdit}
               />
             )}

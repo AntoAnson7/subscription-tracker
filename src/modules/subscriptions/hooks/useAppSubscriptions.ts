@@ -72,6 +72,7 @@ export function useAppSubscriptions(userId: string | null = null) {
     handleCloseModal,
     handleModalSubmit,
     deleteSubscription,
+    subscriptions,
     subscriptionsCount: subscriptions.length,
   };
 }
