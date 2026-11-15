@@ -74,7 +74,7 @@ export const heroStyles = sva({
       display: 'inline-flex',
       alignItems: 'center',
       justifyContent: 'center',
-      gap: '100',
+      gap: '50',
       borderRadius: 'pill',
       fontWeight: '600',
       background: 'text.primary',
@@ -93,7 +93,11 @@ export const heroStyles = sva({
   variants: {
     isCompact: {
       true: {
-        root: { p: { base: '150', sm: '200' }, mb: '200' },
+        root: {
+          px: { base: '200', sm: '250' },
+          py: { base: '150', sm: '200' },
+          mb: '200',
+        },
         contentWrapper: {
           display: 'flex',
           flexDirection: 'row',
@@ -114,7 +118,7 @@ export const heroStyles = sva({
         },
         actionsRow: { mt: '0', flexShrink: 0 },
         primaryBtn: {
-          px: { base: '100', sm: '200' },
+          px: { base: '200', sm: '250' },
           py: '0',
           height: { base: '34px', sm: '38px' },
           fontSize: { base: '12px', sm: '14px' },
