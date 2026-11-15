@@ -18,6 +18,8 @@ const INITIAL_FORM: SubscriptionFormData = {
   cancellationUrl: null,
   websiteUrl: null,
   notes: null,
+  isFamily: false,
+  splitCount: 2,
 };
 
 export function useSubscriptionForm(

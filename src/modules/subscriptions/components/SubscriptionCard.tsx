@@ -1,10 +1,11 @@
-import { RotateCcw } from 'lucide-react';
+import { RotateCcw, Users } from 'lucide-react';
 import { css } from 'styled-system/css';
 import { StatusBadge } from '@/modules/common/components/StatusBadge';
 import { useCurrency } from '@/modules/common/hooks/useCurrency';
 import { formatDisplayDate } from '@/modules/common/utils/date.utils';
 import { getBrandIconUrl } from '@/modules/common/utils/icons.utils';
 import { SubscriptionCardMenu } from '@/modules/subscriptions/components/SubscriptionCardMenu';
+import { sharedSubscriptionCardStyles } from '@/modules/subscriptions/recipes/sharedSubscriptionCard.recipe';
 import { subscriptionCardStyles } from '@/modules/subscriptions/recipes/subscriptionCard.recipe';
 import { Subscription } from '@/modules/subscriptions/types/subscription.types';
 
@@ -24,6 +25,7 @@ export function SubscriptionCard({
   const { format } = useCurrency();
   const isCancelled = subscription.status === 'cancelled';
   const classes = subscriptionCardStyles({ isCancelled });
+  const sharedClasses = sharedSubscriptionCardStyles();
   const iconUrl = getBrandIconUrl(subscription.iconSlug, subscription.websiteUrl);
   const isUrgent = subscription.daysRemaining <= 3;
   const isSoon = subscription.daysRemaining <= 7 && !isUrgent;
@@ -39,6 +41,8 @@ export function SubscriptionCard({
     subscription.iconSlug === 'apple' ||
     subscription.iconSlug === 'openai' ||
     subscription.iconSlug === 'github';
+
+  const planTotal = subscription.totalCost ?? subscription.cost * (subscription.splitCount ?? 2);
 
   return (
     <article className={classes.root}>
@@ -63,14 +67,38 @@ export function SubscriptionCard({
               <span className={classes.category}>{subscription.category}</span>
             </div>
           </div>
-          <StatusBadge status={subscription.status} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {subscription.isFamily && (
+              <div className={sharedClasses.badge}>
+                <Users size={11} />
+                <span>Family ({subscription.splitCount ?? 2})</span>
+              </div>
+            )}
+            <StatusBadge status={subscription.status} />
+          </div>
         </div>
 
         <div className={classes.priceSection}>
+          {subscription.isFamily && (
+            <div className={sharedClasses.shareTag}>Your tracked share</div>
+          )}
           <div className={classes.priceRow}>
             <span className={`${classes.price} tabular-nums`}>{format(subscription.cost)}</span>
             <span className={classes.cycle}>/{subscription.cycle}</span>
           </div>
+          {subscription.isFamily && (
+            <div className={sharedClasses.breakdown}>
+              <div className={sharedClasses.breakdownRow}>
+                <Users size={12} />
+                <span>
+                  Total: <strong>{format(planTotal)}</strong>/{subscription.cycle}
+                </span>
+              </div>
+              <span className={sharedClasses.breakdownSub}>
+                Split {subscription.splitCount ?? 2} ways ({format(subscription.cost)} each)
+              </span>
+            </div>
+          )}
           {subscription.cycle === 'yearly' && (
             <p className={classes.normalizedText}>
               Normalized to{' '}

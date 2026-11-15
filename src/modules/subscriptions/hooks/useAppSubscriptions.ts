@@ -39,10 +39,23 @@ export function useAppSubscriptions(userId: string | null = null) {
   };
 
   const handleModalSubmit = async (data: SubscriptionFormData) => {
+    const isFamily = Boolean(data.isFamily && (data.splitCount ?? 1) > 1);
+    const splitCount = isFamily ? Math.max(2, data.splitCount || 2) : 1;
+    const totalCost = isFamily ? data.cost : undefined;
+    const trackedCost = isFamily ? Math.round((data.cost / splitCount) * 100) / 100 : data.cost;
+
+    const payload = {
+      ...data,
+      cost: trackedCost,
+      totalCost,
+      isFamily,
+      splitCount: isFamily ? splitCount : undefined,
+    };
+
     if (activeSub) {
-      await updateSubscription(activeSub.id, data);
+      await updateSubscription(activeSub.id, payload);
     } else {
-      await addSubscription(data);
+      await addSubscription(payload);
     }
   };
 

@@ -31,6 +31,25 @@ export function fromDbRow(row: DbSubscriptionRow): Subscription {
   const status = row.status as SubscriptionStatus;
   const cost = Number(row.cost);
 
+  let isFamily: boolean | undefined;
+  let splitCount: number | undefined;
+  let totalCost: number | undefined;
+  let notes = row.notes;
+
+  if (row.notes && row.notes.startsWith('{"__family":true')) {
+    try {
+      const meta = JSON.parse(row.notes);
+      if (meta.__family) {
+        isFamily = true;
+        splitCount = meta.splitCount;
+        totalCost = meta.totalCost;
+        notes = meta.rawNotes ?? null;
+      }
+    } catch {
+      // fallback
+    }
+  }
+
   return {
     id: row.id,
     name: row.name,
@@ -47,7 +66,10 @@ export function fromDbRow(row: DbSubscriptionRow): Subscription {
     iconSlug: row.icon_slug,
     cancellationUrl: row.cancellation_url,
     websiteUrl: row.website_url,
-    notes: row.notes,
+    notes,
+    isFamily,
+    splitCount,
+    totalCost,
   };
 }
 
@@ -55,6 +77,16 @@ export function toDbInsert(
   sub: Omit<Subscription, 'id' | 'daysRemaining' | 'monthlyEquivalent'>,
   userId: string
 ) {
+  let notesStr = sub.notes;
+  if (sub.isFamily) {
+    notesStr = JSON.stringify({
+      __family: true,
+      splitCount: sub.splitCount ?? 2,
+      totalCost: sub.totalCost ?? sub.cost,
+      rawNotes: sub.notes,
+    });
+  }
+
   return {
     user_id: userId,
     name: sub.name,
@@ -69,7 +101,7 @@ export function toDbInsert(
     icon_slug: sub.iconSlug,
     cancellation_url: sub.cancellationUrl,
     website_url: sub.websiteUrl,
-    notes: sub.notes,
+    notes: notesStr,
   };
 }
 
@@ -77,7 +109,7 @@ export function toFormData(sub: Subscription): SubscriptionFormData {
   return {
     name: sub.name,
     category: sub.category,
-    cost: sub.cost,
+    cost: sub.isFamily && sub.totalCost ? sub.totalCost : sub.cost,
     currency: sub.currency,
     cycle: sub.cycle,
     startDate: sub.startDate,
@@ -88,5 +120,7 @@ export function toFormData(sub: Subscription): SubscriptionFormData {
     cancellationUrl: sub.cancellationUrl,
     websiteUrl: sub.websiteUrl,
     notes: sub.notes,
+    isFamily: sub.isFamily ?? false,
+    splitCount: sub.splitCount ?? 2,
   };
 }

@@ -3,6 +3,7 @@ import { CustomSelect } from '@/modules/common/components/CustomSelect';
 import { DatePicker } from '@/modules/common/components/DatePicker';
 import { useCurrency } from '@/modules/common/hooks/useCurrency';
 import { BrandAutocomplete } from '@/modules/subscriptions/components/BrandAutocomplete';
+import { FamilyPlanFields } from '@/modules/subscriptions/components/FamilyPlanFields';
 import { subscriptionModalStyles } from '@/modules/subscriptions/recipes/subscriptionModal.recipe';
 import { SubscriptionFormData } from '@/modules/subscriptions/types/form.types';
 import {
@@ -35,6 +36,15 @@ export function SubscriptionFormFields({
 
   return (
     <>
+      <FamilyPlanFields
+        isFamily={formData.isFamily ?? false}
+        splitCount={formData.splitCount ?? 2}
+        totalCost={formData.cost}
+        cycle={formData.cycle}
+        onChangeFamily={(isFamily) => updateField('isFamily', isFamily)}
+        onChangeSplitCount={(count) => updateField('splitCount', count)}
+      />
+
       <BrandAutocomplete
         value={formData.name}
         onChange={onNameChange}
@@ -46,7 +56,7 @@ export function SubscriptionFormFields({
 
       <div className={classes.grid}>
         <CustomInput
-          label="Cost"
+          label={formData.isFamily ? 'Total plan cost' : 'Cost'}
           type="number"
           step="0.01"
           min="0"

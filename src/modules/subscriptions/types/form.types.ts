@@ -18,4 +18,6 @@ export interface SubscriptionFormData {
   cancellationUrl: string | null;
   websiteUrl: string | null;
   notes: string | null;
+  isFamily?: boolean;
+  splitCount?: number;
 }

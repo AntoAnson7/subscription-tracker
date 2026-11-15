@@ -13,6 +13,22 @@ interface SubscriptionTableProps {
   onRenew?: (subscription: Subscription) => void;
 }
 
+const familyPillStyle = {
+  fontSize: '10px',
+  fontWeight: 700,
+  padding: '1px 6px',
+  borderRadius: '9999px',
+  background: 'var(--colors-accent-subtle)',
+  color: 'var(--colors-accent-primary)',
+  border: '1px solid var(--colors-accent-border)',
+} as const;
+
+const totalSubStyle = {
+  display: 'block',
+  fontSize: '10px',
+  color: 'var(--colors-text-tertiary)',
+} as const;
+
 export function SubscriptionTable({
   subscriptions,
   onEdit,
@@ -51,10 +67,20 @@ export function SubscriptionTable({
                       <span>{sub.name.slice(0, 2).toUpperCase()}</span>
                     )}
                     <strong>{sub.name}</strong>
+                    {sub.isFamily && (
+                      <span style={familyPillStyle}>Shared ({sub.splitCount ?? 2})</span>
+                    )}
                   </div>
                 </td>
                 <td className={classes.td}>{sub.category}</td>
-                <td className={`${classes.td} tabular-nums`}>{format(sub.cost)}</td>
+                <td className={`${classes.td} tabular-nums`}>
+                  {format(sub.cost)}
+                  {sub.isFamily && (
+                    <span style={totalSubStyle}>
+                      Total {format(sub.totalCost ?? sub.cost * (sub.splitCount ?? 2))}
+                    </span>
+                  )}
+                </td>
                 <td className={classes.td}>{sub.cycle}</td>
                 <td className={`${classes.td} tabular-nums`}>
                   <strong>{format(sub.monthlyEquivalent)}</strong>

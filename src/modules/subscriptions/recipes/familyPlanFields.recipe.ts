@@ -1,0 +1,107 @@
+import { sva } from 'styled-system/css';
+
+export const familyPlanFieldsStyles = sva({
+  slots: [
+    'root',
+    'headerRow',
+    'content',
+    'splitLabel',
+    'chipsRow',
+    'chip',
+    'shareBox',
+    'shareBoxText',
+    'shareBoxHighlight',
+    'shareBoxSub',
+  ],
+  base: {
+    root: {
+      p: '200',
+      borderRadius: 'xl',
+      border: '1px solid',
+      borderColor: 'border.subtle',
+      bg: 'bg.secondary',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '150',
+      transition: 'all 0.2s ease',
+    },
+    headerRow: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    content: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '150',
+      pt: '100',
+      borderTop: '1px solid',
+      borderTopColor: 'border.subtle',
+    },
+    splitLabel: {
+      fontSize: '12px',
+      fontWeight: '600',
+      color: 'text.secondary',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '50',
+    },
+    chipsRow: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '100',
+      flexWrap: 'wrap',
+    },
+    chip: {
+      px: '150',
+      py: '50',
+      borderRadius: 'pill',
+      fontSize: '12px',
+      fontWeight: '600',
+      border: '1px solid',
+      borderColor: 'border.default',
+      bg: 'bg.primary',
+      color: 'text.secondary',
+      cursor: 'pointer',
+      transition: 'all 0.15s ease',
+      _hover: { borderColor: 'accent.primary', color: 'text.primary' },
+      _focusVisible: { outline: '2px solid', outlineColor: 'accent.primary', outlineOffset: '2px' },
+    },
+    shareBox: {
+      p: '150',
+      borderRadius: 'md',
+      bg: 'accent.subtle',
+      border: '1px solid',
+      borderColor: 'accent.border',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '50',
+    },
+    shareBoxText: {
+      fontSize: '12px',
+      color: 'text.primary',
+      display: 'flex',
+      alignItems: 'baseline',
+      gap: '50',
+    },
+    shareBoxHighlight: {
+      fontSize: '15px',
+      fontWeight: '700',
+      color: 'accent.primary',
+    },
+    shareBoxSub: {
+      fontSize: '11px',
+      color: 'text.secondary',
+    },
+  },
+  variants: {
+    isFamily: {
+      true: {
+        root: {
+          borderColor: 'accent.border',
+          boxShadow: '0 2px 10px rgba(217, 119, 6, 0.06)',
+        },
+      },
+    },
+  },
+});
