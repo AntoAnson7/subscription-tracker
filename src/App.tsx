@@ -49,9 +49,13 @@ export function App() {
           <TrialAlertBanner trialSubscription={subManager.expiringTrial} />
 
           {isSkeletonActive ? (
-            <RunRateHeroSkeleton />
+            <RunRateHeroSkeleton isCompact={activeTab === 'calendar'} />
           ) : (
-            <RunRateHero metrics={subManager.metrics} onAddClick={subManager.handleOpenAdd} />
+            <RunRateHero
+              metrics={subManager.metrics}
+              onAddClick={subManager.handleOpenAdd}
+              isCompact={activeTab === 'calendar'}
+            />
           )}
 
           <ViewControls
