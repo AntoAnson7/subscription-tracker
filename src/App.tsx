@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AnalyticsDashboard } from '@/modules/analytics/components/AnalyticsDashboard';
 import { AuthModals } from '@/modules/auth/components/AuthModals';
 import { useAuth } from '@/modules/auth/hooks/useAuth';
 import { useProfile } from '@/modules/auth/hooks/useProfile';
@@ -96,6 +97,9 @@ export function App() {
                 subscriptions={subManager.subscriptions}
                 onEdit={subManager.handleOpenEdit}
               />
+            )}
+            {activeTab === 'analytics' && (
+              <AnalyticsDashboard subscriptions={subManager.subscriptions} />
             )}
           </div>
         </main>
