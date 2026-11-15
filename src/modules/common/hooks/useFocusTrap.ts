@@ -1,4 +1,4 @@
-import { RefObject, useEffect } from 'react';
+import { RefObject, useEffect, useRef } from 'react';
 
 const FOCUSABLE_SELECTOR = [
   'a[href]',
@@ -20,6 +20,11 @@ export function useFocusTrap(
   options: UseFocusTrapOptions = {}
 ) {
   const { onEscape, initialFocusRef } = options;
+  const onEscapeRef = useRef(onEscape);
+
+  useEffect(() => {
+    onEscapeRef.current = onEscape;
+  });
 
   useEffect(() => {
     if (!isActive || !containerRef.current) return;
@@ -36,11 +41,19 @@ export function useFocusTrap(
     };
 
     const focusTimer = requestAnimationFrame(() => {
+      if (container.contains(document.activeElement)) {
+        return;
+      }
       if (initialFocusRef?.current) {
         initialFocusRef.current.focus();
       } else {
         const focusable = getFocusable();
-        if (focusable.length > 0) {
+        const firstInput = focusable.find((el) =>
+          ['INPUT', 'SELECT', 'TEXTAREA'].includes(el.tagName)
+        );
+        if (firstInput) {
+          firstInput.focus();
+        } else if (focusable.length > 0) {
           focusable[0].focus();
         } else {
           container.focus();
@@ -50,9 +63,9 @@ export function useFocusTrap(
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        if (onEscape) {
+        if (onEscapeRef.current) {
           e.preventDefault();
-          onEscape();
+          onEscapeRef.current();
         }
         return;
       }
@@ -90,5 +103,5 @@ export function useFocusTrap(
         previouslyFocused.focus();
       }
     };
-  }, [isActive, containerRef, onEscape, initialFocusRef]);
+  }, [isActive, containerRef, initialFocusRef]);
 }

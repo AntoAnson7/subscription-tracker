@@ -31,6 +31,7 @@ export const subscriptionModalStyles = sva({
       alignItems: 'center',
       justifyContent: 'center',
       p: '200',
+      overflowY: 'auto',
     },
     modal: {
       width: '100%',
@@ -42,8 +43,7 @@ export const subscriptionModalStyles = sva({
       p: '400',
       boxShadow: '0 24px 60px rgba(0, 0, 0, 0.25)',
       position: 'relative',
-      maxHeight: '90vh',
-      overflowY: 'auto',
+      overflow: 'visible',
     },
     header: {
       display: 'flex',
