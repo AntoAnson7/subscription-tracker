@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { SubscriptionCard } from '@/modules/subscriptions/components/SubscriptionCard';
 import { subscriptionGridStyles } from '@/modules/subscriptions/recipes/subscriptionGrid.recipe';
 import { Subscription } from '@/modules/subscriptions/types/subscription.types';
@@ -18,7 +18,7 @@ export function SubscriptionGrid({
   onRenew,
 }: SubscriptionGridProps) {
   const [isCancelledOpen, setIsCancelledOpen] = useState(false);
-  const classes = subscriptionGridStyles();
+  const classes = subscriptionGridStyles({ isOpen: isCancelledOpen });
 
   if (subscriptions.length === 0) {
     return (
@@ -57,28 +57,31 @@ export function SubscriptionGrid({
             aria-expanded={isCancelledOpen}
             aria-controls="cancelled-subscriptions-grid"
           >
-            {isCancelledOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+            <ChevronRight size={16} className={classes.chevronIcon} />
             <span className={classes.cancelledTitle}>
               Cancelled subscriptions ({cancelledSubs.length})
             </span>
           </button>
 
-          {isCancelledOpen && (
-            <div
-              id="cancelled-subscriptions-grid"
-              className={`${classes.root} tab-content-animated`}
-            >
-              {cancelledSubs.map((subscription) => (
-                <SubscriptionCard
-                  key={subscription.id}
-                  subscription={subscription}
-                  onEdit={onEdit}
-                  onCancel={onCancel}
-                  onRenew={onRenew}
-                />
-              ))}
+          <div
+            id="cancelled-subscriptions-grid"
+            className={classes.cancelledContent}
+            aria-hidden={!isCancelledOpen}
+          >
+            <div className={classes.cancelledInner}>
+              <div className={classes.root}>
+                {cancelledSubs.map((subscription) => (
+                  <SubscriptionCard
+                    key={subscription.id}
+                    subscription={subscription}
+                    onEdit={onEdit}
+                    onCancel={onCancel}
+                    onRenew={onRenew}
+                  />
+                ))}
+              </div>
             </div>
-          )}
+          </div>
         </section>
       ) : null}
     </div>

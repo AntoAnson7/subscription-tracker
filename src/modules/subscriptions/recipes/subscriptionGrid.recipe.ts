@@ -9,6 +9,9 @@ export const subscriptionGridStyles = sva({
     'cancelledSection',
     'cancelledToggle',
     'cancelledTitle',
+    'cancelledContent',
+    'cancelledInner',
+    'chevronIcon',
   ],
   base: {
     root: {
@@ -49,7 +52,7 @@ export const subscriptionGridStyles = sva({
       background: 'transparent',
       border: 'none',
       p: '50',
-      mb: '200',
+      mb: '150',
       cursor: 'pointer',
       color: 'text.secondary',
       fontSize: '15px',
@@ -67,5 +70,44 @@ export const subscriptionGridStyles = sva({
       fontSize: '15px',
       fontWeight: '600',
     },
+    cancelledContent: {
+      display: 'grid',
+      transition: 'grid-template-rows 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease',
+      willChange: 'grid-template-rows, opacity',
+    },
+    cancelledInner: {
+      overflow: 'hidden',
+      py: '50',
+      px: '50',
+    },
+    chevronIcon: {
+      transition: 'transform 0.28s cubic-bezier(0.16, 1, 0.3, 1)',
+      flexShrink: 0,
+    },
+  },
+  variants: {
+    isOpen: {
+      true: {
+        cancelledContent: {
+          gridTemplateRows: '1fr',
+          opacity: 1,
+        },
+        chevronIcon: {
+          transform: 'rotate(90deg)',
+        },
+      },
+      false: {
+        cancelledContent: {
+          gridTemplateRows: '0fr',
+          opacity: 0,
+        },
+        chevronIcon: {
+          transform: 'rotate(0deg)',
+        },
+      },
+    },
+  },
+  defaultVariants: {
+    isOpen: false,
   },
 });
