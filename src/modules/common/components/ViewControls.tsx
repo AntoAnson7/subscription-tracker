@@ -52,9 +52,11 @@ export function ViewControls({
         mb: '6',
       })}
     >
-      <div className={classes.root}>
+      <div className={classes.root} role="tablist" aria-label="Views">
         <button
           type="button"
+          role="tab"
+          aria-selected={activeTab === 'subscriptions'}
           onClick={() => onTabChange('subscriptions')}
           className={`${classes.tab} ${activeTab === 'subscriptions' ? activeTabStyle : ''}`}
         >
@@ -68,6 +70,8 @@ export function ViewControls({
 
         <button
           type="button"
+          role="tab"
+          aria-selected={activeTab === 'calendar'}
           onClick={() => onTabChange('calendar')}
           className={`${classes.tab} ${activeTab === 'calendar' ? activeTabStyle : ''}`}
         >
@@ -77,6 +81,8 @@ export function ViewControls({
 
         <button
           type="button"
+          role="tab"
+          aria-selected={activeTab === 'analytics'}
           onClick={() => onTabChange('analytics')}
           className={`${classes.tab} ${activeTab === 'analytics' ? activeTabStyle : ''}`}
         >
@@ -86,11 +92,12 @@ export function ViewControls({
       </div>
 
       {activeTab === 'subscriptions' && (
-        <div className={classes.viewToggleWrapper}>
+        <div className={classes.viewToggleWrapper} role="group" aria-label="View layout">
           <button
             type="button"
             onClick={() => onViewModeChange('grid')}
             aria-label="Grid view"
+            aria-pressed={viewMode === 'grid'}
             className={`${classes.viewToggleBtn} ${viewMode === 'grid' ? activeToggleStyle : ''}`}
           >
             <Grid3X3 size={16} />
@@ -99,6 +106,7 @@ export function ViewControls({
             type="button"
             onClick={() => onViewModeChange('table')}
             aria-label="Table view"
+            aria-pressed={viewMode === 'table'}
             className={`${classes.viewToggleBtn} ${viewMode === 'table' ? activeToggleStyle : ''}`}
           >
             <TableIcon size={16} />

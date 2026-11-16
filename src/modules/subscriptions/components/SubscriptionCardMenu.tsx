@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { ExternalLink, MoreVertical, Pencil, RotateCcw, Trash2, XCircle } from 'lucide-react';
 import { ConfirmDialog } from '@/modules/common/components/ConfirmDialog';
 import { useClickOutside } from '@/modules/common/hooks/useClickOutside';
+import { sanitizeUrl } from '@/modules/common/utils/url.utils';
 import { useCardMenuPlacement } from '@/modules/subscriptions/hooks/useCardMenuPlacement';
 import { subscriptionCardMenuStyles } from '@/modules/subscriptions/recipes/subscriptionCardMenu.recipe';
 import { Subscription } from '@/modules/subscriptions/types/subscription.types';
@@ -107,11 +108,11 @@ export function SubscriptionCardMenu({
               </button>
             )}
 
-            {subscription.cancellationUrl && (
+            {sanitizeUrl(subscription.cancellationUrl) && (
               <a
-                href={subscription.cancellationUrl}
+                href={sanitizeUrl(subscription.cancellationUrl)!}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 role="menuitem"
                 onClick={close}
                 className={classes.item}

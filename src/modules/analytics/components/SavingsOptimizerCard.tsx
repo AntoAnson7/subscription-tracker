@@ -2,6 +2,7 @@ import { ExternalLink, Sparkles, TrendingDown } from 'lucide-react';
 import { useSavingsOptimizer } from '@/modules/analytics/hooks/useSavingsOptimizer';
 import { savingsOptimizerStyles } from '@/modules/analytics/recipes/savingsOptimizer.recipe';
 import { useCurrency } from '@/modules/common/hooks/useCurrency';
+import { sanitizeUrl } from '@/modules/common/utils/url.utils';
 import { Subscription } from '@/modules/subscriptions/types/subscription.types';
 
 interface SavingsOptimizerCardProps {
@@ -61,9 +62,9 @@ export function SavingsOptimizerCard({ subscriptions }: SavingsOptimizerCardProp
               <span className={classes.savingsBadge}>
                 Save ~{format(op.estimatedAnnualSavings)}/yr
               </span>
-              {op.cancellationUrl && (
+              {sanitizeUrl(op.cancellationUrl) && (
                 <a
-                  href={op.cancellationUrl}
+                  href={sanitizeUrl(op.cancellationUrl)!}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={classes.switchLink}

@@ -3,8 +3,12 @@ import { Subscription } from '@/modules/subscriptions/types/subscription.types';
 
 function escapeCsvField(val: string | number | null | undefined): string {
   if (val === null || val === undefined) return '""';
-  const str = String(val).replace(/"/g, '""');
-  return `"${str}"`;
+  let str = String(val);
+  // Mitigate CSV Formula Injection (OWASP CWE-1236)
+  if (/^[=+\-@\t\r]/.test(str)) {
+    str = `'${str}`;
+  }
+  return `"${str.replace(/"/g, '""')}"`;
 }
 
 export function generateSubscriptionsCsv(

@@ -6,19 +6,35 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Subwise - Take control of recurring expenses with automated email receipt sync, renewal countdowns, and financial analytics."
+    />
+    <meta name="theme-color" content="#F6F6F9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#08090C" media="(prefers-color-scheme: dark)" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta property="og:title" content="Subwise | Smart Subscription Tracker" />
+    <meta
+      property="og:description"
+      content="Take control of recurring expenses with automated email receipt sync, renewal countdowns, and financial analytics."
+    />
+    <meta property="og:type" content="website" />
     <title>Subwise | Subscription Tracker</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
-      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.documentElement.classList.add('dark');
-      }
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-        if (e.matches) {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
-      });
+      (function () {
+        try {
+          var saved =
+            localStorage.getItem('subwise-theme') || localStorage.getItem('subtrack-theme');
+          var prefersDark =
+            window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (saved === 'dark' || (!saved && prefersDark)) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (_) {}
+      })();
     </script>
   </head>
   <body>

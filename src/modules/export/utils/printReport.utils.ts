@@ -1,7 +1,16 @@
 import { toAnnualCost, toMonthlyCost } from '@/modules/subscriptions/utils/normalization.utils';
 import { Subscription } from '@/modules/subscriptions/types/subscription.types';
 
-export function printSubscriptionsReport(subscriptions: Subscription[], currency = 'USD'): void {
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+export function printSubscriptionsReport(subscriptions: Subscription[], currency = 'INR'): void {
   if (typeof window === 'undefined') return;
 
   const totalMonthly = subscriptions.reduce((sum, s) => sum + toMonthlyCost(s.cost, s.cycle), 0);
@@ -11,12 +20,12 @@ export function printSubscriptionsReport(subscriptions: Subscription[], currency
     .map(
       (s) => `
     <tr>
-      <td style="padding: 8px 12px; border-bottom: 1px solid #e4e4e7;"><strong>${s.name}</strong></td>
-      <td style="padding: 8px 12px; border-bottom: 1px solid #e4e4e7;">${s.category}</td>
-      <td style="padding: 8px 12px; border-bottom: 1px solid #e4e4e7;">${s.cycle}</td>
-      <td style="padding: 8px 12px; border-bottom: 1px solid #e4e4e7;">${s.currency} ${s.cost.toFixed(2)}</td>
-      <td style="padding: 8px 12px; border-bottom: 1px solid #e4e4e7;">${s.currency} ${toMonthlyCost(s.cost, s.cycle).toFixed(2)}</td>
-      <td style="padding: 8px 12px; border-bottom: 1px solid #e4e4e7;">${s.renewalDate}</td>
+      <td style="padding: 8px 12px; border-bottom: 1px solid #e4e4e7;"><strong>${escapeHtml(s.name)}</strong></td>
+      <td style="padding: 8px 12px; border-bottom: 1px solid #e4e4e7;">${escapeHtml(s.category)}</td>
+      <td style="padding: 8px 12px; border-bottom: 1px solid #e4e4e7;">${escapeHtml(s.cycle)}</td>
+      <td style="padding: 8px 12px; border-bottom: 1px solid #e4e4e7;">${escapeHtml(s.currency)} ${s.cost.toFixed(2)}</td>
+      <td style="padding: 8px 12px; border-bottom: 1px solid #e4e4e7;">${escapeHtml(s.currency)} ${toMonthlyCost(s.cost, s.cycle).toFixed(2)}</td>
+      <td style="padding: 8px 12px; border-bottom: 1px solid #e4e4e7;">${escapeHtml(s.renewalDate)}</td>
     </tr>`
     )
     .join('');
@@ -53,11 +62,11 @@ export function printSubscriptionsReport(subscriptions: Subscription[], currency
         <div class="summary">
           <div class="stat">
             <span class="stat-label">Monthly Run-Rate</span>
-            <span class="stat-val">${currency} ${totalMonthly.toFixed(2)}</span>
+            <span class="stat-val">${escapeHtml(currency)} ${totalMonthly.toFixed(2)}</span>
           </div>
           <div class="stat">
             <span class="stat-label">Annual Projection</span>
-            <span class="stat-val">${currency} ${totalAnnual.toFixed(2)}</span>
+            <span class="stat-val">${escapeHtml(currency)} ${totalAnnual.toFixed(2)}</span>
           </div>
         </div>
 
