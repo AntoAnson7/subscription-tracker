@@ -11,6 +11,7 @@ interface SubscriptionTableProps {
   onEdit?: (subscription: Subscription) => void;
   onCancel?: (id: string) => void;
   onRenew?: (subscription: Subscription) => void;
+  onDelete?: (id: string) => void;
 }
 
 const familyPillStyle = {
@@ -36,6 +37,7 @@ export function SubscriptionTable({
   onEdit,
   onCancel,
   onRenew,
+  onDelete,
 }: SubscriptionTableProps) {
   const { format } = useCurrency();
   const classes = subscriptionTableStyles();
@@ -100,6 +102,7 @@ export function SubscriptionTable({
                       onEdit={onEdit}
                       onCancel={onCancel}
                       onRenew={onRenew}
+                      onDelete={onDelete}
                       placement="bottom"
                     />
                   </div>

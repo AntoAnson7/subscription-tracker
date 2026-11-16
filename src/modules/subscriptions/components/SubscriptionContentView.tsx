@@ -12,6 +12,7 @@ interface SubscriptionContentViewProps {
   onEdit: (subscription: Subscription) => void;
   onCancel?: (id: string) => void;
   onRenew?: (subscription: Subscription) => void;
+  onDelete?: (id: string) => void;
 }
 
 export function SubscriptionContentView({
@@ -22,6 +23,7 @@ export function SubscriptionContentView({
   onEdit,
   onCancel,
   onRenew,
+  onDelete,
 }: SubscriptionContentViewProps) {
   if (isLoading || showAllSkeletons) {
     return viewMode === 'grid' ? (
@@ -37,6 +39,7 @@ export function SubscriptionContentView({
       onEdit={onEdit}
       onCancel={onCancel}
       onRenew={onRenew}
+      onDelete={onDelete}
     />
   ) : (
     <SubscriptionTable
@@ -44,6 +47,7 @@ export function SubscriptionContentView({
       onEdit={onEdit}
       onCancel={onCancel}
       onRenew={onRenew}
+      onDelete={onDelete}
     />
   );
 }

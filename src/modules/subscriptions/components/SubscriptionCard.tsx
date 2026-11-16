@@ -14,6 +14,7 @@ interface SubscriptionCardProps {
   onEdit?: (subscription: Subscription) => void;
   onCancel?: (id: string) => void;
   onRenew?: (subscription: Subscription) => void;
+  onDelete?: (id: string) => void;
 }
 
 export function SubscriptionCard({
@@ -21,6 +22,7 @@ export function SubscriptionCard({
   onEdit,
   onCancel,
   onRenew,
+  onDelete,
 }: SubscriptionCardProps) {
   const { format } = useCurrency();
   const isCancelled = subscription.status === 'cancelled';
@@ -134,6 +136,7 @@ export function SubscriptionCard({
             onEdit={onEdit}
             onCancel={onCancel}
             onRenew={onRenew}
+            onDelete={onDelete}
           />
         </div>
       </div>

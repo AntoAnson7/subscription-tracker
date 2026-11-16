@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
-import { ExternalLink, MoreVertical, Pencil, RotateCcw, XCircle } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { ExternalLink, MoreVertical, Pencil, RotateCcw, Trash2, XCircle } from 'lucide-react';
+import { ConfirmDialog } from '@/modules/common/components/ConfirmDialog';
 import { useClickOutside } from '@/modules/common/hooks/useClickOutside';
+import { useCardMenuPlacement } from '@/modules/subscriptions/hooks/useCardMenuPlacement';
 import { subscriptionCardMenuStyles } from '@/modules/subscriptions/recipes/subscriptionCardMenu.recipe';
 import { Subscription } from '@/modules/subscriptions/types/subscription.types';
 
@@ -9,6 +11,7 @@ interface SubscriptionCardMenuProps {
   onEdit?: (subscription: Subscription) => void;
   onCancel?: (id: string) => void;
   onRenew?: (subscription: Subscription) => void;
+  onDelete?: (id: string) => void;
   placement?: 'top' | 'bottom';
 }
 
@@ -17,115 +20,128 @@ export function SubscriptionCardMenu({
   onEdit,
   onCancel,
   onRenew,
+  onDelete,
   placement = 'top',
 }: SubscriptionCardMenuProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [actualPlacement, setActualPlacement] = useState<'top' | 'bottom'>(placement);
   const menuRef = useRef<HTMLDivElement>(null);
+  const [confirmAction, setConfirmAction] = useState<'cancel' | 'delete' | null>(null);
+  const { isOpen, actualPlacement, toggle, close } = useCardMenuPlacement(menuRef, placement);
   const classes = subscriptionCardMenuStyles({ placement: actualPlacement });
   const isCancelled = subscription.status === 'cancelled';
 
-  useClickOutside(menuRef, () => setIsOpen(false), isOpen);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setIsOpen(false);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen]);
-
-  const handleToggle = () => {
-    if (!isOpen && menuRef.current) {
-      const rect = menuRef.current.getBoundingClientRect();
-      const spaceBelow = window.innerHeight - rect.bottom;
-      if (placement === 'bottom') {
-        setActualPlacement(spaceBelow < 180 && rect.top > 180 ? 'top' : 'bottom');
-      } else {
-        setActualPlacement(rect.top < 180 && spaceBelow > 180 ? 'bottom' : 'top');
-      }
-    }
-    setIsOpen((prev) => !prev);
-  };
+  useClickOutside(menuRef, close, isOpen);
 
   return (
-    <div ref={menuRef} className={classes.root}>
-      <button
-        type="button"
-        onClick={handleToggle}
-        className={classes.trigger}
-        aria-haspopup="menu"
-        aria-expanded={isOpen}
-        aria-label={`Actions for ${subscription.name}`}
-      >
-        <MoreVertical size={15} />
-      </button>
+    <>
+      <div ref={menuRef} className={classes.root}>
+        <button
+          type="button"
+          onClick={toggle}
+          className={classes.trigger}
+          aria-haspopup="menu"
+          aria-expanded={isOpen}
+          aria-label={`Actions for ${subscription.name}`}
+        >
+          <MoreVertical size={15} />
+        </button>
 
-      {isOpen && (
-        <div className={classes.menu} role="menu">
-          {onEdit && (
-            <button
-              type="button"
-              role="menuitem"
-              onClick={() => {
-                setIsOpen(false);
-                onEdit(subscription);
-              }}
-              className={classes.item}
-            >
-              <Pencil size={13} />
-              <span>Edit</span>
-            </button>
-          )}
+        {isOpen && (
+          <div className={classes.menu} role="menu">
+            {onEdit && (
+              <button
+                type="button"
+                role="menuitem"
+                onClick={() => {
+                  close();
+                  onEdit(subscription);
+                }}
+                className={classes.item}
+              >
+                <Pencil size={13} />
+                <span>Edit</span>
+              </button>
+            )}
 
-          {isCancelled && onRenew ? (
-            <button
-              type="button"
-              role="menuitem"
-              onClick={() => {
-                setIsOpen(false);
-                onRenew(subscription);
-              }}
-              className={classes.item}
-            >
-              <RotateCcw size={13} />
-              <span>Renew</span>
-            </button>
-          ) : null}
+            {isCancelled && onRenew ? (
+              <button
+                type="button"
+                role="menuitem"
+                onClick={() => {
+                  close();
+                  onRenew(subscription);
+                }}
+                className={classes.item}
+              >
+                <RotateCcw size={13} />
+                <span>Renew</span>
+              </button>
+            ) : null}
 
-          {!isCancelled && onCancel ? (
-            <button
-              type="button"
-              role="menuitem"
-              onClick={() => {
-                setIsOpen(false);
-                onCancel(subscription.id);
-              }}
-              className={classes.itemDanger}
-            >
-              <XCircle size={13} />
-              <span>Cancel</span>
-            </button>
-          ) : null}
+            {!isCancelled && onCancel ? (
+              <button
+                type="button"
+                role="menuitem"
+                onClick={() => {
+                  close();
+                  setConfirmAction('cancel');
+                }}
+                className={classes.itemDanger}
+              >
+                <XCircle size={13} />
+                <span>Cancel</span>
+              </button>
+            ) : null}
 
-          {subscription.cancellationUrl && (
-            <a
-              href={subscription.cancellationUrl}
-              target="_blank"
-              rel="noreferrer"
-              role="menuitem"
-              onClick={() => setIsOpen(false)}
-              className={classes.item}
-            >
-              <ExternalLink size={13} />
-              <span>Manage on web</span>
-            </a>
-          )}
-        </div>
-      )}
-    </div>
+            {onDelete && (
+              <button
+                type="button"
+                role="menuitem"
+                onClick={() => {
+                  close();
+                  setConfirmAction('delete');
+                }}
+                className={classes.itemDanger}
+              >
+                <Trash2 size={13} />
+                <span>Delete</span>
+              </button>
+            )}
+
+            {subscription.cancellationUrl && (
+              <a
+                href={subscription.cancellationUrl}
+                target="_blank"
+                rel="noreferrer"
+                role="menuitem"
+                onClick={close}
+                className={classes.item}
+              >
+                <ExternalLink size={13} />
+                <span>Manage on web</span>
+              </a>
+            )}
+          </div>
+        )}
+      </div>
+
+      <ConfirmDialog
+        isOpen={confirmAction !== null}
+        onClose={() => setConfirmAction(null)}
+        onConfirm={() => {
+          if (confirmAction === 'cancel' && onCancel) onCancel(subscription.id);
+          if (confirmAction === 'delete' && onDelete) onDelete(subscription.id);
+        }}
+        title={confirmAction === 'cancel' ? 'Cancel subscription?' : 'Delete subscription?'}
+        description={
+          confirmAction === 'cancel'
+            ? `Are you sure you want to cancel ${subscription.name}? It will be marked as cancelled and moved to your cancelled subscriptions list.`
+            : `Are you sure you want to delete ${subscription.name}? This will permanently remove it from your records.`
+        }
+        confirmLabel={confirmAction === 'cancel' ? 'Cancel Subscription' : 'Delete Subscription'}
+        cancelLabel={confirmAction === 'cancel' ? 'Keep Subscription' : 'Cancel'}
+        variant={confirmAction === 'cancel' ? 'warning' : 'danger'}
+        icon={confirmAction === 'cancel' ? 'cancel' : 'trash'}
+      />
+    </>
   );
 }

@@ -30,6 +30,7 @@ export function MainTabContent({
           onEdit={subManager.handleOpenEdit}
           onCancel={subManager.cancelSubscription}
           onRenew={subManager.handleOpenRenew}
+          onDelete={subManager.deleteSubscription}
         />
       )}
       {activeTab === 'calendar' && (

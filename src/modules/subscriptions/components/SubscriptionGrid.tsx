@@ -9,6 +9,7 @@ interface SubscriptionGridProps {
   onEdit?: (subscription: Subscription) => void;
   onCancel?: (id: string) => void;
   onRenew?: (subscription: Subscription) => void;
+  onDelete?: (id: string) => void;
 }
 
 export function SubscriptionGrid({
@@ -16,6 +17,7 @@ export function SubscriptionGrid({
   onEdit,
   onCancel,
   onRenew,
+  onDelete,
 }: SubscriptionGridProps) {
   const [isCancelledOpen, setIsCancelledOpen] = useState(false);
   const classes = subscriptionGridStyles({ isOpen: isCancelledOpen });
@@ -43,6 +45,7 @@ export function SubscriptionGrid({
               onEdit={onEdit}
               onCancel={onCancel}
               onRenew={onRenew}
+              onDelete={onDelete}
             />
           ))}
         </div>
@@ -77,6 +80,7 @@ export function SubscriptionGrid({
                     onEdit={onEdit}
                     onCancel={onCancel}
                     onRenew={onRenew}
+                    onDelete={onDelete}
                   />
                 ))}
               </div>
