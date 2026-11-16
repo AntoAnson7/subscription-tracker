@@ -18,17 +18,16 @@ export function useAppView(isLoggedIn: boolean) {
     setExplicitView(view);
     if (typeof window === 'undefined') return;
     const url = new URL(window.location.href);
-    if (view === 'app') {
-      url.searchParams.set('view', 'app');
-    } else {
-      url.searchParams.delete('view');
-    }
+    url.searchParams.set('view', view);
     window.history.pushState(null, '', url.toString());
   }, []);
 
   useEffect(() => {
     const handlePopState = () => {
-      setExplicitView(readUrlView());
+      const urlView = readUrlView();
+      if (urlView) {
+        setExplicitView(urlView);
+      }
     };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);

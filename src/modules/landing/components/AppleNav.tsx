@@ -11,24 +11,58 @@ export function AppleNav({ onOpenAuth, onLaunchApp }: AppleNavProps) {
   const { isDark, toggleMode } = useTheme();
   const classes = appleNavStyles();
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      const headerOffset = 56;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      window.scrollTo({
+        top: Math.max(0, offsetPosition),
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const handleBrandClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <header className={classes.root}>
       <div className={classes.container}>
-        <div className={classes.brand} onClick={onLaunchApp} role="button" tabIndex={0}>
+        <div
+          className={classes.brand}
+          onClick={handleBrandClick}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') handleBrandClick();
+          }}
+        >
           <span className={classes.brandText}>SubTrack</span>
         </div>
 
         <nav className={classes.links} aria-label="Product navigation">
-          <a href="#overview" className={classes.link}>
+          <a
+            href="#overview"
+            className={classes.link}
+            onClick={(e) => handleNavClick(e, 'overview')}
+          >
             Overview
           </a>
-          <a href="#features" className={classes.link}>
+          <a
+            href="#features"
+            className={classes.link}
+            onClick={(e) => handleNavClick(e, 'features')}
+          >
             Features
           </a>
-          <a href="#specs" className={classes.link}>
+          <a href="#specs" className={classes.link} onClick={(e) => handleNavClick(e, 'specs')}>
             Compare
           </a>
-          <a href="#faq" className={classes.link}>
+          <a href="#faq" className={classes.link} onClick={(e) => handleNavClick(e, 'faq')}>
             FAQ
           </a>
         </nav>
