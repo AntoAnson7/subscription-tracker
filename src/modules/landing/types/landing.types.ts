@@ -1,4 +1,4 @@
-export type ShowcaseTab = 'overview' | 'hikes' | 'savings';
+export type ShowcaseTab = 'subscriptions' | 'calendar' | 'analytics';
 
 export interface AppleStory {
   id: string;

@@ -43,8 +43,8 @@ export function AppleNav({ onOpenAuth, onLaunchApp }: AppleNavProps) {
             {isDark ? <Sun size={13} color="#FBBF24" /> : <Moon size={13} color="#71717A" />}
           </button>
 
-          <button type="button" onClick={onOpenAuth} className={classes.themeBtn} title="Sign in">
-            Sign In
+          <button type="button" onClick={onOpenAuth} className={classes.signInBtn} title="Sign in">
+            Sign in
           </button>
 
           <button type="button" onClick={onLaunchApp} className={classes.ctaBtn}>

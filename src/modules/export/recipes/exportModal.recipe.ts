@@ -33,7 +33,7 @@ export const exportModalStyles = sva({
       pt: { base: '250', sm: '300' },
       pb: '150',
       borderBottom: '1px solid',
-      borderColor: 'border.subtle',
+      borderBottomColor: 'border.subtle',
       flexShrink: 0,
     },
     title: { fontSize: '18px', fontWeight: '700', color: 'text.primary', letterSpacing: '-0.3px' },
@@ -74,7 +74,7 @@ export const exportModalStyles = sva({
       px: { base: '250', sm: '350' },
       py: { base: '200', sm: '250' },
       borderTop: '1px solid',
-      borderColor: 'border.subtle',
+      borderTopColor: 'border.subtle',
       flexShrink: 0,
       bg: 'bg.primary',
       '& button': {

@@ -91,9 +91,7 @@ export const appleStoriesStyles = sva({
       color: 'text.secondary',
     },
     statBadge: {
-      pt: '150',
-      borderTop: '1px solid',
-      borderColor: 'border.subtle',
+      pt: '100',
       display: 'flex',
       alignItems: 'baseline',
       gap: '100',

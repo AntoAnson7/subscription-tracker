@@ -64,7 +64,7 @@ export const appleSpecsStyles = sva({
     },
     thead: {
       borderBottom: '1px solid',
-      borderColor: 'border.subtle',
+      borderBottomColor: 'border.subtle',
       bg: 'bg.secondary',
     },
     th: {
@@ -79,13 +79,10 @@ export const appleSpecsStyles = sva({
       color: 'accent.primary',
       fontWeight: '700',
     },
-    tbody: {
-      divideY: '1px solid',
-      divideColor: 'border.subtle',
-    },
+    tbody: {},
     tr: {
       borderBottom: '1px solid',
-      borderColor: 'border.subtle',
+      borderBottomColor: 'border.subtle',
       _last: { borderBottom: 'none' },
     },
     tdFeature: {

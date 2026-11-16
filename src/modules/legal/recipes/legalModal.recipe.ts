@@ -33,7 +33,7 @@ export const legalModalStyles = sva({
       pt: { base: '250', sm: '300' },
       pb: '150',
       borderBottom: '1px solid',
-      borderColor: 'border.subtle',
+      borderBottomColor: 'border.subtle',
       flexShrink: 0,
     },
     title: {

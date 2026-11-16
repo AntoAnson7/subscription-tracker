@@ -1,6 +1,6 @@
 import { sva } from 'styled-system/css';
 
-const focusRing = { outline: '2px solid', outlineColor: 'accent.primary', outlineOffset: '-2px' };
+const focusRing = { outline: '2px solid', outlineColor: 'accent.primary', outlineOffset: '2px' };
 
 export const appleFaqStyles = sva({
   slots: [
@@ -43,18 +43,21 @@ export const appleFaqStyles = sva({
       color: 'text.primary',
     },
     list: {
-      borderTop: '1px solid',
-      borderColor: 'border.subtle',
       display: 'flex',
       flexDirection: 'column',
+      gap: '150',
     },
     item: {
-      borderBottom: '1px solid',
-      borderColor: 'border.subtle',
+      bg: 'bg.secondary',
+      borderRadius: 'lg',
+      px: { base: '200', sm: '250' },
+      py: '50',
+      transition: 'all 0.15s ease',
+      _hover: { bg: 'bg.hover' },
     },
     button: {
       width: '100%',
-      py: '200',
+      py: '150',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
@@ -77,7 +80,7 @@ export const appleFaqStyles = sva({
       flexShrink: 0,
     },
     answer: {
-      pb: '200',
+      pb: '150',
       fontSize: '13px',
       lineHeight: '1.6',
       color: 'text.secondary',
