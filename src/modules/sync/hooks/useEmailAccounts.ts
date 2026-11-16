@@ -40,7 +40,7 @@ export function useEmailAccounts(userId: string | null = null) {
     isSimulated = false,
     accessToken?: string,
     tokenExpiresAt?: number
-  ): boolean => {
+  ): string | null => {
     const existing = accounts.find((a) => a.email.toLowerCase() === email.toLowerCase());
     if (existing) {
       if (accessToken) {
@@ -54,11 +54,12 @@ export function useEmailAccounts(userId: string | null = null) {
           return updated;
         });
       }
-      return true;
+      return existing.id;
     }
 
+    const newId = crypto.randomUUID();
     const newAccount: LinkedEmailAccount = {
-      id: crypto.randomUUID(),
+      id: newId,
       userId,
       email,
       provider,
@@ -76,7 +77,7 @@ export function useEmailAccounts(userId: string | null = null) {
       saveAccounts(userId, updated);
       return updated;
     });
-    return true;
+    return newId;
   };
 
   const unlinkAccount = (id: string) => {

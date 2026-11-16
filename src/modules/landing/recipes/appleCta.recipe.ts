@@ -27,7 +27,7 @@ export const appleCtaStyles = sva({
       borderRadius: { base: '20px', sm: '28px' },
       bg: 'bg.secondary',
       border: '1px solid',
-      borderColor: 'border.strong',
+      borderColor: 'accent.border',
       p: { base: '300', sm: '400', md: '500' },
       textAlign: 'center',
       display: 'flex',

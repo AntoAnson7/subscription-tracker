@@ -101,7 +101,7 @@ export const authModalStyles = sva({
       borderRadius: 'pill',
       background: 'bg.secondary',
       border: '1px solid',
-      borderColor: 'border.strong',
+      borderColor: 'border.default',
       color: 'text.primary',
       cursor: 'pointer',
       transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',

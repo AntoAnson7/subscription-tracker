@@ -42,9 +42,9 @@ export function SubscriptionFilterBar({
               onClick={() => onCategoryChange(category)}
               className={classes.pill}
               style={{
-                background: isSelected ? '#1D1D1F' : undefined,
+                background: isSelected ? 'var(--colors-accent-primary)' : undefined,
                 color: isSelected ? '#FFFFFF' : undefined,
-                borderColor: isSelected ? '#1D1D1F' : undefined,
+                borderColor: isSelected ? 'var(--colors-accent-primary)' : undefined,
               }}
             >
               {category}

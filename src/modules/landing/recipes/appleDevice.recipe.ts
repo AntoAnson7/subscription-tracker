@@ -35,9 +35,9 @@ export const appleDeviceStyles = sva({
     deviceFrame: {
       borderRadius: { base: '16px', sm: '20px', md: '24px' },
       border: '1px solid',
-      borderColor: 'border.strong',
+      borderColor: 'accent.border',
       bg: 'bg.primary',
-      boxShadow: '0 25px 80px -20px rgba(0, 0, 0, 0.25)',
+      boxShadow: '0 25px 80px -20px rgba(217, 119, 6, 0.1)',
       overflow: 'hidden',
     },
     deviceHeader: {

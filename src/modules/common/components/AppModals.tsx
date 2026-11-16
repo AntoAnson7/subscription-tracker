@@ -96,7 +96,13 @@ export function AppModals({
       <SyncModals
         isConsentOpen={syncManager.isConsentModalOpen}
         onCloseConsent={() => syncManager.setIsConsentModalOpen(false)}
-        onLinkAccount={syncManager.linkAccount}
+        onLinkAccount={(email, provider, isSimulated, token, expires) => {
+          onCloseProfile();
+          return syncManager.linkAccount(email, provider, isSimulated, token, expires);
+        }}
+        promptScanAccount={syncManager.promptScanAccount}
+        onCloseScanPrompt={() => syncManager.setPromptScanAccount(null)}
+        onScanAccount={syncManager.scanEmails}
         isReviewOpen={syncManager.isReviewOpen}
         onCloseReview={syncManager.closeReview}
         discoveredSubs={syncManager.discoveredSubs}

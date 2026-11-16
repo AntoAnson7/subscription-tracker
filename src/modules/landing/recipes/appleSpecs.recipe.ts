@@ -53,7 +53,7 @@ export const appleSpecsStyles = sva({
       WebkitOverflowScrolling: 'touch',
       borderRadius: '20px',
       border: '1px solid',
-      borderColor: 'border.default',
+      borderColor: 'border.subtle',
       bg: 'bg.primary',
     },
     table: {

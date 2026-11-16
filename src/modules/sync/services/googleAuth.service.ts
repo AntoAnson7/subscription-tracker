@@ -41,6 +41,11 @@ export async function requestGoogleAccessToken(clientId: string): Promise<Google
             callback: (resp: GoogleTokenResponse) => void;
             error_callback?: (err: unknown) => void;
           }) => GoogleTokenClient;
+          hasGrantedAllScopes?: (
+            tokenResponse: GoogleTokenResponse,
+            firstScope: string,
+            ...restScopes: string[]
+          ) => boolean;
         };
       };
     };
@@ -64,6 +69,19 @@ export async function requestGoogleAccessToken(clientId: string): Promise<Google
           if (resp.error) {
             reject(
               new Error(resp.error_description || resp.error || 'Google authorization failed')
+            );
+            return;
+          }
+
+          const hasGmail = oauth2.hasGrantedAllScopes
+            ? oauth2.hasGrantedAllScopes(resp, 'https://www.googleapis.com/auth/gmail.readonly')
+            : (resp.scope || '').includes('gmail.readonly');
+
+          if (!hasGmail) {
+            reject(
+              new Error(
+                'Gmail read permission was not granted. Please reconnect and check the "View your email messages" box on Google\'s consent screen.'
+              )
             );
             return;
           }

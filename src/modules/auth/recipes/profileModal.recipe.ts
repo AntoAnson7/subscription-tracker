@@ -81,7 +81,7 @@ export const profileModalStyles = sva({
       borderRadius: 'pill',
       overflow: 'hidden',
       border: '2px solid',
-      borderColor: 'border.strong',
+      borderColor: 'border.default',
       background: 'bg.secondary',
       mb: '100',
     },

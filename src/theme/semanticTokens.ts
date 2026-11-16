@@ -11,19 +11,19 @@ export const semanticTokens = {
       },
       tertiary: {
         value: {
-          base: 'rgba(0, 0, 0, 0.03)',
+          base: 'rgba(217, 119, 6, 0.04)',
           _dark: 'rgba(255, 255, 255, 0.05)',
         },
       },
       hover: {
         value: {
-          base: 'rgba(0, 0, 0, 0.04)',
+          base: 'rgba(217, 119, 6, 0.06)',
           _dark: 'rgba(255, 255, 255, 0.08)',
         },
       },
       muted: {
         value: {
-          base: 'rgba(0, 0, 0, 0.02)',
+          base: 'rgba(217, 119, 6, 0.02)',
           _dark: 'rgba(255, 255, 255, 0.02)',
         },
       },
@@ -37,20 +37,20 @@ export const semanticTokens = {
     border: {
       subtle: {
         value: {
-          base: 'rgba(0, 0, 0, 0.06)',
+          base: 'rgba(217, 119, 6, 0.08)',
           _dark: 'rgba(255, 255, 255, 0.08)',
         },
       },
       default: {
         value: {
-          base: 'rgba(0, 0, 0, 0.08)',
-          _dark: 'rgba(255, 255, 255, 0.1)',
+          base: 'rgba(217, 119, 6, 0.14)',
+          _dark: 'rgba(245, 158, 11, 0.16)',
         },
       },
       strong: {
         value: {
-          base: 'rgba(0, 0, 0, 0.15)',
-          _dark: 'rgba(255, 255, 255, 0.2)',
+          base: 'rgba(217, 119, 6, 0.22)',
+          _dark: 'rgba(245, 158, 11, 0.25)',
         },
       },
     },
@@ -64,7 +64,7 @@ export const semanticTokens = {
       },
       border: {
         value: {
-          base: 'rgba(217, 119, 6, 0.15)',
+          base: 'rgba(217, 119, 6, 0.18)',
           _dark: 'rgba(245, 158, 11, 0.25)',
         },
       },
@@ -79,22 +79,34 @@ export const semanticTokens = {
       },
       dangerBorder: {
         value: {
-          base: 'rgba(239, 68, 68, 0.2)',
-          _dark: 'rgba(239, 68, 68, 0.3)',
+          base: 'rgba(239, 68, 68, 0.22)',
+          _dark: 'rgba(239, 68, 68, 0.32)',
         },
       },
-      warning: { value: { base: '#F59E0B', _dark: '#FBBF24' } },
+      warning: { value: { base: '#D97706', _dark: '#F59E0B' } },
       warningBg: {
         value: {
-          base: 'rgba(245, 158, 11, 0.1)',
-          _dark: 'rgba(245, 158, 11, 0.15)',
+          base: 'rgba(245, 158, 11, 0.08)',
+          _dark: 'rgba(245, 158, 11, 0.14)',
+        },
+      },
+      warningBorder: {
+        value: {
+          base: 'rgba(217, 119, 6, 0.28)',
+          _dark: 'rgba(245, 158, 11, 0.38)',
         },
       },
       success: { value: { base: '#10B981', _dark: '#34D399' } },
       successBg: {
         value: {
-          base: 'rgba(16, 185, 129, 0.1)',
-          _dark: 'rgba(16, 185, 129, 0.15)',
+          base: 'rgba(16, 185, 129, 0.08)',
+          _dark: 'rgba(16, 185, 129, 0.14)',
+        },
+      },
+      successBorder: {
+        value: {
+          base: 'rgba(16, 185, 129, 0.25)',
+          _dark: 'rgba(16, 185, 129, 0.35)',
         },
       },
     },

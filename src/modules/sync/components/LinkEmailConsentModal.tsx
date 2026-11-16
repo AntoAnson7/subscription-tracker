@@ -19,7 +19,7 @@ interface LinkEmailConsentModalProps {
     isSimulated?: boolean,
     accessToken?: string,
     tokenExpiresAt?: number
-  ) => boolean;
+  ) => string | boolean | null;
 }
 
 export function LinkEmailConsentModal({ isOpen, onClose, onLink }: LinkEmailConsentModalProps) {

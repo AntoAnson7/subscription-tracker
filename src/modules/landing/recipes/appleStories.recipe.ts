@@ -64,7 +64,7 @@ export const appleStoriesStyles = sva({
       justifyContent: 'space-between',
       gap: '200',
       transition: 'border-color 0.2s ease',
-      _hover: { borderColor: 'border.strong' },
+      _hover: { borderColor: 'accent.border' },
     },
     cardContent: {
       display: 'flex',

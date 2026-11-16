@@ -51,6 +51,9 @@ export async function fetchGmailReceipts(
   if (listRes.status === 401) {
     throw new Error('AUTH_EXPIRED');
   }
+  if (listRes.status === 403) {
+    throw new Error('INSUFFICIENT_SCOPES');
+  }
   if (!listRes.ok) {
     throw new Error(`Gmail API error (${listRes.status}): ${listRes.statusText}`);
   }

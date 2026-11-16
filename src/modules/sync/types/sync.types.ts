@@ -7,6 +7,12 @@ export type EmailProvider = 'gmail' | 'outlook' | 'custom';
 
 export type SyncStatus = 'idle' | 'syncing' | 'completed' | 'error';
 
+export interface ScanResult {
+  discoveredCount: number;
+  receiptsCount: number;
+  error: 'SCOPE_ERROR' | 'AUTH_ERROR' | null;
+}
+
 export interface LinkedEmailAccount {
   id: string;
   userId: string | null;

@@ -7,6 +7,7 @@ import {
   EmailReceipt,
   LinkedEmailAccount,
   PaymentRecord,
+  ScanResult,
 } from '@/modules/sync/types/sync.types';
 import { processReceipts } from '@/modules/sync/utils/receiptProcessor.utils';
 
@@ -31,18 +32,21 @@ export function useEmailSync({
   const [lastSyncResult, setLastSyncResult] = useState<string | null>(null);
 
   const scanEmails = useCallback(
-    async (targetAccountId?: string) => {
+    async (targetAccountId?: string): Promise<ScanResult> => {
       const targetAccounts = targetAccountId
         ? accounts.filter((a) => a.id === targetAccountId)
         : accounts.filter((a) => a.status === 'active');
 
-      if (targetAccounts.length === 0) return;
+      if (targetAccounts.length === 0) {
+        return { discoveredCount: 0, receiptsCount: 0, error: null };
+      }
 
       setIsSyncing(true);
       targetAccounts.forEach((acc) => updateAccountSync(acc.id, 'syncing'));
 
       const allReceipts: EmailReceipt[] = [];
       let authErrors = 0;
+      let scopeErrors = 0;
 
       for (const account of targetAccounts) {
         if (account.accessToken) {
@@ -50,9 +54,12 @@ export function useEmailSync({
             const fetched = await fetchGmailReceipts(account.accessToken, account.email);
             allReceipts.push(...fetched);
             updateAccountSync(account.id, 'active');
-          } catch {
+          } catch (err) {
             updateAccountSync(account.id, 'error');
             authErrors += 1;
+            if (err instanceof Error && err.message === 'INSUFFICIENT_SCOPES') {
+              scopeErrors += 1;
+            }
           }
         } else {
           updateAccountSync(account.id, 'active');
@@ -72,7 +79,13 @@ export function useEmailSync({
         setIsReviewOpen(true);
       }
 
-      if (authErrors > 0) {
+      const scanError = scopeErrors > 0 ? 'SCOPE_ERROR' : authErrors > 0 ? 'AUTH_ERROR' : null;
+
+      if (scopeErrors > 0) {
+        setLastSyncResult(
+          'Sync warning: Gmail permission was missing. Please unlink and reconnect, ensuring the "View email messages" box is checked.'
+        );
+      } else if (authErrors > 0) {
         setLastSyncResult(
           `Sync warning: Google authorization expired for ${authErrors} account(s). Please reconnect.`
         );
@@ -83,6 +96,12 @@ export function useEmailSync({
           `Scan complete: Found ${allReceipts.length} receipts (${newDiscovered.length} new subs, ${debitMatchesCount} debits, ${cancellationsCount} cancellations).`
         );
       }
+
+      return {
+        discoveredCount: newDiscovered.length,
+        receiptsCount: allReceipts.length,
+        error: scanError,
+      };
     },
     [accounts, subscriptions, updateAccountSync, addPayment, addCancellationAlert]
   );

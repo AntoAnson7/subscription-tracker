@@ -73,7 +73,7 @@ export const onboardingModalStyles = sva({
       margin: '0 auto 100',
       overflow: 'hidden',
       border: '2px solid',
-      borderColor: 'border.strong',
+      borderColor: 'border.default',
       ...centerFlex,
       background: 'bg.secondary',
     },

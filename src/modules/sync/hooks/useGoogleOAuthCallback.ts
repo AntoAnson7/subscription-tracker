@@ -9,7 +9,7 @@ export function useGoogleOAuthCallback(
     isSimulated?: boolean,
     accessToken?: string,
     tokenExpiresAt?: number
-  ) => boolean
+  ) => string | boolean | null
 ) {
   useEffect(() => {
     if (!supabase || !isSupabaseConfigured) return;

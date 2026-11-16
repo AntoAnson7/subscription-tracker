@@ -7,7 +7,7 @@ import { useEmailSync } from '@/modules/sync/hooks/useEmailSync';
 import { useGoogleOAuthCallback } from '@/modules/sync/hooks/useGoogleOAuthCallback';
 import { usePaymentHistory } from '@/modules/sync/hooks/usePaymentHistory';
 import { usePriceHikeAlerts } from '@/modules/sync/hooks/usePriceHikeAlerts';
-import { DiscoveredSubscription } from '@/modules/sync/types/sync.types';
+import { DiscoveredSubscription, EmailProvider } from '@/modules/sync/types/sync.types';
 
 interface UseSyncManagerParams {
   userId: string | null;
@@ -26,6 +26,9 @@ export function useSyncManager({
 }: UseSyncManagerParams) {
   const [isConsentModalOpen, setIsConsentModalOpen] = useState(false);
   const [activeSubForPayments, setActiveSubForPayments] = useState<Subscription | null>(null);
+  const [promptScanAccount, setPromptScanAccount] = useState<{ id: string; email: string } | null>(
+    null
+  );
 
   const {
     accounts: linkedAccounts,
@@ -35,7 +38,24 @@ export function useSyncManager({
     updateAccountSync,
   } = useEmailAccounts(userId);
 
-  useGoogleOAuthCallback(linkAccount);
+  const handleLinkAccount = useCallback(
+    (
+      email: string,
+      provider: EmailProvider = 'gmail',
+      isSimulated = false,
+      accessToken?: string,
+      tokenExpiresAt?: number
+    ): string | null => {
+      const accountId = linkAccount(email, provider, isSimulated, accessToken, tokenExpiresAt);
+      if (accountId) {
+        setPromptScanAccount({ id: accountId, email });
+      }
+      return accountId;
+    },
+    [linkAccount]
+  );
+
+  useGoogleOAuthCallback(handleLinkAccount);
 
   const { payments, addPayment, getPaymentsForSubscription } = usePaymentHistory();
 
@@ -103,9 +123,11 @@ export function useSyncManager({
     priceHikeAlerts,
     payments,
     activeSubForPayments,
+    promptScanAccount,
+    setPromptScanAccount,
     setIsConsentModalOpen,
     setActiveSubForPayments,
-    linkAccount,
+    linkAccount: handleLinkAccount,
     unlinkAccount,
     scanEmails,
     toggleSelection,

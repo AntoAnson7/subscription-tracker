@@ -96,10 +96,13 @@ export function DatePicker({ label, value, onChange, required }: DatePickerProps
                   onClick={() => handleSelectDay(item.dateString)}
                   className={classes.dayBtn}
                   style={{
-                    background: item.isSelected ? '#1D1D1F' : undefined,
+                    background: item.isSelected ? 'var(--colors-accent-primary)' : undefined,
                     color: item.isSelected ? '#FFFFFF' : undefined,
                     fontWeight: item.isSelected || item.isToday ? 700 : 500,
-                    outline: item.isToday && !item.isSelected ? '1px solid #D97706' : undefined,
+                    outline:
+                      item.isToday && !item.isSelected
+                        ? '1px solid var(--colors-accent-primary)'
+                        : undefined,
                   }}
                 >
                   {item.dayNumber}

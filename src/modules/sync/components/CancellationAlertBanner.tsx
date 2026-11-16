@@ -23,7 +23,7 @@ export function CancellationAlertBanner({
       {pendingAlerts.map((alert) => (
         <div key={alert.id} className={classes.alertBanner}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <AlertTriangle size={16} />
+            <AlertTriangle size={16} color="var(--colors-status-warning)" />
             <span className={classes.alertText}>
               Cancellation email detected for <strong>{alert.subscriptionName}</strong> (
               {alert.sourceSubject}).

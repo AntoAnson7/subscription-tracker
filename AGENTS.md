@@ -213,7 +213,7 @@ Available semantic tokens:
 - **Text**: `text.primary`, `text.secondary`, `text.tertiary`, `text.inverse`
 - **Borders**: `border.subtle`, `border.default`, `border.strong`
 - **Accent**: `accent.primary`, `accent.subtle`, `accent.border`
-- **Status**: `status.danger`, `status.dangerBg`, `status.dangerBorder`, `status.warning`, `status.warningBg`, `status.success`, `status.successBg`
+- **Status**: `status.danger`, `status.dangerBg`, `status.dangerBorder`, `status.warning`, `status.warningBg`, `status.warningBorder`, `status.success`, `status.successBg`, `status.successBorder`
 
 ### Sizing & Spacing Scale
 
