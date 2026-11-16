@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAuth } from '@/modules/auth/hooks/useAuth';
 import { useProfile } from '@/modules/auth/hooks/useProfile';
 import { AppBackground } from '@/modules/common/components/AppBackground';
@@ -22,6 +22,7 @@ export function App() {
   const [activeTab, setActiveTab] = useTabParam();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const redirectToAppAfterAuthRef = useRef(false);
 
   const { user, loading: authLoading, signInWithGoogle, signOut, error: authError } = useAuth();
   const { currentView, navigateToView } = useAppView(!!user);
@@ -29,6 +30,26 @@ export function App() {
   const subManager = useAppSubscriptions(user?.id ?? null);
   const legalModal = useLegalModal();
   const exportManager = useExport();
+
+  const handleLaunchApp = useCallback(() => {
+    if (user) {
+      navigateToView('app');
+    } else {
+      redirectToAppAfterAuthRef.current = true;
+      setIsAuthModalOpen(true);
+    }
+  }, [user, navigateToView]);
+
+  const prevUserRef = useRef(user);
+  useEffect(() => {
+    if (!prevUserRef.current && user) {
+      if (redirectToAppAfterAuthRef.current) {
+        redirectToAppAfterAuthRef.current = false;
+        navigateToView('app');
+      }
+    }
+    prevUserRef.current = user;
+  }, [user, navigateToView]);
 
   const syncManager = useSyncManager({
     userId: user?.id ?? null,
@@ -46,8 +67,10 @@ export function App() {
       <AppBackground>
         {currentView === 'landing' ? (
           <LandingPage
+            isLoggedIn={!!user}
             onOpenAuth={() => setIsAuthModalOpen(true)}
-            onLaunchApp={() => navigateToView('app')}
+            onLaunchApp={handleLaunchApp}
+            onExploreDemo={() => navigateToView('app')}
             onOpenLegal={legalModal.openLegal}
           />
         ) : (
@@ -83,8 +106,11 @@ export function App() {
           onSubmitSubModal={subManager.handleModalSubmit}
           onDeleteSub={subManager.deleteSubscription}
           activeSub={subManager.activeSub}
-          isAuthOpen={isAuthModalOpen}
-          onCloseAuth={() => setIsAuthModalOpen(false)}
+          isAuthOpen={isAuthModalOpen && !user}
+          onCloseAuth={() => {
+            setIsAuthModalOpen(false);
+            redirectToAppAfterAuthRef.current = false;
+          }}
           onGoogleSignIn={signInWithGoogle}
           authError={authError}
           needsOnboarding={needsOnboarding}

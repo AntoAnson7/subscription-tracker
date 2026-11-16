@@ -10,25 +10,34 @@ import { AppleStorySections } from '@/modules/landing/components/AppleStorySecti
 import { landingPageStyles } from '@/modules/landing/recipes/landingPage.recipe';
 
 interface LandingPageProps {
+  isLoggedIn?: boolean;
   onOpenAuth: () => void;
   onLaunchApp: () => void;
+  onExploreDemo?: () => void;
   onOpenLegal: (tab: LegalTab) => void;
 }
 
-export function LandingPage({ onOpenAuth, onLaunchApp, onOpenLegal }: LandingPageProps) {
+export function LandingPage({
+  isLoggedIn,
+  onOpenAuth,
+  onLaunchApp,
+  onExploreDemo,
+  onOpenLegal,
+}: LandingPageProps) {
   const classes = landingPageStyles();
+  const handleExplore = onExploreDemo ?? onLaunchApp;
 
   return (
     <div className={classes.root}>
-      <AppleNav onOpenAuth={onOpenAuth} onLaunchApp={onLaunchApp} />
+      <AppleNav isLoggedIn={isLoggedIn} onLaunchApp={onLaunchApp} />
 
       <main className={classes.content}>
-        <AppleHero onOpenAuth={onOpenAuth} onLaunchApp={onLaunchApp} />
+        <AppleHero onOpenAuth={onOpenAuth} onLaunchApp={handleExplore} />
         <AppleDeviceShowcase />
         <AppleStorySections />
         <AppleSpecsTable />
         <AppleFaq />
-        <AppleCta onOpenAuth={onOpenAuth} onLaunchApp={onLaunchApp} />
+        <AppleCta onOpenAuth={onOpenAuth} onLaunchApp={handleExplore} />
       </main>
 
       <Footer onOpenLegal={onOpenLegal} onOpenAuth={onOpenAuth} />

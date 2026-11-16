@@ -108,6 +108,8 @@ export const appleDeviceStyles = sva({
       display: 'flex',
       flexDirection: 'column',
       gap: '250',
+      pointerEvents: 'none',
+      userSelect: 'none',
     },
     screenView: {
       display: 'flex',

@@ -3,11 +3,11 @@ import { useTheme } from '@/modules/common/hooks/useTheme';
 import { appleNavStyles } from '@/modules/landing/recipes/appleNav.recipe';
 
 interface AppleNavProps {
-  onOpenAuth: () => void;
+  isLoggedIn?: boolean;
   onLaunchApp: () => void;
 }
 
-export function AppleNav({ onOpenAuth, onLaunchApp }: AppleNavProps) {
+export function AppleNav({ isLoggedIn, onLaunchApp }: AppleNavProps) {
   const { isDark, toggleMode } = useTheme();
   const classes = appleNavStyles();
 
@@ -78,12 +78,8 @@ export function AppleNav({ onOpenAuth, onLaunchApp }: AppleNavProps) {
             {isDark ? <Sun size={13} color="#FBBF24" /> : <Moon size={13} color="#71717A" />}
           </button>
 
-          <button type="button" onClick={onOpenAuth} className={classes.signInBtn} title="Sign in">
-            Sign in
-          </button>
-
           <button type="button" onClick={onLaunchApp} className={classes.ctaBtn}>
-            Launch App
+            {isLoggedIn ? 'Dashboard' : 'Launch App'}
           </button>
         </div>
       </div>
