@@ -33,7 +33,7 @@ export function AnalyticsSummaryCards({ summary }: AnalyticsSummaryCardsProps) {
       <div className={classes.summaryCard}>
         <span className={classes.summaryLabel}>Top category</span>
         <span className={classes.summaryValue}>
-          {summary.topCategory ? summary.topCategory.name : '—'}
+          {summary.topCategory ? summary.topCategory.name : '-'}
         </span>
         <span className={classes.summarySub}>
           {summary.topCategory

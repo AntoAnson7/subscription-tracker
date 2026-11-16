@@ -13,7 +13,7 @@ function getOrdinalSuffix(day: number): string {
 }
 
 export function formatDisplayDate(dateString: string): string {
-  if (!dateString) return '—';
+  if (!dateString) return '-';
   const parts = dateString.split('-');
   let date: Date;
   if (parts.length === 3) {

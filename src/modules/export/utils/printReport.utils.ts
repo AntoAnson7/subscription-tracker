@@ -25,7 +25,7 @@ export function printSubscriptionsReport(subscriptions: Subscription[], currency
     <!DOCTYPE html>
     <html>
       <head>
-        <title>Subwise — Subscription Expense Report</title>
+        <title>Subwise Subscription Expense Report</title>
         <style>
           body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding: 32px; color: #18181b; }
           h1 { margin: 0 0 4px 0; font-size: 24px; font-weight: 800; }
@@ -42,7 +42,7 @@ export function printSubscriptionsReport(subscriptions: Subscription[], currency
       <body>
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
           <div>
-            <h1>Subwise — Expense & Tax Report</h1>
+            <h1>Subwise Expense & Tax Report</h1>
             <p style="margin: 4px 0 0 0;">Generated on ${new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })} • ${subscriptions.length} Subscriptions</p>
           </div>
           <div style="background: #18181b; padding: 4px 12px; border-radius: 9999px; display: inline-flex; align-items: center;">

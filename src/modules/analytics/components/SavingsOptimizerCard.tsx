@@ -26,7 +26,7 @@ export function SavingsOptimizerCard({ subscriptions }: SavingsOptimizerCardProp
           <h3 className={classes.headerTitle}>Annual Billing Optimizer</h3>
         </div>
         <p className={classes.headerDesc}>
-          Most digital services offer 15%–20% discounts when billed annually instead of monthly.
+          Most digital services offer 15% to 20% discounts when billed annually instead of monthly.
         </p>
       </header>
 

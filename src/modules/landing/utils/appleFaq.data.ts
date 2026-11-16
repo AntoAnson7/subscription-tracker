@@ -23,6 +23,6 @@ export const APPLE_FAQS: LandingFaq[] = [
     id: 'apple-pricing',
     question: 'What does Subwise cost?',
     answer:
-      'Subwise is completely free to use. All core capabilities—including Gmail receipt parsing, price hike alerts, savings optimization, and CSV/PDF export—are included without paywalls.',
+      'Subwise is completely free to use. All core capabilities, including Gmail receipt parsing, price hike alerts, savings optimization, and CSV/PDF export, are included without paywalls.',
   },
 ];

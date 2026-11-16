@@ -30,7 +30,7 @@ export function AppleDeviceShowcase() {
                 alt=""
                 style={{ width: '14px', height: '14px', objectFit: 'contain' }}
               />
-              <span>Subwise — Personal Workspace</span>
+              <span>Subwise Workspace</span>
             </span>
 
             <div className={classes.segmentBar} role="tablist" aria-label="Showcase screens">
