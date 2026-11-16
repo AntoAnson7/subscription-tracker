@@ -5,10 +5,11 @@ export const checkboxStyles = sva({
   base: {
     root: {
       display: 'inline-flex',
-      alignItems: 'flex-start',
+      alignItems: 'center',
       gap: '100',
       cursor: 'pointer',
       userSelect: 'none',
+      width: '100%',
     },
     input: {
       position: 'absolute',
@@ -32,7 +33,7 @@ export const checkboxStyles = sva({
       alignItems: 'center',
       justifyContent: 'center',
       flexShrink: 0,
-      mt: '2px',
+      mt: '0',
       transition: 'all 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
       _hover: { borderColor: 'accent.primary' },
     },
@@ -44,6 +45,24 @@ export const checkboxStyles = sva({
     },
   },
   variants: {
+    isMultiline: {
+      true: {
+        root: {
+          alignItems: 'flex-start',
+        },
+        control: {
+          mt: '2px',
+        },
+      },
+      false: {
+        root: {
+          alignItems: 'center',
+        },
+        control: {
+          mt: '0',
+        },
+      },
+    },
     isChecked: {
       true: {
         control: {

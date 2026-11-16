@@ -31,7 +31,8 @@ export const consentFormStyles = sva({
       borderColor: 'border.subtle',
       mb: '200',
       display: 'flex',
-      alignItems: 'flex-start',
+      alignItems: 'center',
+      minHeight: '44px',
     },
   },
 });
