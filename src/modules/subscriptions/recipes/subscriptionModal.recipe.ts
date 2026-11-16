@@ -138,7 +138,7 @@ export const subscriptionModalStyles = sva({
       alignItems: 'center',
       gap: '50',
       marginRight: 'auto',
-      _hover: { background: 'status.danger', color: 'text.inverse' },
+      _hover: { background: 'status.danger', color: '#FFFFFF' },
       _focusVisible: focusRing,
     },
   },

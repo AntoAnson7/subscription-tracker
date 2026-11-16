@@ -123,7 +123,7 @@ export const consentModalStyles = sva({
       gap: '100',
       boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
       _disabled: { opacity: 0.5, cursor: 'not-allowed' },
-      _hover: { opacity: 0.9 },
+      _hover: { opacity: 0.9, bg: 'accent.primary', color: '#FFFFFF' },
     },
   },
 });

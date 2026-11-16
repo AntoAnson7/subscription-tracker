@@ -116,7 +116,7 @@ export const appleNavStyles = sva({
       border: 'none',
       cursor: 'pointer',
       transition: 'opacity 0.15s ease',
-      _hover: { opacity: 0.9 },
+      _hover: { opacity: 0.9, bg: 'accent.primary', color: '#FFFFFF' },
       _focusVisible: focusRing,
     },
   },

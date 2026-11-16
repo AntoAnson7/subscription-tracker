@@ -50,6 +50,10 @@ export const exportOptionStyles = sva({
         borderColor: 'accent.primary',
         bg: 'bg.primary',
         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+        _hover: {
+          borderColor: 'accent.primary',
+          bg: 'bg.primary',
+        },
       },
       '& > div': {
         fontSize: '14px',

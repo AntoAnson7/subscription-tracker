@@ -83,7 +83,7 @@ export const appleCtaStyles = sva({
       cursor: 'pointer',
       width: { base: '100%', sm: 'auto' },
       transition: 'opacity 0.15s ease',
-      _hover: { opacity: 0.9 },
+      _hover: { opacity: 0.9, bg: 'accent.primary', color: '#FFFFFF' },
       _focusVisible: focusRing,
     },
     secondaryBtn: {

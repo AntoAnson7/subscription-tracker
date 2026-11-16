@@ -133,7 +133,7 @@ export const syncModalStyles = sva({
       fontWeight: '600',
       cursor: 'pointer',
       _disabled: { opacity: 0.5, cursor: 'not-allowed' },
-      _hover: { opacity: 0.9 },
+      _hover: { opacity: 0.9, bg: 'accent.primary', color: '#FFFFFF' },
     },
   },
 });

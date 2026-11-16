@@ -122,12 +122,12 @@ export function ExportModal({
         </div>
 
         <div className={classes.actionsRow}>
-          <button type="button" onClick={onClose}>
+          <button type="button" onClick={onClose} className={classes.cancelBtn}>
             Cancel
           </button>
           <button
             type="button"
-            data-primary="true"
+            className={classes.primaryBtn}
             onClick={() => onExport(subscriptions, currency)}
           >
             <Download size={14} />
