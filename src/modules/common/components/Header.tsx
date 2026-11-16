@@ -1,4 +1,4 @@
-import { CreditCard, Moon, Sun, User as UserIcon } from 'lucide-react';
+import { Moon, Sun, User as UserIcon } from 'lucide-react';
 import { UserProfile } from '@/modules/auth/types/auth.types';
 import { HeaderAvatarSkeleton } from '@/modules/common/components/HeaderAvatarSkeleton';
 import { CurrencySelector } from '@/modules/common/components/CurrencySelector';
@@ -43,7 +43,7 @@ export function Header({
           style={{ cursor: onBackToLanding ? 'pointer' : 'default' }}
         >
           <div className={classes.brandIcon}>
-            <CreditCard size={18} strokeWidth={2.2} />
+            <img src="/subwise-icon.png" alt="" className={classes.brandIconImg} />
           </div>
           <span className={classes.brandText}>Subwise</span>
         </div>

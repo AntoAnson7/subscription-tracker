@@ -7,6 +7,7 @@ export const appleNavStyles = sva({
     'root',
     'container',
     'brand',
+    'brandLogo',
     'brandText',
     'links',
     'link',
@@ -48,6 +49,12 @@ export const appleNavStyles = sva({
       fontSize: '14px',
       fontWeight: '600',
       letterSpacing: '-0.01em',
+    },
+    brandLogo: {
+      height: { base: '24px', sm: '26px' },
+      width: 'auto',
+      display: 'block',
+      objectFit: 'contain',
     },
     brandText: {
       fontWeight: '700',

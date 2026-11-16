@@ -18,7 +18,9 @@ export function Footer({ onOpenLegal, onOpenAuth }: FooterProps) {
         <div className={classes.topGrid}>
           <div className={classes.brandCol}>
             <div className={classes.brandHeader}>
-              <div className={classes.brandLogo}>S</div>
+              <div className={classes.brandLogo}>
+                <img src="/subwise-icon.png" alt="" className={classes.brandLogoImg} />
+              </div>
               <span className={classes.brandName}>Subwise</span>
             </div>
             <p className={classes.brandTagline}>

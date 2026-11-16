@@ -68,7 +68,9 @@ export const appleDeviceStyles = sva({
       fontWeight: '600',
       color: 'text.secondary',
       letterSpacing: '-0.01em',
-      display: { base: 'none', md: 'block' },
+      display: { base: 'none', md: 'flex' },
+      alignItems: 'center',
+      gap: '50',
     },
     segmentBar: {
       display: 'flex',

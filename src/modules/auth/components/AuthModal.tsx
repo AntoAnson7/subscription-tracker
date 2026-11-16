@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Sparkles, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { GoogleIcon } from '@/modules/auth/components/GoogleIcon';
 import { authModalStyles } from '@/modules/auth/recipes/authModal.recipe';
 import { useClickOutside } from '@/modules/common/hooks/useClickOutside';
@@ -37,7 +37,11 @@ export function AuthModal({ isOpen, onClose, onGoogleSignIn, error }: AuthModalP
 
         <header className={classes.header}>
           <div className={classes.iconWrapper}>
-            <Sparkles size={22} strokeWidth={2.2} />
+            <img
+              src="/subwise-icon.png"
+              alt=""
+              style={{ width: '24px', height: '24px', objectFit: 'contain' }}
+            />
           </div>
           <h2 id="auth-modal-title" className={classes.title}>
             Subwise Sync

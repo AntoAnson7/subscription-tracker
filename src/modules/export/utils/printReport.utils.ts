@@ -40,8 +40,13 @@ export function printSubscriptionsReport(subscriptions: Subscription[], currency
         </style>
       </head>
       <body>
-        <h1>Subwise — Expense & Tax Report</h1>
-        <p>Generated on ${new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })} • ${subscriptions.length} Subscriptions</p>
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+          <div>
+            <h1>Subwise — Expense & Tax Report</h1>
+            <p style="margin: 4px 0 0 0;">Generated on ${new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })} • ${subscriptions.length} Subscriptions</p>
+          </div>
+          <img src="/subwise-full.png" alt="Subwise" style="height: 28px; width: auto;" />
+        </div>
         
         <div class="summary">
           <div class="stat">

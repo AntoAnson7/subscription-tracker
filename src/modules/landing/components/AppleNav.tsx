@@ -37,11 +37,12 @@ export function AppleNav({ onOpenAuth, onLaunchApp }: AppleNavProps) {
           onClick={handleBrandClick}
           role="button"
           tabIndex={0}
+          aria-label="Subwise Home"
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') handleBrandClick();
           }}
         >
-          <span className={classes.brandText}>Subwise</span>
+          <img src="/subwise-full.png" alt="Subwise" className={classes.brandLogo} />
         </div>
 
         <nav className={classes.links} aria-label="Product navigation">

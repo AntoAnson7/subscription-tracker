@@ -24,7 +24,14 @@ export function AppleDeviceShowcase() {
               <div className={classes.trafficLight} style={{ backgroundColor: '#27C93F' }} />
             </div>
 
-            <span className={classes.windowTitle}>Subwise — Personal Workspace</span>
+            <span className={classes.windowTitle}>
+              <img
+                src="/subwise-icon.png"
+                alt=""
+                style={{ width: '14px', height: '14px', objectFit: 'contain' }}
+              />
+              <span>Subwise — Personal Workspace</span>
+            </span>
 
             <div className={classes.segmentBar} role="tablist" aria-label="Showcase screens">
               <button
