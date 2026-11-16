@@ -28,7 +28,7 @@ html {
 *::after {
   box-sizing: border-box;
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  scrollbar-color: var(--colors-accent-primary, #d97706) transparent;
 }
 
 /* Prevent iOS Safari / mobile auto-zoom on input focus */
@@ -50,7 +50,7 @@ textarea {
 .dark *,
 .dark *::before,
 .dark *::after {
-  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  scrollbar-color: var(--colors-accent-primary, #f59e0b) transparent;
 }
 
 /* Custom sleek scrollbars */
@@ -64,21 +64,21 @@ textarea {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--colors-accent-primary, #d97706);
   border-radius: 9999px;
   transition: background 0.15s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.35);
+  background: #b45309;
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--colors-accent-primary, #f59e0b);
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.38);
+  background: #fbbf24;
 }
 
 body {
