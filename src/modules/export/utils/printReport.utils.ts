@@ -45,7 +45,9 @@ export function printSubscriptionsReport(subscriptions: Subscription[], currency
             <h1>Subwise — Expense & Tax Report</h1>
             <p style="margin: 4px 0 0 0;">Generated on ${new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })} • ${subscriptions.length} Subscriptions</p>
           </div>
-          <img src="/subwise-full.png" alt="Subwise" style="height: 28px; width: auto;" />
+          <div style="background: #18181b; padding: 4px 12px; border-radius: 9999px; display: inline-flex; align-items: center;">
+            <img src="/subwise-full.png" alt="Subwise" style="height: 22px; width: auto;" />
+          </div>
         </div>
         
         <div class="summary">
