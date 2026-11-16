@@ -106,8 +106,6 @@ export const appleDeviceStyles = sva({
       display: 'flex',
       flexDirection: 'column',
       gap: '250',
-      maxHeight: { base: '520px', md: '640px' },
-      overflowY: 'auto',
     },
     screenView: {
       display: 'flex',
