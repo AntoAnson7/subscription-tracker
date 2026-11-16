@@ -23,7 +23,7 @@ export function useExport() {
     if (format === 'csv') {
       const csv = generateSubscriptionsCsv(filtered, true);
       const dateStr = new Date().toISOString().split('T')[0];
-      downloadCsvFile(csv, `subtrack-subscriptions-${dateStr}.csv`);
+      downloadCsvFile(csv, `subwise-subscriptions-${dateStr}.csv`);
     } else {
       printSubscriptionsReport(filtered, currency);
     }

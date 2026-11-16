@@ -14,7 +14,7 @@ export const appleSpecsStyles = sva({
     'tbody',
     'tr',
     'tdFeature',
-    'tdSubtrack',
+    'tdSubwise',
     'tdOther',
   ],
   base: {
@@ -91,7 +91,7 @@ export const appleSpecsStyles = sva({
       fontWeight: '600',
       color: 'text.primary',
     },
-    tdSubtrack: {
+    tdSubwise: {
       p: '200',
       fontSize: '13px',
       fontWeight: '600',

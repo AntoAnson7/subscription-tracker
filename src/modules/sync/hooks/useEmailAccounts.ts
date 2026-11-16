@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { EmailProvider, LinkedEmailAccount } from '@/modules/sync/types/sync.types';
 
-const STORAGE_KEY = 'subtrack-linked-emails';
+const STORAGE_KEY = 'subwise-linked-emails';
+const LEGACY_STORAGE_KEY = 'subtrack-linked-emails';
 
 function loadAccounts(userId: string | null): LinkedEmailAccount[] {
   if (typeof window === 'undefined') return [];
   const key = userId ? `${STORAGE_KEY}-${userId}` : STORAGE_KEY;
-  const raw = localStorage.getItem(key);
+  const legacyKey = userId ? `${LEGACY_STORAGE_KEY}-${userId}` : LEGACY_STORAGE_KEY;
+  const raw = localStorage.getItem(key) ?? localStorage.getItem(legacyKey);
   if (!raw) return [];
   try {
     const parsed = JSON.parse(raw) as LinkedEmailAccount[];

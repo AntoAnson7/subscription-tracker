@@ -10,7 +10,9 @@ import { supabase } from '@/modules/common/utils/supabase';
 
 function getStoredProfile(userId: string): UserProfile | null {
   if (typeof window === 'undefined') return null;
-  const raw = localStorage.getItem(`subtrack-profile-${userId}`);
+  const raw =
+    localStorage.getItem(`subwise-profile-${userId}`) ??
+    localStorage.getItem(`subtrack-profile-${userId}`);
   if (!raw) return null;
   try {
     return JSON.parse(raw) as UserProfile;
@@ -64,7 +66,7 @@ export function useProfile(user: User | null) {
           if (!error && data) {
             const parsed = fromDbProfile(data as unknown as DbProfileRow);
             setProfile(parsed);
-            localStorage.setItem(`subtrack-profile-${user.id}`, JSON.stringify(parsed));
+            localStorage.setItem(`subwise-profile-${user.id}`, JSON.stringify(parsed));
             setIsNewUser(false);
           } else {
             setIsNewUser(true);
@@ -94,7 +96,7 @@ export function useProfile(user: User | null) {
       createdAt: new Date().toISOString(),
     };
 
-    localStorage.setItem(`subtrack-profile-${user.id}`, JSON.stringify(newProfile));
+    localStorage.setItem(`subwise-profile-${user.id}`, JSON.stringify(newProfile));
     setProfile(newProfile);
     setIsNewUser(false);
 

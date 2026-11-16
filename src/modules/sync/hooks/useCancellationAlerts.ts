@@ -1,11 +1,12 @@
 import { useCallback, useState } from 'react';
 import { CancellationAlert } from '@/modules/sync/types/sync.types';
 
-const STORAGE_KEY = 'subtrack-cancellation-alerts';
+const STORAGE_KEY = 'subwise-cancellation-alerts';
+const LEGACY_STORAGE_KEY = 'subtrack-cancellation-alerts';
 
 function loadAlerts(): CancellationAlert[] {
   if (typeof window === 'undefined') return [];
-  const raw = localStorage.getItem(STORAGE_KEY);
+  const raw = localStorage.getItem(STORAGE_KEY) ?? localStorage.getItem(LEGACY_STORAGE_KEY);
   if (!raw) return [];
   try {
     return JSON.parse(raw) as CancellationAlert[];

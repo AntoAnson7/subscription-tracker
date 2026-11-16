@@ -30,7 +30,7 @@ export function useGoogleLink(onSuccess: (email: string, token: string, expires:
 
     if (supabase && isSupabaseConfigured) {
       try {
-        sessionStorage.setItem('subtrack_linking_gmail', 'true');
+        sessionStorage.setItem('subwise_linking_gmail', 'true');
         const { error: authError } = await supabase.auth.signInWithOAuth({
           provider: 'google',
           options: {
@@ -45,7 +45,7 @@ export function useGoogleLink(onSuccess: (email: string, token: string, expires:
         });
         if (authError) throw authError;
       } catch (err) {
-        sessionStorage.removeItem('subtrack_linking_gmail');
+        sessionStorage.removeItem('subwise_linking_gmail');
         const message = err instanceof Error ? err.message : 'Failed to initialize Google login.';
         setError(message);
         setIsAuthorizing(false);

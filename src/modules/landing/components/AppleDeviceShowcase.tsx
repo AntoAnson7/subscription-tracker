@@ -24,7 +24,7 @@ export function AppleDeviceShowcase() {
               <div className={classes.trafficLight} style={{ backgroundColor: '#27C93F' }} />
             </div>
 
-            <span className={classes.windowTitle}>SubTrack — Personal Workspace</span>
+            <span className={classes.windowTitle}>Subwise — Personal Workspace</span>
 
             <div className={classes.segmentBar} role="tablist" aria-label="Showcase screens">
               <button

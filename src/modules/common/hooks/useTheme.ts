@@ -15,7 +15,7 @@ export const APPLE_CARD_THEME: ThemeColors = {
 export function useTheme() {
   const [mode, setMode] = useState<ThemeMode>(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('subtrack-theme');
+      const saved = localStorage.getItem('subwise-theme') ?? localStorage.getItem('subtrack-theme');
       if (saved === 'dark' || saved === 'light') return saved;
       return 'light';
     }
@@ -25,10 +25,10 @@ export function useTheme() {
   useEffect(() => {
     if (mode === 'dark') {
       document.documentElement.classList.add('dark');
-      localStorage.setItem('subtrack-theme', 'dark');
+      localStorage.setItem('subwise-theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
-      localStorage.setItem('subtrack-theme', 'light');
+      localStorage.setItem('subwise-theme', 'light');
     }
   }, [mode]);
 

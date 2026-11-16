@@ -11,7 +11,7 @@ export function AppleHero({ onOpenAuth, onLaunchApp }: AppleHeroProps) {
 
   return (
     <section id="overview" className={classes.section}>
-      <span className={classes.eyebrow}>SubTrack</span>
+      <span className={classes.eyebrow}>Subwise</span>
 
       <h1 className={classes.headline}>
         Your subscriptions.

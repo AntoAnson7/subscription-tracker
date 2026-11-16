@@ -18,7 +18,7 @@ export function LinkedAccountItem({
   const classes = linkedAccountItemStyles();
 
   const handleUnlink = () => {
-    if (window.confirm(`Unlink ${account.email}? SubTrack will stop scanning this inbox.`)) {
+    if (window.confirm(`Unlink ${account.email}? Subwise will stop scanning this inbox.`)) {
       onUnlink(account.id);
     }
   };

@@ -107,7 +107,7 @@ export function LinkEmailConsentModal({ isOpen, onClose, onLink }: LinkEmailCons
                   setHasConsented(checked);
                   if (checked) setConsentError(null);
                 }}
-                label="I authorize SubTrack to scan transactional emails. I can unlink anytime."
+                label="I authorize Subwise to scan transactional emails. I can unlink anytime."
               />
             </div>
 

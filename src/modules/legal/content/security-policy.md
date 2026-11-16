@@ -2,7 +2,7 @@
 
 _Last updated: November 15, 2026_
 
-SubTrack is engineered from the ground up around data isolation, minimal privilege, and zero email retention.
+Subwise is engineered from the ground up around data isolation, minimal privilege, and zero email retention.
 
 ---
 
@@ -24,4 +24,4 @@ All data in transit between your browser, Google Cloud APIs, and Supabase is enc
 
 ## 4. Reporting Security Inquiries
 
-If you discover any security vulnerabilities or have technical questions regarding our data architecture, please report them to `security@subtrack.app` or `antoanson6@gmail.com`.
+If you discover any security vulnerabilities or have technical questions regarding our data architecture, please report them to `security@subwise.app` or `antoanson6@gmail.com`.

@@ -41,7 +41,7 @@ export function AppleNav({ onOpenAuth, onLaunchApp }: AppleNavProps) {
             if (e.key === 'Enter' || e.key === ' ') handleBrandClick();
           }}
         >
-          <span className={classes.brandText}>SubTrack</span>
+          <span className={classes.brandText}>Subwise</span>
         </div>
 
         <nav className={classes.links} aria-label="Product navigation">

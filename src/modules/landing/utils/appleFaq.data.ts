@@ -3,9 +3,9 @@ import { LandingFaq } from '@/modules/landing/types/landing.types';
 export const APPLE_FAQS: LandingFaq[] = [
   {
     id: 'apple-privacy',
-    question: 'How does SubTrack protect my privacy when accessing Gmail?',
+    question: 'How does Subwise protect my privacy when accessing Gmail?',
     answer:
-      'SubTrack requests restricted, read-only permission strictly to find digital receipts and invoices. Parsing executes inside your browser session, and email bodies are never stored on external databases or shared with third parties.',
+      'Subwise requests restricted, read-only permission strictly to find digital receipts and invoices. Parsing executes inside your browser session, and email bodies are never stored on external databases or shared with third parties.',
   },
   {
     id: 'apple-manual',
@@ -17,12 +17,12 @@ export const APPLE_FAQS: LandingFaq[] = [
     id: 'apple-hikes',
     question: 'How are stealth price increases identified?',
     answer:
-      'SubTrack indexes verified receipt charges against your registered base cost. If a recurring bill increases by even $0.50, you receive an immediate alert showing the percentage jump, the annual budget impact, and a one-click option to update.',
+      'Subwise indexes verified receipt charges against your registered base cost. If a recurring bill increases by even $0.50, you receive an immediate alert showing the percentage jump, the annual budget impact, and a one-click option to update.',
   },
   {
     id: 'apple-pricing',
-    question: 'What does SubTrack cost?',
+    question: 'What does Subwise cost?',
     answer:
-      'SubTrack is completely free to use. All core capabilities—including Gmail receipt parsing, price hike alerts, savings optimization, and CSV/PDF export—are included without paywalls.',
+      'Subwise is completely free to use. All core capabilities—including Gmail receipt parsing, price hike alerts, savings optimization, and CSV/PDF export—are included without paywalls.',
   },
 ];

@@ -9,14 +9,17 @@ import {
   toDbInsert,
 } from '@/modules/subscriptions/utils/subscriptionMapper.utils';
 
+const STORAGE_KEY = 'subwise-subscriptions';
+const LEGACY_STORAGE_KEY = 'subtrack-subscriptions';
+
 function saveLocal(subs: Subscription[]) {
-  localStorage.setItem('subtrack-subscriptions', JSON.stringify(subs));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(subs));
 }
 
 export function useSubscriptions(userId: string | null = null) {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('subtrack-subscriptions');
+      const saved = localStorage.getItem(STORAGE_KEY) ?? localStorage.getItem(LEGACY_STORAGE_KEY);
       if (saved) {
         try {
           return JSON.parse(saved) as Subscription[];

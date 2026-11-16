@@ -20,11 +20,14 @@ export function useGoogleOAuthCallback(
         user?: { email?: string } | null;
       } | null
     ) => {
-      const isLinking = sessionStorage.getItem('subtrack_linking_gmail') === 'true';
+      const isLinking =
+        sessionStorage.getItem('subwise_linking_gmail') === 'true' ||
+        sessionStorage.getItem('subtrack_linking_gmail') === 'true';
       const hasParam = window.location.search.includes('link_gmail=true');
       if (!isLinking && !hasParam) return;
 
       if (session?.provider_token && session.user?.email) {
+        sessionStorage.removeItem('subwise_linking_gmail');
         sessionStorage.removeItem('subtrack_linking_gmail');
         if (hasParam) {
           const url = new URL(window.location.href);

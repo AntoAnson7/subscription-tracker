@@ -4,14 +4,19 @@ import {
   GoogleUserInfo,
 } from '@/modules/sync/types/google.types';
 
-const CLIENT_ID_STORAGE_KEY = 'subtrack-google-client-id';
+const CLIENT_ID_STORAGE_KEY = 'subwise-google-client-id';
+const LEGACY_CLIENT_ID_KEY = 'subtrack-google-client-id';
 
 export function getGoogleClientId(): string {
   const envId = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
   if (envId && envId.trim().length > 0) return envId.trim();
 
   if (typeof window !== 'undefined') {
-    return localStorage.getItem(CLIENT_ID_STORAGE_KEY)?.trim() || '';
+    return (
+      (
+        localStorage.getItem(CLIENT_ID_STORAGE_KEY) ?? localStorage.getItem(LEGACY_CLIENT_ID_KEY)
+      )?.trim() || ''
+    );
   }
   return '';
 }

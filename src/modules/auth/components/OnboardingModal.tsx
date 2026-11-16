@@ -65,7 +65,7 @@ export function OnboardingModal({ isOpen, user, onSubmit }: OnboardingModalProps
             Complete account setup
           </h2>
           <p className={classes.subtitle}>
-            We found your Google profile. Confirm your details to finish creating your SubTrack
+            We found your Google profile. Confirm your details to finish creating your Subwise
             account.
           </p>
         </header>

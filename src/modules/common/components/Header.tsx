@@ -45,7 +45,7 @@ export function Header({
           <div className={classes.brandIcon}>
             <CreditCard size={18} strokeWidth={2.2} />
           </div>
-          <span className={classes.brandText}>SubTrack</span>
+          <span className={classes.brandText}>Subwise</span>
         </div>
 
         <div className={classes.controls}>

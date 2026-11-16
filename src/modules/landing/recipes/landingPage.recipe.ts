@@ -8,7 +8,6 @@ export const landingPageStyles = sva({
       display: 'flex',
       flexDirection: 'column',
       position: 'relative',
-      overflowX: 'hidden',
       bg: 'bg.canvas',
     },
     content: {

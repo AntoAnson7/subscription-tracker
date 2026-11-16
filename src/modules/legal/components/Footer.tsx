@@ -19,7 +19,7 @@ export function Footer({ onOpenLegal, onOpenAuth }: FooterProps) {
           <div className={classes.brandCol}>
             <div className={classes.brandHeader}>
               <div className={classes.brandLogo}>S</div>
-              <span className={classes.brandName}>SubTrack</span>
+              <span className={classes.brandName}>Subwise</span>
             </div>
             <p className={classes.brandTagline}>
               Privacy-first subscription run-rate tracking, renewal schedules, and intelligent
@@ -92,7 +92,7 @@ export function Footer({ onOpenLegal, onOpenAuth }: FooterProps) {
                   <ExternalLink size={11} />
                 </a>
                 <a
-                  href="mailto:support@subtrack.app"
+                  href="mailto:support@subwise.app"
                   className={classes.linkBtn}
                   style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                 >
@@ -106,9 +106,9 @@ export function Footer({ onOpenLegal, onOpenAuth }: FooterProps) {
         <hr className={classes.divider} />
 
         <div className={classes.bottomRow}>
-          <span className={classes.copyright}>© {CURRENT_YEAR} SubTrack. All rights reserved.</span>
+          <span className={classes.copyright}>© {CURRENT_YEAR} Subwise. All rights reserved.</span>
           <p className={classes.googleNotice}>
-            SubTrack’s use of information received from Google APIs adheres to the Google API
+            Subwise’s use of information received from Google APIs adheres to the Google API
             Services User Data Policy, including the Limited Use requirements.
           </p>
         </div>

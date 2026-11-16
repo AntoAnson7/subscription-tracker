@@ -12,7 +12,7 @@ export interface AppleStory {
 
 export interface SpecRow {
   feature: string;
-  subtrack: string | boolean;
+  subwise: string | boolean;
   traditional: string | boolean;
   spreadsheets: string | boolean;
 }

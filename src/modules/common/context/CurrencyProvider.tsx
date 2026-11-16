@@ -18,9 +18,10 @@ export function CurrencyProvider({ children, initialCurrency }: CurrencyProvider
       return initialCurrency;
     }
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('subtrack-currency');
-      if (saved === 'INR') {
-        return 'INR';
+      const saved =
+        localStorage.getItem('subwise-currency') ?? localStorage.getItem('subtrack-currency');
+      if (saved && SUPPORTED_CURRENCIES.some((c) => c.code === saved)) {
+        return saved as CurrencyCode;
       }
     }
     return 'INR';
@@ -29,7 +30,7 @@ export function CurrencyProvider({ children, initialCurrency }: CurrencyProvider
   const setCurrency = useCallback((nextCode: CurrencyCode) => {
     setCurrencyState(nextCode);
     if (typeof window !== 'undefined') {
-      localStorage.setItem('subtrack-currency', nextCode);
+      localStorage.setItem('subwise-currency', nextCode);
     }
   }, []);
 

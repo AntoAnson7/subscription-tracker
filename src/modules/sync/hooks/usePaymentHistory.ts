@@ -1,11 +1,12 @@
 import { useCallback, useState } from 'react';
 import { PaymentRecord } from '@/modules/sync/types/sync.types';
 
-const STORAGE_KEY = 'subtrack-payment-records';
+const STORAGE_KEY = 'subwise-payment-records';
+const LEGACY_STORAGE_KEY = 'subtrack-payment-records';
 
 function loadPayments(): PaymentRecord[] {
   if (typeof window === 'undefined') return [];
-  const raw = localStorage.getItem(STORAGE_KEY);
+  const raw = localStorage.getItem(STORAGE_KEY) ?? localStorage.getItem(LEGACY_STORAGE_KEY);
   if (!raw) return [];
   try {
     return JSON.parse(raw) as PaymentRecord[];

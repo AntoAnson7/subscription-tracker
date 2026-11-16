@@ -16,7 +16,7 @@ export function AppleSpecsTable() {
           <thead className={classes.thead}>
             <tr>
               <th className={classes.th}>Capability</th>
-              <th className={`${classes.th} ${classes.thActive}`}>SubTrack</th>
+              <th className={`${classes.th} ${classes.thActive}`}>Subwise</th>
               <th className={classes.th}>Budget Apps</th>
               <th className={classes.th}>Spreadsheets</th>
             </tr>
@@ -25,7 +25,7 @@ export function AppleSpecsTable() {
             {APPLE_SPECS.map((spec) => (
               <tr key={spec.feature} className={classes.tr}>
                 <td className={classes.tdFeature}>{spec.feature}</td>
-                <td className={classes.tdSubtrack}>{String(spec.subtrack)}</td>
+                <td className={classes.tdSubwise}>{String(spec.subwise)}</td>
                 <td className={classes.tdOther}>{String(spec.traditional)}</td>
                 <td className={classes.tdOther}>{String(spec.spreadsheets)}</td>
               </tr>

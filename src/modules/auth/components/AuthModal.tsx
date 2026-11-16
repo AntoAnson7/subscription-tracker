@@ -40,7 +40,7 @@ export function AuthModal({ isOpen, onClose, onGoogleSignIn, error }: AuthModalP
             <Sparkles size={22} strokeWidth={2.2} />
           </div>
           <h2 id="auth-modal-title" className={classes.title}>
-            SubTrack Sync
+            Subwise Sync
           </h2>
           <p className={classes.subtitle}>
             Sign in with Google to securely sync your subscriptions, renewals, and run-rates.
@@ -55,7 +55,7 @@ export function AuthModal({ isOpen, onClose, onGoogleSignIn, error }: AuthModalP
         </button>
 
         <p className={classes.termsText}>
-          By continuing, you agree to SubTrack's privacy policy and local sync terms.
+          By continuing, you agree to Subwise's privacy policy and local sync terms.
         </p>
       </div>
     </div>

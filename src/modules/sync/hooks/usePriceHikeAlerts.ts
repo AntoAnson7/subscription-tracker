@@ -3,11 +3,12 @@ import { Subscription } from '@/modules/subscriptions/types/subscription.types';
 import { PriceHikeAlert } from '@/modules/sync/types/priceHike.types';
 import { PaymentRecord } from '@/modules/sync/types/sync.types';
 
-const DISMISSED_KEY = 'subtrack-dismissed-price-hikes';
+const DISMISSED_KEY = 'subwise-dismissed-price-hikes';
+const LEGACY_DISMISSED_KEY = 'subtrack-dismissed-price-hikes';
 
 function loadDismissedIds(): string[] {
   if (typeof window === 'undefined') return [];
-  const raw = localStorage.getItem(DISMISSED_KEY);
+  const raw = localStorage.getItem(DISMISSED_KEY) ?? localStorage.getItem(LEGACY_DISMISSED_KEY);
   if (!raw) return [];
   try {
     return JSON.parse(raw) as string[];

@@ -1,6 +1,6 @@
 # Repository Rules & Architecture Guide
 
-Welcome to the SubTrack codebase. All contributors and AI agents must strictly adhere to the following architectural standards, linting constraints, and file organization rules.
+Welcome to the Subwise codebase. All contributors and AI agents must strictly adhere to the following architectural standards, linting constraints, and file organization rules.
 
 ---
 
