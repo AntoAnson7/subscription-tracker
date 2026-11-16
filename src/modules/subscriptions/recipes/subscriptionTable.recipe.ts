@@ -1,7 +1,18 @@
 import { sva } from 'styled-system/css';
 
 export const subscriptionTableStyles = sva({
-  slots: ['root', 'table', 'thead', 'th', 'tr', 'td', 'brandCell', 'manageLink'],
+  slots: [
+    'root',
+    'table',
+    'thead',
+    'th',
+    'thAction',
+    'tr',
+    'td',
+    'tdAction',
+    'brandCell',
+    'manageLink',
+  ],
   base: {
     root: {
       background: 'bg.secondary',
@@ -9,6 +20,7 @@ export const subscriptionTableStyles = sva({
       borderRadius: 'xl',
       border: '1px solid',
       overflowX: 'auto',
+      minHeight: '260px',
       backdropFilter: 'blur(20px)',
     },
     table: {
@@ -28,6 +40,14 @@ export const subscriptionTableStyles = sva({
       fontWeight: '700',
       color: 'text.primary',
     },
+    thAction: {
+      py: '200',
+      px: '200',
+      fontWeight: '700',
+      color: 'text.primary',
+      textAlign: 'right',
+      width: '64px',
+    },
     tr: {
       borderBottom: '1px solid',
       borderBottomColor: 'border.subtle',
@@ -40,6 +60,13 @@ export const subscriptionTableStyles = sva({
       py: '150',
       px: '200',
       color: 'text.primary',
+    },
+    tdAction: {
+      py: '150',
+      px: '200',
+      color: 'text.primary',
+      textAlign: 'right',
+      width: '64px',
     },
     brandCell: {
       display: 'flex',

@@ -30,7 +30,6 @@ export const subscriptionCardMenuStyles = sva({
     },
     menu: {
       position: 'absolute',
-      bottom: 'calc(100% + 6px)',
       right: 0,
       minWidth: '160px',
       background: 'bg.primary',
@@ -95,5 +94,24 @@ export const subscriptionCardMenuStyles = sva({
         outlineOffset: '-2px',
       },
     },
+  },
+  variants: {
+    placement: {
+      top: {
+        menu: {
+          bottom: 'calc(100% + 6px)',
+          top: 'auto',
+        },
+      },
+      bottom: {
+        menu: {
+          top: 'calc(100% + 6px)',
+          bottom: 'auto',
+        },
+      },
+    },
+  },
+  defaultVariants: {
+    placement: 'top',
   },
 });

@@ -9,6 +9,7 @@ interface SubscriptionCardMenuProps {
   onEdit?: (subscription: Subscription) => void;
   onCancel?: (id: string) => void;
   onRenew?: (subscription: Subscription) => void;
+  placement?: 'top' | 'bottom';
 }
 
 export function SubscriptionCardMenu({
@@ -16,10 +17,12 @@ export function SubscriptionCardMenu({
   onEdit,
   onCancel,
   onRenew,
+  placement = 'top',
 }: SubscriptionCardMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [actualPlacement, setActualPlacement] = useState<'top' | 'bottom'>(placement);
   const menuRef = useRef<HTMLDivElement>(null);
-  const classes = subscriptionCardMenuStyles();
+  const classes = subscriptionCardMenuStyles({ placement: actualPlacement });
   const isCancelled = subscription.status === 'cancelled';
 
   useClickOutside(menuRef, () => setIsOpen(false), isOpen);
@@ -35,11 +38,24 @@ export function SubscriptionCardMenu({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen]);
 
+  const handleToggle = () => {
+    if (!isOpen && menuRef.current) {
+      const rect = menuRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      if (placement === 'bottom') {
+        setActualPlacement(spaceBelow < 180 && rect.top > 180 ? 'top' : 'bottom');
+      } else {
+        setActualPlacement(rect.top < 180 && spaceBelow > 180 ? 'bottom' : 'top');
+      }
+    }
+    setIsOpen((prev) => !prev);
+  };
+
   return (
     <div ref={menuRef} className={classes.root}>
       <button
         type="button"
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={handleToggle}
         className={classes.trigger}
         aria-haspopup="menu"
         aria-expanded={isOpen}
