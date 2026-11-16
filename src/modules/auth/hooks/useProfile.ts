@@ -30,7 +30,7 @@ function resolveProfile(user: User | null): UserProfile | null {
       id: user.id,
       fullName:
         (user.user_metadata.full_name as string) || (user.user_metadata.name as string) || 'User',
-      preferredCurrency: (user.user_metadata.preferred_currency as string) || 'USD',
+      preferredCurrency: (user.user_metadata.preferred_currency as string) || 'INR',
       trackingFocus: (user.user_metadata.tracking_focus as TrackingFocus) || 'Personal',
       avatarUrl:
         (user.user_metadata.avatar_url as string) || (user.user_metadata.picture as string) || null,

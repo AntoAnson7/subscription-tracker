@@ -13,7 +13,7 @@ export function useOnboardingForm(
 
   const [formData, setFormData] = useState<CreateProfileData>({
     fullName: initialName,
-    preferredCurrency: 'USD',
+    preferredCurrency: 'INR',
     trackingFocus: 'Personal',
   });
   const [submitting, setSubmitting] = useState(false);

@@ -46,6 +46,16 @@ export const customInputStyles = sva({
         opacity: 0.6,
         cursor: 'not-allowed',
       },
+      _readOnly: {
+        cursor: 'default',
+        color: 'text.secondary',
+        borderColor: 'border.subtle',
+        userSelect: 'none',
+        _focusVisible: {
+          outline: 'none',
+          borderColor: 'border.subtle',
+        },
+      },
     },
     leftAdornment: {
       position: 'absolute',

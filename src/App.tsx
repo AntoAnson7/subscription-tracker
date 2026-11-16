@@ -127,7 +127,7 @@ export function App() {
           onLegalTabChange={legalModal.setActiveLegalTab}
           exportManager={exportManager}
           subscriptions={subManager.subscriptions}
-          currency={profile?.preferredCurrency || 'USD'}
+          currency={profile?.preferredCurrency || 'INR'}
         />
       </AppBackground>
     </CurrencyProvider>

@@ -15,16 +15,6 @@ interface OnboardingModalProps {
   onSubmit: (data: CreateProfileData) => Promise<boolean> | boolean;
 }
 
-const CURRENCY_OPTIONS = [
-  { value: 'USD', label: 'USD ($)' },
-  { value: 'EUR', label: 'EUR (€)' },
-  { value: 'GBP', label: 'GBP (£)' },
-  { value: 'CAD', label: 'CAD ($)' },
-  { value: 'AUD', label: 'AUD ($)' },
-  { value: 'INR', label: 'INR (₹)' },
-  { value: 'JPY', label: 'JPY (¥)' },
-];
-
 const FOCUS_OPTIONS = [
   { value: 'Personal', label: 'Personal subscriptions' },
   { value: 'Work & Business', label: 'Work & SaaS tools' },
@@ -88,12 +78,7 @@ export function OnboardingModal({ isOpen, user, onSubmit }: OnboardingModalProps
               placeholder="e.g. Jane Doe"
             />
 
-            <CustomSelect
-              label="Preferred currency"
-              value={formData.preferredCurrency}
-              onChange={(val) => updateField('preferredCurrency', val)}
-              options={CURRENCY_OPTIONS}
-            />
+            <CustomInput label="Preferred currency" value="INR (₹)" readOnly />
 
             <CustomSelect
               label="Tracking focus"
